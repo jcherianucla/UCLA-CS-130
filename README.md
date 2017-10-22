@@ -11,7 +11,7 @@ In many introductory Computer Science classes, students start out with code for 
 
 ### The Solution
 
-Professors in said classes, usually have a grading script with test cases that describe which areas the students failed/succeeded. However, these scripts are usually convoluted to the point that if a student tries to run it themselves on their project - post submission - they aren't going to be able to digest the information effectively. GradePortal is the solution to this very problem. It provied a two sided interface, for professors to easily create projects, administer grades, upload grading scripts etc. and thereby allows a student to upload their submission to the portal to get immediate feedback on the results of the grading script.
+Professors in said classes usually have a grading script with test cases that describe which areas the students failed/succeeded in. However, these scripts are usually convoluted to the point that if a student tries to run it themselves on their project - post submission - they aren't going to be able to digest the information effectively. GradePortal is the solution to this very problem. It provied a two sided interface, for professors to easily create projects, administer grades, upload grading scripts etc. and thereby allows a student to upload their submission to the portal to get immediate feedback on the results of the grading script.
 
 ### Scope
 
