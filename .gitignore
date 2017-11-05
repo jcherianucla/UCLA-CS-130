@@ -1,0 +1,13 @@
+# OS files
+.DS_STORE
+*.swp
+
+# Logs
+*.log
+
+# NPM
+node_modules
+
+# Builds
+build/
+
