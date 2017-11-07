@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../images/logo.svg';
 import '../styles/Landing.css';
 
 class Landing extends Component {
