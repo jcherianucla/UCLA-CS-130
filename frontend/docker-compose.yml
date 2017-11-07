@@ -4,4 +4,3 @@ react:
   - "5000:5000"
   volumes:
   - .:/home/appuser
-  - /home/appuser/node_modules
