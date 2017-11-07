@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Header from '../../shared/Header.js'
 import '../../styles/professor/Login.css';
 
 class ProfessorLogin extends Component {
@@ -14,6 +15,7 @@ class ProfessorLogin extends Component {
   render() {
     return (
       <div>
+        <Header />
         <h1>Professor Login</h1>
         <button onClick={() => this.back()}>
           Back

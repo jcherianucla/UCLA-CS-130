@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Header from '../shared/Header.js'
 import '../styles/Classes.css';
 
 class Classes extends Component {
@@ -18,6 +19,7 @@ class Classes extends Component {
   render() {
     return (
       <div>
+        <Header />
         <h1>Classes</h1>
         <button onClick={() => this.back()}>
           Back
