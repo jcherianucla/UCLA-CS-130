@@ -2,19 +2,17 @@ FROM node:7.8.0
 
 ENV NPM_CONFIG_LOGLEVEL warn
 
-RUN useradd --user-group --create-home --shell /bin/false appuser
+COPY package.json npm-shrinkwrap.json /grade-portal/
 
-ENV HOME=/home/appuser
-
-COPY package.json npm-shrinkwrap.json $HOME/
-RUN chown -R appuser:appuser $HOME/*
-
-USER appuser
-
-WORKDIR $HOME
+WORKDIR /grade-portal
 
 RUN npm install
 
 EXPOSE 5000
 
+RUN useradd --user-group --shell /bin/false admin
+RUN chown -R admin:admin /grade-portal/
+
 CMD ["npm", "start"]
+
+ENV HOME=/home/appuser
