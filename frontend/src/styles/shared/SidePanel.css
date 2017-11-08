@@ -1,0 +1,8 @@
+.sidePanel {
+  background-image: url("../../images/side_panel.png");
+  background-size: contain;
+  height: 100vh;
+  width: 2vw;
+  top: 0;
+  position: fixed;
+}

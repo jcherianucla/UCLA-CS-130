@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../../shared/Header.js'
+import SidePanel from '../../shared/SidePanel.js'
 import '../../styles/student/Login.css';
 
 class StudentLogin extends Component {
@@ -16,6 +17,7 @@ class StudentLogin extends Component {
     return (
       <div>
         <Header />
+        <SidePanel />
         <h1>Student Login</h1>
         <button onClick={() => this.back()}>
           Back
