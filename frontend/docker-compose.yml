@@ -3,5 +3,5 @@ react:
   ports:
   - "5000:5000"
   volumes:
-  - .:/grade-portal
+  - ./:/grade-portal
   - /grade-portal/node_modules
