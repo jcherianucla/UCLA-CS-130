@@ -7,16 +7,13 @@ class ItemCard extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <Card>
+        <Card className="item-card">
           <CardHeader
-            title="Without Avatar"
+            title="CS 31"
             subtitle="Subtitle"
           />
           <CardText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+            Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++
           </CardText>
         </Card>
       </MuiThemeProvider>

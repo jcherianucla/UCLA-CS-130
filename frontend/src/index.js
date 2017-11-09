@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import './styles/index.css';
+import './styles/common.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Landing from './containers/Landing';
 import Classes from './containers/Classes';
