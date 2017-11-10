@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Header from '../shared/Header.js'
+import Content from '../shared/Content.js'
 import SidePanel from '../shared/SidePanel.js'
 import ItemCard from '../shared/ItemCard.js'
 import '../styles/Classes.css';
+import '../styles/shared/Page.css';
 
 class Classes extends Component {
 
@@ -21,19 +23,23 @@ class Classes extends Component {
   render() {
     return (
       <div>
-        <Header />
         <SidePanel />
-        <h1>Classes</h1>
-        <button onClick={() => this.back()}>
-          Back
-        </button>
-        <button onClick={() => this.projects()}>
-          Projects
-        </button>
-        <button onClick={() => this.professorUpsertClass()}>
-          Professor Create/Edit Class
-        </button>
-        <ItemCard />
+        <div className="page">
+          <Header />
+
+          <button onClick={() => this.back()}>
+            Back
+          </button>
+          <button onClick={() => this.projects()}>
+            Projects
+          </button>
+          <button onClick={() => this.professorUpsertClass()}>
+            Professor Create/Edit Class
+          </button>
+
+          <ItemCard />
+        </div>
+ 
       </div>
     );
   }

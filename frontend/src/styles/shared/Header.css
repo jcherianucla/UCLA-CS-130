@@ -1,5 +1,4 @@
 .header {
-  background-color: blue;
   height: 100px;
 }
 
@@ -7,4 +6,24 @@
   margin-top: 0px;
   padding-top: 10px;
   color: #ffffff;
+}
+
+.logo {
+	background-image: url("../../images/logo.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	height: 10vh;
+	width: 50vw;
+	position: relative;
+}
+
+.welcome {
+	font-family: "Comic Sans MS";
+	font-size: 4vw;
+}
+
+.path {
+	margin-top: 1vw;
+	font-family: "Comic Sans MS";
+	font-size: 2.5vw;
 }

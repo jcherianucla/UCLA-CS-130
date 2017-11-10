@@ -4,8 +4,20 @@ import '../styles/shared/Header.css';
 class Header extends Component {
   render() {
     return (
-      <div className="header">
-        <p>This is an example header. Code that is repeated on multiple pages should be implemented as shared components</p>
+    	<div>
+	      <div className="header">
+	      	<div className="logo" /> 
+	        <p>This is an example header.</p>
+	      </div>
+
+	      <div className="welcome">
+	      	Welcome Joe Bruin
+	      </div>
+
+	      <div className="path">
+	        Path
+	      </div>
+
       </div>
     );
   }
