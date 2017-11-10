@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../shared/Header.js'
 import Content from '../shared/Content.js'
 import SidePanel from '../shared/SidePanel.js'
+import ItemCard from '../shared/ItemCard.js'
 import '../styles/Classes.css';
 import '../styles/shared/Page.css';
 
@@ -35,9 +36,10 @@ class Classes extends Component {
           <button onClick={() => this.professorUpsertClass()}>
             Professor Create/Edit Class
           </button>
-          
-          <Content />
+
+          <ItemCard />
         </div>
+ 
       </div>
     );
   }
