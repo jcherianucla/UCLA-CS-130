@@ -166,13 +166,9 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 		err = errors.Wrapf(err, "Invalid user model")
 		return
 	}
-	// Make sure user doesn't already exist
-	exist, err := table.GetUserByEmail(user.Email)
+	err = table.userExists(UserQuery{Email: user.Email})
 	if err != nil {
-		err = errors.Wrapf(err, "Failed to check for existing user")
-		return
-	} else if exist != nil {
-		err = errors.New(fmt.Sprintf("User with email: %s already exists", user.Email))
+		err = errors.Wrapf(err, "Search error")
 		return
 	}
 	var query bytes.Buffer
@@ -181,6 +177,10 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 	var vStr, kStr bytes.Buffer
 	vIdx := 1
 	fields := reflect.ValueOf(user)
+	if fields.NumField() < 1 {
+		err = errors.New("Invalid number of fields given")
+		return
+	}
 	first := true
 	for i := 0; i < fields.NumField(); i++ {
 		k := reflect.Field(i).Name()
@@ -213,5 +213,105 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 	}
 	// Retrieve user with the new id
 	new = table.GetUser(UserQuery{id: &new.Id})
+	return
+}
+
+func (table *UserTable) userExists(userQuery UserQuery) (err error) {
+	users, err := table.GetUser(userQuery)
+	// Check if user exists
+	if err != nil {
+		err = errors.Wrapf(err, "Error while searching for user")
+		return
+	} else if users == nil {
+		err = errors.New("Couldn't find user")
+		return
+	}
+	return
+}
+
+func (table *UserTable) UpdateUser(id int, updates User) (updated User, err error) {
+	err = table.userExists(UserQuery{Id: id})
+	if err != nil {
+		err = errors.Wrapf(err, "Search error")
+		return
+	}
+	var query bytes.Buffer
+	query.WriteString(fmt.Sprintf("UPDATE %s SET", TABLE))
+	var values []string
+	var vStr, kStr bytes.Buffer
+	vIdx := 1
+	fields := reflect.ValueOf(user)
+	if fields.NumField() < 1 {
+		err = errors.New("Invalid number of fields given")
+		return
+	}
+	first := true
+	for i := 0; i < fields.NumField(); i++ {
+		k := reflect.Field(i).Name()
+		v := fmt.Sprintf("%v", reflect.Field(i).Interface())
+		// Skip auto params or unset fields
+		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i)) {
+			continue
+		}
+		if first {
+			query.WriteString(" ")
+			first = false
+		} else {
+			query.WriteString(", ")
+		}
+		// Hash new password
+		if k == "Password" {
+			v, err = bcrypt.GenerateFromPassword([]byte(v), bcrypt.DefaultCost())
+			if err != nil {
+				err = errors.Wrapf(err, "Problem creating password hash")
+				return
+			}
+		}
+		query.WriteString(fmt.Sprintf("%v=$%d", k, vIdx))
+		values = append(values, v)
+		vIdx += 1
+	}
+	// End of query
+	query.WriteString(fmt.Sprintf(" WHERE id=%d;", id))
+
+	stmt, err := table.connection.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Couldn't prepare update query")
+		return
+	}
+	if _, err = stmt.Exec(values...); err != nil {
+		err = errors.Wrapf(err, "Couldn't execute update query")
+		return
+	}
+	// Get updated user
+	users, err := table.GetUser(UserQuery{Id: id})
+	if err != nil {
+		err = errors.Wrapf(err, "Error getting updated user")
+		return
+	} else if len(users) != 1 {
+		err = errors.New("Found duplicate users")
+		return
+	}
+	updated = users[0]
+	return
+}
+
+func (table *UserTable) DeleteUser(id int) (err error) {
+	err = table.userExists(UserQuery{Id: id})
+	if err != nil {
+		err = errors.Wrapf(err, "Search error")
+		return
+	}
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", TABLE)
+
+	stmt, err := table.connection.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Couldn't prepare delete query")
+		return
+	}
+
+	if _, err = stmt.Exec(id.(string)); err != nil {
+		err = errors.Wrapf(err, "Couldn't execute delete query")
+	}
 	return
 }
