@@ -2,13 +2,13 @@ package config
 
 import (
 	"database/sql"
-	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
+	"fmt"
 	_ "github.com/lib/pq"
-	"gopkg.in/oleiade/reflections.v1"
+	"github.com/pkg/errors"
 )
 
 type Db struct {
-	Pool *sql.Db
+	Pool *sql.DB
 	cfg  Config
 }
 

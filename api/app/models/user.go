@@ -3,12 +3,16 @@ package models
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/asaskevich/govalidator"
 	"github.com/jcherianucla/UCLA-CS-130/api/config"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
-	"gopkg.in/oleiade/reflections.v1"
+	"io/ioutil"
+	"net/http"
+	"reflect"
+	"strconv"
 	"time"
 )
 
@@ -26,7 +30,7 @@ var (
 
 // Holds the connection to the db instance
 type UserTable struct {
-	connection *Db
+	connection *config.Db
 }
 
 // Basic user model
@@ -58,12 +62,15 @@ func NewUser(r *http.Request) (user User, err error) {
 	// Converts JSON to user
 	json.Unmarshal(b, &user)
 	// Hashes password
-	user.Password = bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost())
+	user.Password, err = bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost)
+	if err != nil {
+		err = errors.Wrapf(err, "Error hashing password")
+	}
 	return
 }
 
 // Creates a new user table
-func NewUserTable(db *Db) (userTable UserTable, err error) {
+func NewUserTable(db *config.Db) (userTable UserTable, err error) {
 	if db == nil {
 		err = errors.New("Invalid database connection")
 		return
@@ -88,7 +95,7 @@ func (table *UserTable) createTable() (err error) {
 			password BYTEA
 			time_created TIMESTAMP DEFAULT now()
 		);`, TABLE)
-	if _, err = table.connection.Exec(query); err != nil {
+	if _, err = table.connection.Pool.Exec(query); err != nil {
 		err = errors.Wrapf(err, "Table creation query failed")
 	}
 	return
@@ -96,8 +103,7 @@ func (table *UserTable) createTable() (err error) {
 
 // Get by unique email
 func (table *UserTable) GetUserByEmail(email string) (user User, err error) {
-	userQuery := UserQuery{email: email}
-	users, err := table.GetUser(UserQuery, "")
+	users, err := table.GetUser(UserQuery{Email: email}, "")
 	if len(users) > 0 {
 		user = users[0]
 	}
@@ -105,16 +111,16 @@ func (table *UserTable) GetUserByEmail(email string) (user User, err error) {
 }
 
 // Can get all users based on any queryable fields and the varying operation to combine fields
-func (table *UserTable) GetUser(query UserQuery, op string) (users []User, err error) {
+func (table *UserTable) GetUser(userQuery UserQuery, op string) (users []User, err error) {
 	var query bytes.Buffer
 	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", TABLE))
-	fields := reflect.ValueOf(query)
+	fields := reflect.ValueOf(userQuery)
 	if fields.NumField() <= 0 {
 		err = errors.New("Invalid number of query fields")
 		return
 	}
 	first := true
-	var values []string
+	var values []interface{}
 	vIdx := 1
 	for i := 0; i < fields.NumField(); i++ {
 		if first {
@@ -126,9 +132,9 @@ func (table *UserTable) GetUser(query UserQuery, op string) (users []User, err e
 			}
 		}
 		// Skip fields that are not set to query on
-		if !utilities.IsUndeclared(reflect.Field(i)) {
-			k := reflect.Field(i).Name()
-			v := fmt.Sprintf("%v", reflect.Field(i).Interface())
+		if !utilities.IsUndeclared(fields.Field(i)) {
+			k := fields.Type().Field(i).Name
+			v := fmt.Sprintf("%v", fields.Field(i).Interface())
 			values = append(values, v)
 			query.WriteString(fmt.Sprintf("%s=$%d", k, vIdx))
 			vIdx++
@@ -136,12 +142,12 @@ func (table *UserTable) GetUser(query UserQuery, op string) (users []User, err e
 	}
 	query.WriteString(";")
 
-	stmt, err := table.connection.Prepare(query.String())
+	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
 		err = errors.Wrapf(err, "Could not prepare db query for user")
 		return
 	}
-	rows, err := table.connection.Query(values...)
+	rows, err := stmt.Query(values...)
 	if err != nil {
 		err = errors.Wrapf(err, "Could not retrieve rows for query")
 		return
@@ -149,7 +155,7 @@ func (table *UserTable) GetUser(query UserQuery, op string) (users []User, err e
 	// Get all the user rows that matched the query
 	for rows.Next() {
 		var user User
-		err := rows.Scan(&user.Id, &user.Is_professor, &user.Email, &user.First_name, &user.Last_name, &user.Password, &user.Created_at)
+		err = rows.Scan(&user.Id, &user.Is_professor, &user.Email, &user.First_name, &user.Last_name, &user.Password, &user.Created_at)
 		if err != nil {
 			err = errors.Wrapf(err, "Failed to scan row")
 			return
@@ -161,7 +167,7 @@ func (table *UserTable) GetUser(query UserQuery, op string) (users []User, err e
 
 // Inserts a new user into the DB
 func (table *UserTable) InsertUser(user User) (new User, err error) {
-	_, err := govalidator.ValidateStruct(user)
+	_, err = govalidator.ValidateStruct(user)
 	if err != nil {
 		err = errors.Wrapf(err, "Invalid user model")
 		return
@@ -173,7 +179,7 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 	}
 	var query bytes.Buffer
 	query.WriteString(fmt.Sprintf("INSERT INTO %s (", TABLE))
-	var values []string
+	var values []interface{}
 	var vStr, kStr bytes.Buffer
 	vIdx := 1
 	fields := reflect.ValueOf(user)
@@ -183,8 +189,8 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 	}
 	first := true
 	for i := 0; i < fields.NumField(); i++ {
-		k := reflect.Field(i).Name()
-		v := fmt.Sprintf("%v", reflect.Field(i).Interface())
+		k := fields.Type().Field(i).Name
+		v := fmt.Sprintf("%v", fields.Field(i).Interface())
 		// Skip auto params
 		if AUTO_PARAM[k] {
 			continue
@@ -201,23 +207,30 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 		vIdx++
 	}
 	query.WriteString(fmt.Sprintf("%s) VALUES (%s) RETURNING id;", kStr, vStr))
-	stmt, err := table.connection.Prepare(query)
+	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
 		err = errors.Wrapf(err, "Could not prepare insertion query")
 		return
 	}
-	err := table.connection.QueryRow(values...).Scan(&new.Id)
+	err = stmt.QueryRow(values...).Scan(&new.Id)
 	if err != nil {
 		err = errors.Wrapf(err, "Could not insert user")
 		return
 	}
 	// Retrieve user with the new id
-	new = table.GetUser(UserQuery{id: &new.Id})
+	users, err := table.GetUser(UserQuery{Id: new.Id}, "")
+	if err != nil {
+		err = errors.Wrapf(err, "Failed to get user")
+	} else if len(users) != 1 {
+		err = errors.New("Found duplicate users while inserting")
+	} else {
+		new = users[0]
+	}
 	return
 }
 
 func (table *UserTable) userExists(userQuery UserQuery) (err error) {
-	users, err := table.GetUser(userQuery)
+	users, err := table.GetUser(userQuery, "AND")
 	// Check if user exists
 	if err != nil {
 		err = errors.Wrapf(err, "Error while searching for user")
@@ -237,18 +250,17 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 	}
 	var query bytes.Buffer
 	query.WriteString(fmt.Sprintf("UPDATE %s SET", TABLE))
-	var values []string
-	var vStr, kStr bytes.Buffer
+	var values []interface{}
 	vIdx := 1
-	fields := reflect.ValueOf(user)
+	fields := reflect.ValueOf(updates)
 	if fields.NumField() < 1 {
 		err = errors.New("Invalid number of fields given")
 		return
 	}
 	first := true
 	for i := 0; i < fields.NumField(); i++ {
-		k := reflect.Field(i).Name()
-		v := fmt.Sprintf("%v", reflect.Field(i).Interface())
+		k := fields.Type().Field(i).Name
+		v := fmt.Sprintf("%v", fields.Field(i).Interface())
 		// Skip auto params or unset fields
 		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i)) {
 			continue
@@ -261,20 +273,22 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 		}
 		// Hash new password
 		if k == "Password" {
-			v, err = bcrypt.GenerateFromPassword([]byte(v), bcrypt.DefaultCost())
-			if err != nil {
-				err = errors.Wrapf(err, "Problem creating password hash")
+			hash, cryptErr := bcrypt.GenerateFromPassword([]byte(v), bcrypt.DefaultCost)
+			if cryptErr != nil {
+				err = errors.Wrapf(cryptErr, "Problem creating password hash")
 				return
 			}
+			values = append(values, hash)
+		} else {
+			values = append(values, v)
 		}
 		query.WriteString(fmt.Sprintf("%v=$%d", k, vIdx))
-		values = append(values, v)
 		vIdx += 1
 	}
 	// End of query
 	query.WriteString(fmt.Sprintf(" WHERE id=%d;", id))
 
-	stmt, err := table.connection.Prepare(query)
+	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
 		err = errors.Wrapf(err, "Couldn't prepare update query")
 		return
@@ -284,7 +298,7 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 		return
 	}
 	// Get updated user
-	users, err := table.GetUser(UserQuery{Id: id})
+	users, err := table.GetUser(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Error getting updated user")
 		return
@@ -304,13 +318,13 @@ func (table *UserTable) DeleteUser(id int) (err error) {
 	}
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", TABLE)
 
-	stmt, err := table.connection.Prepare(query)
+	stmt, err := table.connection.Pool.Prepare(query)
 	if err != nil {
 		err = errors.Wrapf(err, "Couldn't prepare delete query")
 		return
 	}
 
-	if _, err = stmt.Exec(id.(string)); err != nil {
+	if _, err = stmt.Exec(strconv.Itoa(id)); err != nil {
 		err = errors.Wrapf(err, "Couldn't execute delete query")
 	}
 	return
