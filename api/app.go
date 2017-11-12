@@ -8,7 +8,7 @@ import (
 	"github.com/jcherianucla/UCLA-CS-130/api/middleware"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/urfave/negroni"
-	"net/http"
+	//"net/http"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 	n.UseHandler(r)
 
 	// Start server on specified port
-	http.ListenAndServe(utilities.PORT, n)
+	//http.ListenAndServe(utilities.PORT, n)
 
 	// Create DB
 	db, err := db.New(db.Config{
@@ -32,12 +32,12 @@ func main() {
 		utilities.DB_NAME,
 	})
 	if err != nil {
-		fmt.Println(err)
 		panic(err)
 	}
+	fmt.Println("Testing")
 	// Test
 	ut, err := models.NewUserTable(&db)
-	ut.InsertUser(models.User{
+	_, err = ut.InsertUser(models.User{
 		Id:           1,
 		Is_professor: false,
 		Email:        "jcherian@ucla.edu",
@@ -45,4 +45,7 @@ func main() {
 		Last_name:    "Kuruvilla Cherian",
 		Password:     []byte("swag"),
 	})
+	if err != nil {
+		panic(err)
+	}
 }
