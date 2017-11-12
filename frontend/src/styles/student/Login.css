@@ -1,0 +1,15 @@
+.google {
+  background-image: url("../../images/google.png");
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 300px;
+  height: 70px;
+  outline: none;
+  text-align: center;
+  border: none;
+  margin-top: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

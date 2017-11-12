@@ -24,11 +24,11 @@ class Header extends Component {
 	      </div>
 
 	      <div className="welcome bold">
-	      	Welcome!
+	      	{this.props.title}
 	      </div>
 
 	      <div className="path">
-	        Path
+	        {this.props.path}
 	      </div>
       </div>
     );
