@@ -9,7 +9,7 @@ func Logging(
 	w http.ResponseWriter,
 	r *http.Request,
 	next http.HandlerFunc) {
-	utilities.Logger.Infof("Starting request")
+	utilities.Logger.Info("Starting request")
 	next(w, r)
-	utilities.Logger.Infof("Sent response")
+	utilities.Logger.Info("Sent response")
 }
