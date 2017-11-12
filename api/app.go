@@ -2,18 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/jcherianucla/UCLA-CS-130/api/app/controllers"
-	"github.com/jcherianucla/UCLA-CS-130/api/app/middleware"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
-	"github.com/jcherianucla/UCLA-CS-130/api/config"
+	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
+	"github.com/jcherianucla/UCLA-CS-130/api/config/router"
+	"github.com/jcherianucla/UCLA-CS-130/api/middleware"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/urfave/negroni"
 	"net/http"
 )
 
 func main() {
-	r := config.NewRouter()
+	r := router.NewRouter()
 	// Setup default middleware
 	n := negroni.New(
 		negroni.HandlerFunc(middleware.Logging),
@@ -25,7 +24,7 @@ func main() {
 	http.ListenAndServe(utilities.PORT, n)
 
 	// Create DB
-	db, err := config.New(config.Config{
+	db, err := db.New(db.Config{
 		utilities.DB_HOST,
 		utilities.DB_PORT,
 		utilities.DB_USER,
