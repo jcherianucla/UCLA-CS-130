@@ -113,8 +113,8 @@ func (table *UserTable) createTable() (err error) {
 }
 
 // Get by unique email
-func (table *UserTable) GetUserByEmail(email string) (user User, err error) {
-	users, err := table.GetUser(UserQuery{Email: email}, "")
+func (table *UserTable) GetByEmail(email string) (user User, err error) {
+	users, err := table.Get(UserQuery{Email: email}, "")
 	if len(users) > 0 {
 		user = users[0]
 	}
@@ -122,7 +122,7 @@ func (table *UserTable) GetUserByEmail(email string) (user User, err error) {
 }
 
 // Can get all users based on any queryable fields and the varying operation to combine fields
-func (table *UserTable) GetUser(userQuery UserQuery, op string) (users []User, err error) {
+func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err error) {
 	var query bytes.Buffer
 	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", TABLE))
 	fields := reflect.ValueOf(userQuery)
@@ -142,10 +142,11 @@ func (table *UserTable) GetUser(userQuery UserQuery, op string) (users []User, e
 				query.WriteString(fmt.Sprintf(" %s ", op))
 			}
 		}
+		v := fields.Field(i).Interface()
 		// Skip fields that are not set to query on
-		if !utilities.IsUndeclared(fields.Field(i)) {
+		if !utilities.IsUndeclared(v) {
 			k := strings.ToLower(fields.Type().Field(i).Name)
-			v := fmt.Sprintf("%v", fields.Field(i).Interface())
+			v = fmt.Sprintf("%v", v)
 			values = append(values, v)
 			query.WriteString(fmt.Sprintf("%s=$%d", k, vIdx))
 			vIdx++
@@ -180,13 +181,13 @@ func (table *UserTable) GetUser(userQuery UserQuery, op string) (users []User, e
 }
 
 // Inserts a new user into the DB
-func (table *UserTable) InsertUser(user User) (new User, err error) {
+func (table *UserTable) Insert(user User) (new User, err error) {
 	_, err = govalidator.ValidateStruct(user)
 	if err != nil {
 		err = errors.Wrapf(err, "Invalid user model")
 		return
 	}
-	users, err := table.GetUser(UserQuery{Email: user.Email}, "AND")
+	users, err := table.Get(UserQuery{Email: user.Email}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
 		return
@@ -239,7 +240,7 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 		return
 	}
 	// Retrieve user with the new id
-	users, err = table.GetUser(UserQuery{Id: new.Id}, "")
+	users, err = table.Get(UserQuery{Id: new.Id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Failed to get user")
 	} else if len(users) != 1 {
@@ -250,20 +251,8 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 	return
 }
 
-func (table *UserTable) userExists(userQuery UserQuery) (err error) {
-	users, err := table.GetUser(userQuery, "AND")
-	// Check if user exists
-	if err != nil {
-		err = errors.Wrapf(err, "Error while searching for user")
-		return
-	} else if users != nil {
-		return
-	}
-	return
-}
-
-func (table *UserTable) UpdateUser(id int, updates User) (updated User, err error) {
-	users, err := table.GetUser(UserQuery{Id: id}, "AND")
+func (table *UserTable) Update(id int, updates User) (updated User, err error) {
+	users, err := table.Get(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
 		return
@@ -285,7 +274,7 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 		k := strings.ToLower(fields.Type().Field(i).Name)
 		v := fmt.Sprintf("%v", fields.Field(i).Interface())
 		// Skip auto params or unset fields
-		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i)) {
+		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i).Interface()) {
 			continue
 		}
 		if first {
@@ -311,6 +300,9 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 	// End of query
 	query.WriteString(fmt.Sprintf(" WHERE id=%d;", id))
 
+	utilities.Sugar.Infof("SQL Query: %s", query.String())
+	utilities.Sugar.Infof("Values: %v", values)
+
 	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
 		err = errors.Wrapf(err, "Couldn't prepare update query")
@@ -321,7 +313,7 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 		return
 	}
 	// Get updated user
-	users, err = table.GetUser(UserQuery{Id: id}, "")
+	users, err = table.Get(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Error getting updated user")
 		return
@@ -333,8 +325,8 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 	return
 }
 
-func (table *UserTable) DeleteUser(id int) (err error) {
-	users, err := table.GetUser(UserQuery{Id: id}, "AND")
+func (table *UserTable) Delete(id int) (err error) {
+	users, err := table.Get(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
 		return
@@ -343,6 +335,8 @@ func (table *UserTable) DeleteUser(id int) (err error) {
 		return
 	}
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", TABLE)
+
+	utilities.Sugar.Infof("SQL Query: %s", query)
 
 	stmt, err := table.connection.Pool.Prepare(query)
 	if err != nil {
