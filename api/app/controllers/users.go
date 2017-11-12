@@ -21,6 +21,27 @@ var UsersBOL = http.HandlerFunc(
 	},
 )
 
+var UsersCreate = http.HandlerFunc(
+	func(w http.ResponseWriter, r *http.Request) {
+		// Set headers
+		w.Header().Set("Content-Type", "application/json")
+		user, err := models.NewUser(r)
+		user, err = models.LayerInstance().User.Insert(user)
+		var status int
+		var msg string
+		if err != nil {
+			status = 500
+			msg = err.Error()
+		}
+		JSON, _ := json.Marshal(map[string]interface{}{
+			"status":  status,
+			"message": msg,
+			"user":    user,
+		})
+		w.Write(JSON)
+	},
+)
+
 var UsersLogin = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers

@@ -36,6 +36,12 @@ func (routes *Routes) createUserRoutes() {
 			controllers.UsersBOL,
 		},
 		Route{
+			"Create",
+			"POST",
+			utilities.GetAPIInstance().Gen("/users"),
+			controllers.UsersCreate,
+		},
+		Route{
 			"Professor Login",
 			"POST",
 			utilities.GetAPIInstance().Gen("/login"),
