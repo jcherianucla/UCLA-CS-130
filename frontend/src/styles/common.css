@@ -1,3 +1,14 @@
+@font-face {
+  font-family: Circular-Bold;
+  src: url(../fonts/circular_bold.ttf);
+}
+
+@font-face {
+  font-family: Circular-Book;
+  src: url(../fonts/circular_book.ttf);
+}
+
 body {
   background-color: #FBFBFB;
+  font-family: Circular-Book, Verdana, sans-serif;
 }
