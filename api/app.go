@@ -2,30 +2,29 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/jcherianucla/UCLA-CS-130/api/app/controllers"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
-	"github.com/jcherianucla/UCLA-CS-130/api/config"
+	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
+	"github.com/jcherianucla/UCLA-CS-130/api/config/router"
+	"github.com/jcherianucla/UCLA-CS-130/api/middleware"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/urfave/negroni"
 	"net/http"
 )
 
 func main() {
-	r := mux.NewRouter()
-	// Basic example of adding a route
-	r.HandleFunc("/", controllers.Home)
-	r.HandleFunc("/classes", controllers.AllClasses).Methods("GET")
-
+	r := router.NewRouter()
 	// Setup default middleware
-	n := negroni.Classic()
+	n := negroni.New(
+		negroni.HandlerFunc(middleware.Logging),
+		negroni.NewLogger(),
+	)
 	n.UseHandler(r)
 
 	// Start server on specified port
 	http.ListenAndServe(utilities.PORT, n)
 
 	// Create DB
-	db, err := config.New(config.Config{
+	db, err := db.New(db.Config{
 		utilities.DB_HOST,
 		utilities.DB_PORT,
 		utilities.DB_USER,

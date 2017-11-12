@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/asaskevich/govalidator"
-	"github.com/jcherianucla/UCLA-CS-130/api/config"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
@@ -30,7 +31,7 @@ var (
 
 // Holds the connection to the db instance
 type UserTable struct {
-	connection *config.Db
+	connection *db.Db
 }
 
 // Basic user model
@@ -69,8 +70,17 @@ func NewUser(r *http.Request) (user User, err error) {
 	return
 }
 
+func (user *User) GenerateJWT() string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id":  user.Id,
+		"exp": time.Now().Add(time.Hour * 24).Unix(),
+	})
+	tokenString, _ := token.SignedString(utilities.GP_TOKEN_SECRET)
+	return tokenString
+}
+
 // Creates a new user table
-func NewUserTable(db *config.Db) (userTable UserTable, err error) {
+func NewUserTable(db *db.Db) (userTable UserTable, err error) {
 	if db == nil {
 		err = errors.New("Invalid database connection")
 		return
