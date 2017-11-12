@@ -4,4 +4,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var Logger = zap.NewDevelopment().Sugar()
+var Logger, _ = zap.NewDevelopment()
+
+var Sugar = Logger.Sugar()
