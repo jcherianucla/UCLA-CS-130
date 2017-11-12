@@ -8,6 +8,10 @@ import '../styles/shared/Page.css';
 
 class Classes extends Component {
 
+  componentWillMount() {
+    console.log(this.props.history);
+  }
+
   back() {
     this.props.history.goBack();
   }
@@ -25,8 +29,7 @@ class Classes extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header />
-
+          <Header title={`Welcome ${this.props.history.location.state.firstName}`} path="Classes" />
           <button onClick={() => this.back()}>
             Back
           </button>

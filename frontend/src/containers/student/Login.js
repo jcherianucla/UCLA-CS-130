@@ -12,11 +12,14 @@ class StudentLogin extends Component {
   }
 
   classes() {
-    this.props.history.push('/classes');
+    this.props.history.replace('/classes', this.state);
   }
 
   responseGoogle(response) {
-    console.log(response.profileObj);
+    this.setState({firstName: response.profileObj.givenName});
+    this.setState({lastName: response.profileObj.familyName});
+    this.setState({email: response.profileObj.email});
+    this.classes();
   }
 
   render() {
