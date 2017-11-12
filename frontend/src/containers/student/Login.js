@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GoogleLogin from 'react-google-login';
 import Header from '../../shared/Header.js'
 import SidePanel from '../../shared/SidePanel.js'
 import '../../styles/student/Login.css';
@@ -14,6 +15,10 @@ class StudentLogin extends Component {
     this.props.history.push('/classes');
   }
 
+  responseGoogle(response) {
+    console.log(response.profileObj);
+  }
+
   render() {
     return (
       <div>
@@ -27,6 +32,12 @@ class StudentLogin extends Component {
           <button onClick={() => this.classes()}>
             Classes
           </button>
+          <GoogleLogin
+            clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
+            buttonText="Login With Google"
+            onSuccess={(response) => this.responseGoogle(response)}
+            onFailure={(response) => this.responseGoogle(response)}
+          />
         </div>
       </div>
     );
