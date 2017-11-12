@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/Landing.css';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 class Landing extends Component {
 
@@ -37,47 +38,62 @@ class Landing extends Component {
           <h1 className="landing-header">About</h1>
           <p id="landing-about-paragraph">Project submissions can be scary tasks, especially with the fear of the unknown when it comes to test cases. GradePortal aims to make this process easier on you. By working with professors we want to bring you pre-project grades, and post deadline project feedback, otherwise only known to TA’s and professors. We want to make the grading process transparent and beneficial to the students.</p>
         </div>
+        <div id="landing-background-team"></div>
         <div id="landing-section-team">
-          <div id="landing-background-team"></div>
           <div id="landing-content-team" className="text-center">
             <h1 className="landing-header text-center">Team</h1>
-            <div id="landing-katie" className="landing-pic">
-              <div className="landing-pic-caption text-center">
-                <p>Katie Aspinwall</p>
-                <p>Frontend Developer</p>
-              </div>
-            </div>
-            <div id="landing-shalini" className="landing-pic">
-              <div className="landing-pic-caption text-center">
-                <p>Shalini Dangi</p>
-                <p>Frontend Developer</p>
-              </div>
-            </div>
-            <div id="landing-prit" className="landing-pic">
-              <div className="landing-pic-caption text-center">
-                <p>Prit Joshi</p>
-                <p>Backend Developer</p>
-              </div>
-            </div>
-            <br />
-            <div id="landing-connor" className="landing-pic">
-              <div className="landing-pic-caption text-center">
-                <p>Connor Kenny</p>
-                <p>Frontend Developer</p>
-              </div>
-            </div>
-            <div id="landing-jahan" className="landing-pic">
-              <div className="landing-pic-caption text-center">
-                <p>Jahan Kuruvilla Cherian</p>
-                <p>Backend Developer</p>
-              </div>
-            </div>
-            <div id="landing-omar" className="landing-pic">
-              <div className="landing-pic-caption text-center">
-                <p>Omar Ozgur</p>
-                <p>Backend Developer</p>
-              </div>
-            </div>
+            <Grid fluid>
+              <Row>
+                <Col xs={12} sm={6} md={4}>
+                  <div id="landing-katie" className="landing-pic">
+                    <div className="landing-pic-caption text-center">
+                      <p>Katie Aspinwall</p>
+                      <p>Frontend Developer</p>
+                    </div>
+                  </div>
+                </Col>
+                <Col xs={12} sm={6} md={4}>
+                  <div id="landing-shalini" className="landing-pic">
+                    <div className="landing-pic-caption text-center">
+                      <p>Shalini Dangi</p>
+                      <p>Frontend Developer</p>
+                    </div>
+                  </div>
+                </Col>
+                <Col xs={12} sm={6} md={4}>
+                  <div id="landing-prit" className="landing-pic">
+                    <div className="landing-pic-caption text-center">
+                      <p>Prit Joshi</p>
+                      <p>Backend Developer</p>
+                    </div>
+                  </div>
+                </Col>
+                <Col xs={12} sm={6} md={4}>
+                  <div id="landing-connor" className="landing-pic">
+                    <div className="landing-pic-caption text-center">
+                      <p>Connor Kenny</p>
+                      <p>Frontend Developer</p>
+                    </div>
+                  </div>
+                </Col>
+                <Col xs={12} sm={6} md={4}>
+                  <div id="landing-jahan" className="landing-pic">
+                    <div className="landing-pic-caption text-center">
+                      <p>Jahan Kuruvilla Cherian</p>
+                      <p>Backend Developer</p>
+                    </div>
+                  </div>
+                </Col>
+                <Col xs={12} sm={6} md={4}>
+                  <div id="landing-omar" className="landing-pic">
+                    <div className="landing-pic-caption text-center">
+                      <p>Omar Ozgur</p>
+                      <p>Backend Developer</p>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </Grid>
           </div>
         </div>
         <div id="landing-section-contact">
@@ -85,7 +101,7 @@ class Landing extends Component {
           <p id="landing-contact-info" className="text-center">Have feedback? Want to learn more? Email us at gradeportal@gmail.com</p>
         </div>
         <div id="landing-section-footer">
-          <p id="landing-footer-info" className="text-center">All our code is open source and available <span><a href="https://github.com/jcherianucla/UCLA-CS-130">here</a></span></p>
+          <p id="landing-footer-info" className="text-center">All our source code is available <span><a href="https://github.com/jcherianucla/UCLA-CS-130">here</a></span></p>
         </div>
       </div>
     );
