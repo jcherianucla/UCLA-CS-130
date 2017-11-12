@@ -8,7 +8,15 @@
   src: url(../fonts/circular_book.ttf);
 }
 
-body {
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
   background-color: #FBFBFB;
   font-family: Circular-Book, Verdana, sans-serif;
+}
+
+.bold {
+  font-family: Circular-Bold, Verdana, sans-serif;
 }

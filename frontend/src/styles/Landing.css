@@ -1,0 +1,116 @@
+#landing-section-top {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#landing-background-top {
+  background: #3E5EFF; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#3E5EFF, #48F5FB); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#3E5EFF, #48F5FB); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#3E5EFF, #48F5FB); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#3E5EFF, #48F5FB); /* Standard syntax */
+  width: 200%;
+  height: 100%;
+  margin-left: -50%;
+  border-radius: 50% / 100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  position: absolute;
+}
+
+#landing-content-top {
+  position: absolute;
+  z-index: 1;
+}
+
+.landing-logo {
+  background-image: url("../images/white-logo.png");
+  margin: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 80px;
+  width: 80px;
+  position: relative;
+}
+
+#landing-login-professor {
+  color: #45CFFC;
+  background-color: white;
+  margin-left: 89px;
+}
+
+#landing-login-student {
+  color: #ffffff;
+  background-color: #2C82FF;
+  margin-left: 57px;
+}
+
+.landing-login-button {
+  border: none;
+  border-radius: 28px;
+  height: 56px;
+  width: 264px;
+  font-size: 25px;
+  margin-top: 47px;
+}
+
+#landing-analytics-card {
+  background-image: url("../images/analytics-card.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 600px;
+  width: 100%;
+  margin-top: -300px;
+  margin-left: 100%;
+}
+
+#landing-classes-card {
+  background-image: url("../images/classes-card.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 600px;
+  width: 100%;
+  margin-top: -230px;
+  margin-left: 55%;
+}
+
+#landing-feedback-card {
+  background-image: url("../images/feedback-card.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 600px;
+  width: 100%;
+  margin-top: -300px;
+  margin-left: 95%;
+}
+
+#landing-section-about {
+  margin-left: 67px;
+}
+
+#landing-about-paragraph {
+  color: #868687;
+  font-size: 20px;
+  line-height: 35px;
+  width: 343px;
+}
+
+.landing-header {
+  color: #43A5FD;
+  font-size: 40px;
+}
+
+.landing-title {
+  margin: 0px;
+  margin-left: 67px;
+  font-size: 120px;
+  color: #ffffff;
+}
+
+.landing-subtitle {
+  margin: 0px;
+  margin-left: 80px;
+  font-size: 25px;
+  color: #ffffff;
+}
