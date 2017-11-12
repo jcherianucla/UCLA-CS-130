@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/controllers"
+	"github.com/jcherianucla/UCLA-CS-130/api/app/middleware"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
 	"github.com/jcherianucla/UCLA-CS-130/api/config"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
@@ -12,13 +13,12 @@ import (
 )
 
 func main() {
-	r := mux.NewRouter()
-	// Basic example of adding a route
-	r.HandleFunc("/", controllers.Home)
-	r.HandleFunc("/classes", controllers.AllClasses).Methods("GET")
-
+	r := config.NewRouter()
 	// Setup default middleware
-	n := negroni.Classic()
+	n := negroni.New(
+		negroni.HandlerFunc(middleware.Logging),
+		negroni.NewLogger(),
+	)
 	n.UseHandler(r)
 
 	// Start server on specified port
