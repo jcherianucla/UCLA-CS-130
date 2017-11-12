@@ -6,18 +6,30 @@ class Header extends Component {
     return (
     	<div>
 	      <div className="header">
-	      	<div className="logo" /> 
-	        <p>This is an example header.</p>
+          <ul>
+  	      	<li>
+              <div className="logo" />
+            </li>
+            <li>
+              <div className="faq">
+                <h1>FAQ</h1>
+              </div>
+            </li>
+            <li>
+              <div className="home">
+                <h1>Home</h1>
+              </div>
+            </li>
+          </ul>
 	      </div>
 
-	      <div className="welcome">
-	      	Welcome Joe Bruin
+	      <div className="welcome bold">
+	      	Welcome!
 	      </div>
 
 	      <div className="path">
 	        Path
 	      </div>
-
       </div>
     );
   }
