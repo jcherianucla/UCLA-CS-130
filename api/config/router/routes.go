@@ -1,16 +1,18 @@
-package config
+package router
 
 import (
 	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/controllers"
+	"github.com/jcherianucla/UCLA-CS-130/api/middleware"
+	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
 )
 
 type Route struct {
-	Name    string
-	Method  string
-	URI     string
-	Handler http.HandlerFunc
+	Name        string
+	Method      string
+	URI         string
+	HandlerFunc http.Handler
 }
 
 type Routes struct {
@@ -20,18 +22,24 @@ type Routes struct {
 }
 
 func (routes *Routes) createUserRoutes() {
-	routes.userRoutes = Routes{
+	routes.userRoutes = []Route{
 		Route{
-			"Index",
+			"Show",
 			"GET",
-			GetAPIInstance.Gen("/"),
-			controllers.UserIndex,
+			utilities.GetAPIInstance().Gen("/users/{id}"),
+			middleware.Authenticate(controllers.UsersShow),
 		},
 		Route{
-			"Login",
+			"BOL",
 			"POST",
-			GetAPIInstance.Gen("/login"),
-			middleware.Authenticate(controllers.UserLogin),
+			utilities.GetAPIInstance().Gen("/bol"),
+			controllers.UsersBOL,
+		},
+		Route{
+			"Professor Login",
+			"POST",
+			utilities.GetAPIInstance().Gen("/login"),
+			controllers.UsersLogin,
 		},
 	}
 }
@@ -45,7 +53,7 @@ func BindRoutes(r *mux.Router, routes []Route) {
 			Methods(route.Method).
 			Path(route.URI).
 			Name(route.Name).
-			Handler(route.Handler)
+			Handler(route.HandlerFunc)
 	}
 }
 
@@ -55,5 +63,6 @@ func NewRouter() *mux.Router {
 	routes := &Routes{}
 	// Create the user routes
 	routes.createUserRoutes()
-	BindRoutes(&router, routes.userRoutes)
+	BindRoutes(router, routes.userRoutes)
+	return router
 }
