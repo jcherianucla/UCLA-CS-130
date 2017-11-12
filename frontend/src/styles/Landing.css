@@ -22,6 +22,7 @@
 #landing-content-top {
   position: absolute;
   z-index: 1;
+  width: 100%;
 }
 
 .landing-logo {
@@ -59,30 +60,30 @@
   background-image: url("../images/analytics-card.png");
   background-repeat: no-repeat;
   background-size: contain;
-  height: 600px;
+  height: 500px;
   width: 100%;
-  margin-top: -300px;
-  margin-left: 100%;
+  margin-top: -250px;
+  margin-left: 70%;
 }
 
 #landing-classes-card {
   background-image: url("../images/classes-card.png");
   background-repeat: no-repeat;
   background-size: contain;
-  height: 600px;
+  height: 500px;
   width: 100%;
-  margin-top: -230px;
-  margin-left: 55%;
+  margin-top: -200px;
+  margin-left: 45%;
 }
 
 #landing-feedback-card {
   background-image: url("../images/feedback-card.png");
   background-repeat: no-repeat;
   background-size: contain;
-  height: 600px;
+  height: 500px;
   width: 100%;
-  margin-top: -300px;
-  margin-left: 95%;
+  margin-top: -250px;
+  margin-left: 65%;
 }
 
 #landing-section-about {
@@ -96,9 +97,73 @@
   width: 343px;
 }
 
+#landing-section-team {
+  margin-top: 50px;
+}
+
+#landing-background-team {
+  background-color: #F0F0F0;
+  width: 200%;
+  height: 1000px;
+  margin-left: -50%;
+  border-radius: 50% / 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  position: absolute;
+}
+
+#landing-content-team {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+}
+
+#landing-katie {
+  background-image: url("../images/katie.png");
+}
+
+#landing-shalini {
+  background-image: url("../images/shalini.png");
+  margin-left: 150px;
+}
+
+#landing-prit {
+  background-image: url("../images/prit.png");
+  margin-left: 150px;
+}
+
+#landing-connor {
+  background-image: url("../images/connor.png");
+}
+
+#landing-jahan {
+  background-image: url("../images/jahan.png");
+  margin-left: 150px;
+}
+
+#landing-omar {
+  background-image: url("../images/omar.png");
+  margin-left: 150px;
+}
+
+.landing-pic {
+  margin-top: 70px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 200px;
+  width: 200px;
+  display: inline-block;
+}
+
+.landing-pic-caption {
+  padding-top: 200px;
+  color: #868687;
+}
+
 .landing-header {
   color: #43A5FD;
   font-size: 40px;
+  margin-top: 94px;
 }
 
 .landing-title {

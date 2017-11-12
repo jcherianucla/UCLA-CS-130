@@ -20,3 +20,7 @@ html, body {
 .bold {
   font-family: Circular-Bold, Verdana, sans-serif;
 }
+
+.text-center {
+  text-align: center;
+}
