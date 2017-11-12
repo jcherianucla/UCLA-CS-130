@@ -176,7 +176,22 @@
 }
 
 #landing-section-footer {
-  
+  background: #3E5EFF; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#3E5EFF, #42A2FD); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#3E5EFF, #42A2FD); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#3E5EFF, #42A2FD); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#3E5EFF, #42A2FD); /* Standard syntax */
+  height: 100px;
+}
+
+#landing-footer-info {
+  color: #ffffff;
+  line-height: 100px;
+  margin: 0px;
+}
+
+#landing-footer-info a{
+  color: #ffffff;
 }
 
 .landing-header {

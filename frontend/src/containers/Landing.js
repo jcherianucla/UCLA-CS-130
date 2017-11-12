@@ -85,6 +85,7 @@ class Landing extends Component {
           <p id="landing-contact-info" className="text-center">Have feedback? Want to learn more? Email us at gradeportal@gmail.com</p>
         </div>
         <div id="landing-section-footer">
+          <p id="landing-footer-info" className="text-center">All our code is open source and available <span><a href="https://github.com/jcherianucla/UCLA-CS-130">here</a></span></p>
         </div>
       </div>
     );
