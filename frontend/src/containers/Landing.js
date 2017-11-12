@@ -82,7 +82,7 @@ class Landing extends Component {
         </div>
         <div id="landing-section-contact">
           <h1 className="landing-header text-center">Contact</h1>
-          <p id="text-center">Have feedback? Want to learn more? Email us at gradeportal@gmail.com</p>
+          <p id="landing-contact-info" className="text-center">Have feedback? Want to learn more? Email us at gradeportal@gmail.com</p>
         </div>
         <div id="landing-section-footer">
         </div>
