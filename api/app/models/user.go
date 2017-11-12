@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -24,8 +25,8 @@ const (
 var (
 	// These are auto maintained by the DB
 	AUTO_PARAM = map[string]bool{
-		"Id":         true,
-		"Created_at": true,
+		"id":           true,
+		"time_created": true,
 	}
 )
 
@@ -39,10 +40,10 @@ type User struct {
 	Id           int       `valid:"-" json:"-"`
 	Is_professor bool      `valid:"-" json:"is_professor"`
 	Email        string    `valid:"email,required" json:"email"`
-	First_name   string    `valid:"first_name,required" json:"first_name"`
-	Last_name    string    `valid:"last_name,required" json:"last_name"`
+	First_name   string    `valid:"required" json:"first_name"`
+	Last_name    string    `valid:"required" json:"last_name"`
 	Password     []byte    `valid:"required" json:"password"`
-	Created_at   time.Time `valid:"-" json:"-"`
+	Time_created time.Time `valid:"-" json:"-"`
 }
 
 // Queryable over the following
@@ -102,7 +103,7 @@ func (table *UserTable) createTable() (err error) {
 			email TEXT,
 			first_name TEXT,
 			last_name TEXT,
-			password BYTEA
+			password BYTEA,
 			time_created TIMESTAMP DEFAULT now()
 		);`, TABLE)
 	if _, err = table.connection.Pool.Exec(query); err != nil {
@@ -143,7 +144,7 @@ func (table *UserTable) GetUser(userQuery UserQuery, op string) (users []User, e
 		}
 		// Skip fields that are not set to query on
 		if !utilities.IsUndeclared(fields.Field(i)) {
-			k := fields.Type().Field(i).Name
+			k := strings.ToLower(fields.Type().Field(i).Name)
 			v := fmt.Sprintf("%v", fields.Field(i).Interface())
 			values = append(values, v)
 			query.WriteString(fmt.Sprintf("%s=$%d", k, vIdx))
@@ -151,6 +152,9 @@ func (table *UserTable) GetUser(userQuery UserQuery, op string) (users []User, e
 		}
 	}
 	query.WriteString(";")
+
+	utilities.Sugar.Infof("SQL Query: %s", query.String())
+	utilities.Sugar.Infof("Values: %v", values)
 
 	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
@@ -165,7 +169,7 @@ func (table *UserTable) GetUser(userQuery UserQuery, op string) (users []User, e
 	// Get all the user rows that matched the query
 	for rows.Next() {
 		var user User
-		err = rows.Scan(&user.Id, &user.Is_professor, &user.Email, &user.First_name, &user.Last_name, &user.Password, &user.Created_at)
+		err = rows.Scan(&user.Id, &user.Is_professor, &user.Email, &user.First_name, &user.Last_name, &user.Password, &user.Time_created)
 		if err != nil {
 			err = errors.Wrapf(err, "Failed to scan row")
 			return
@@ -182,9 +186,12 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 		err = errors.Wrapf(err, "Invalid user model")
 		return
 	}
-	err = table.userExists(UserQuery{Email: user.Email})
+	users, err := table.GetUser(UserQuery{Email: user.Email}, "AND")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
+		return
+	} else if users != nil {
+		err = errors.New("Found duplicate user")
 		return
 	}
 	var query bytes.Buffer
@@ -199,7 +206,7 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 	}
 	first := true
 	for i := 0; i < fields.NumField(); i++ {
-		k := fields.Type().Field(i).Name
+		k := strings.ToLower(fields.Type().Field(i).Name)
 		v := fmt.Sprintf("%v", fields.Field(i).Interface())
 		// Skip auto params
 		if AUTO_PARAM[k] {
@@ -216,7 +223,11 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 		values = append(values, v)
 		vIdx++
 	}
-	query.WriteString(fmt.Sprintf("%s) VALUES (%s) RETURNING id;", kStr, vStr))
+	query.WriteString(fmt.Sprintf("%s) VALUES (%s) RETURNING id;", kStr.String(), vStr.String()))
+
+	utilities.Sugar.Infof("SQL Query: %s", query.String())
+	utilities.Sugar.Infof("Values: %v", values)
+
 	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
 		err = errors.Wrapf(err, "Could not prepare insertion query")
@@ -228,7 +239,7 @@ func (table *UserTable) InsertUser(user User) (new User, err error) {
 		return
 	}
 	// Retrieve user with the new id
-	users, err := table.GetUser(UserQuery{Id: new.Id}, "")
+	users, err = table.GetUser(UserQuery{Id: new.Id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Failed to get user")
 	} else if len(users) != 1 {
@@ -245,17 +256,19 @@ func (table *UserTable) userExists(userQuery UserQuery) (err error) {
 	if err != nil {
 		err = errors.Wrapf(err, "Error while searching for user")
 		return
-	} else if users == nil {
-		err = errors.New("Couldn't find user")
+	} else if users != nil {
 		return
 	}
 	return
 }
 
 func (table *UserTable) UpdateUser(id int, updates User) (updated User, err error) {
-	err = table.userExists(UserQuery{Id: id})
+	users, err := table.GetUser(UserQuery{Id: id}, "AND")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
+		return
+	} else if users == nil {
+		err = errors.New("Couldn't find user")
 		return
 	}
 	var query bytes.Buffer
@@ -269,7 +282,7 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 	}
 	first := true
 	for i := 0; i < fields.NumField(); i++ {
-		k := fields.Type().Field(i).Name
+		k := strings.ToLower(fields.Type().Field(i).Name)
 		v := fmt.Sprintf("%v", fields.Field(i).Interface())
 		// Skip auto params or unset fields
 		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i)) {
@@ -308,7 +321,7 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 		return
 	}
 	// Get updated user
-	users, err := table.GetUser(UserQuery{Id: id}, "")
+	users, err = table.GetUser(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Error getting updated user")
 		return
@@ -321,9 +334,12 @@ func (table *UserTable) UpdateUser(id int, updates User) (updated User, err erro
 }
 
 func (table *UserTable) DeleteUser(id int) (err error) {
-	err = table.userExists(UserQuery{Id: id})
+	users, err := table.GetUser(UserQuery{Id: id}, "AND")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
+		return
+	} else if users == nil {
+		err = errors.New("Couldn't find user")
 		return
 	}
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", TABLE)
