@@ -23,12 +23,14 @@ class Landing extends Component {
             </div>
             <h1 className="landing-title bold">GradePortal</h1>
             <h2 className="landing-subtitle">The real-time project submission and feedback platform for UCLA</h2>
-            <button id="landing-login-professor" className="landing-login-button" onClick={() => this.professorLogin()}>
-              Login as Professor
-            </button>
-            <button id="landing-login-student" className="landing-login-button" onClick={() => this.studentLogin()}>
-              Login as Student
-            </button>
+            <div>
+              <button id="landing-login-professor" className="landing-login-button" onClick={() => this.professorLogin()}>
+                Login as Professor
+              </button>
+              <button id="landing-login-student" className="landing-login-button" onClick={() => this.studentLogin()}>
+                Login as Student
+              </button>
+            </div>
             <div id="landing-analytics-card"></div>
             <div id="landing-classes-card"></div>
             <div id="landing-feedback-card"></div>
@@ -38,7 +40,9 @@ class Landing extends Component {
           <h1 className="landing-header">About</h1>
           <p id="landing-about-paragraph">Project submissions can be scary tasks, especially with the fear of the unknown when it comes to test cases. GradePortal aims to make this process easier on you. By working with professors we want to bring you pre-project grades, and post deadline project feedback, otherwise only known to TA’s and professors. We want to make the grading process transparent and beneficial to the students.</p>
         </div>
-        <div id="landing-background-team"></div>
+        <div id="landing-background-team-container">
+          <div id="landing-background-team"></div>
+        </div>
         <div id="landing-section-team">
           <div id="landing-content-team" className="text-center">
             <h1 className="landing-header text-center">Team</h1>
