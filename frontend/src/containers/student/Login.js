@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GoogleLogin from 'react-google-login';
 import Header from '../../shared/Header.js'
 import SidePanel from '../../shared/SidePanel.js'
-import '../../styles/student/Login.css';
+import '../../styles/shared/Login.css';
 import '../../styles/shared/Page.css';
 
 class StudentLogin extends Component {
@@ -19,6 +19,7 @@ class StudentLogin extends Component {
     this.setState({firstName: response.profileObj.givenName});
     this.setState({lastName: response.profileObj.familyName});
     this.setState({email: response.profileObj.email});
+    this.setState({type: 'student'});
     this.classes();
   }
 

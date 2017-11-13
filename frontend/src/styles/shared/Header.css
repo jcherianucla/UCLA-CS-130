@@ -49,7 +49,8 @@
 }
 
 .path {
-	margin-top: 1vw;
+	margin-top: 1vh;
+  margin-bottom: 2vh;
 	font-size: 35px;
   color: #43A5FD;
 }

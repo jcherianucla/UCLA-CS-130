@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card, CardHeader, CardText} from 'material-ui';
+import {Card, CardMedia, CardHeader, CardText} from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import '../styles/shared/ItemCard.css';
 
@@ -8,13 +8,18 @@ class ItemCard extends Component {
     return (
       <MuiThemeProvider>
         <Card className="item-card">
-          <CardHeader
-            title="CS 31"
-            subtitle="Subtitle"
+          <CardHeader 
+            title={this.props.title}
+            titleStyle={{'font-size':'35px', 'color': '#43A5FD', 'font-family': 'Circular-Book'}}
           />
-          <CardText>
-            Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++
+          <CardText
+            style={{'padding-top': '0px', 'font-size':'15px', 'color': '#868687', 'font-family': 'Circular-Book'}}
+          >
+            {this.props.cardText}
           </CardText>
+          <CardMedia> 
+            <img src={this.props.plus}/>
+          </CardMedia>
         </Card>
       </MuiThemeProvider>
     );
