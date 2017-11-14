@@ -5,6 +5,9 @@ import SidePanel from '../../shared/SidePanel.js'
 import '../../styles/shared/Login.css';
 import '../../styles/shared/Page.css';
 
+/**
+* Login page for professors.
+*/
 class ProfessorLogin extends Component {
 
   back() {

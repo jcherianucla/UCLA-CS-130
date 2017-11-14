@@ -3,6 +3,10 @@ import {Card, CardMedia, CardHeader, CardText} from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import '../styles/shared/ItemCard.css';
 
+/**
+* Represents a card object with a title, subtitle, and description.
+* Cards are meant to be clickable to display more information about the object they represent.
+*/
 class ItemCard extends Component {
   render() {
     return (

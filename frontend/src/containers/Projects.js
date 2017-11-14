@@ -3,6 +3,12 @@ import Header from '../shared/Header.js'
 import SidePanel from '../shared/SidePanel.js'
 import '../styles/Projects.css';
 
+/**
+* Displays a list of ItemCards representing the projects available for a class. 
+* Students can click on an ItemCard to submit or view their submission,
+* while professors click on ItemCards to view project analytics.
+* Professors can also update or insert new projects from this page. 
+*/
 class Projects extends Component {
 
   back() {

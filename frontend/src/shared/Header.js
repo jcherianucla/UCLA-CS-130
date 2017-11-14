@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import '../styles/shared/Header.css';
 
+/**
+ * The header that shows up on every page once a user has logged in.
+ */
 class Header extends Component {
-  render() {
+
+
+ render() {
     return (
     	<div>
 	      <div className="header">

@@ -7,6 +7,11 @@ import ItemCard from '../shared/ItemCard.js'
 import '../styles/Classes.css';
 import '../styles/shared/Page.css';
 
+/** 
+* Displays a list of ItemCards representing all of the classes 
+* a student or professor is taking or teaching, respectively.
+* Clicking on a class will take you to the projects page for that class. 
+*/
 class Classes extends Component {
 
   componentWillMount() {

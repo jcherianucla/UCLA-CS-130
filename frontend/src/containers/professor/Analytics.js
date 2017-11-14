@@ -3,6 +3,9 @@ import Header from '../../shared/Header.js'
 import SidePanel from '../../shared/SidePanel.js'
 import '../../styles/professor/Analytics.css';
 
+/** 
+* Page displaying analytics for a project (i.e. grade distribution)
+*/
 class ProfessorAnalytics extends Component {
 
   back() {

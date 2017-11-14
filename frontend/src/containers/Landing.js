@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import '../styles/Landing.css';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
+/** 
+* The home page. 
+*/
 class Landing extends Component {
 
   professorLogin() {
