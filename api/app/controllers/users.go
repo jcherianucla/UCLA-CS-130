@@ -1,3 +1,9 @@
+// The controllers package house the Controller layer within the MVC architecture design.
+// This is the middle layer in the architecture, which communicates from the view to the
+// model. It does this through a RESTful API, as the View layer is a separate service.
+// In effect the controller represents all the handlers exposed to the router upstream.
+// All handlers take in the incoming HTTP request and a writer to the HTTP response,
+// writing as JSON.
 package controllers
 
 import (
@@ -7,13 +13,15 @@ import (
 	"net/http"
 )
 
+// UsersShow will show the home page for the user.
 var UsersShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		// Set headers
 		w.Header().Set("Content-Type", "application/json")
 	},
 )
 
+// UsersBOL will use Google Omniauth callback from the frontend
+// to automatically insert a new student object.
 var UsersBOL = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -21,6 +29,8 @@ var UsersBOL = http.HandlerFunc(
 	},
 )
 
+// UsersCreate will explicitly insert a user object.
+// Used to create a professor.
 var UsersCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -46,6 +56,8 @@ var UsersCreate = http.HandlerFunc(
 	},
 )
 
+// UsersLogin will explicitly login a user, handing back
+// a JWT for continued access to restricted parts of the site.
 var UsersLogin = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers

@@ -1,9 +1,6 @@
 // The models package houses the Model layer within the MVC architecture design.
 // This is the lowest layer in the architecture, which directly communicates with
 // the database layer. The models represent an abstraction to the DB object relations.
-// Users
-// Classes
-// Assignments
 package models
 
 import (
@@ -24,13 +21,13 @@ import (
 	"time"
 )
 
-// The table name as set in the Postgres DB creation
+// The table name as set in the Postgres DB creation.
 const (
 	TABLE = "users"
 )
 
 // Params that should be automatically set by the Postgres DB,
-// that is it should never be explicitly set in any code
+// that is it should never be explicitly set in any code.
 var (
 	AUTO_PARAM = map[string]bool{
 		"id":           true,
@@ -38,14 +35,14 @@ var (
 	}
 )
 
-// Represents the connection to the DB instance
+// Represents the connection to the DB instance.
 type UserTable struct {
 	connection *db.Db
 }
 
 // Represents a User row in the User table within the DB
 // Validator and json tags are used for convenient serialization and
-// deserialization
+// deserialization.
 type User struct {
 	Id int `valid:"-" json:"-"`
 	// Distinguishes privileges between a student and professor
@@ -57,7 +54,7 @@ type User struct {
 	Time_created time.Time `valid:"-" json:"-"`
 }
 
-// Represents all fields a user can be queried over
+// Represents all fields a user can be queried over.
 type UserQuery struct {
 	Id           int
 	Is_professor bool
@@ -66,9 +63,9 @@ type UserQuery struct {
 	Last_name    string
 }
 
-// NewUser is used to create a new user object from an incoming HTTP request
-// It takes in the HTTP request in JSON format
-// It returns the user constructed and an error if one exists
+// NewUser is used to create a new user object from an incoming HTTP request.
+// It takes in the HTTP request in JSON format.
+// It returns the user constructed and an error if one exists.
 func NewUser(r *http.Request) (user User, err error) {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -98,9 +95,9 @@ func (user *User) GenerateJWT() string {
 }
 
 // NewUserTable creates a new table within the database for housing
-// all user objects
-// It takes in a reference to an open database connection
-// It returns the constructed table, and an error if one exists
+// all user objects.
+// It takes in a reference to an open database connection.
+// It returns the constructed table, and an error if one exists.
 func NewUserTable(db *db.Db) (userTable UserTable, err error) {
 	// Ensure connection is alive
 	if db == nil {
@@ -115,8 +112,8 @@ func NewUserTable(db *db.Db) (userTable UserTable, err error) {
 	return
 }
 
-// createTable runs the actual PSQL query to create the table
-// It returns an error if one exists
+// createTable runs the actual PSQL query to create the table.
+// It returns an error if one exists.
 func (table *UserTable) createTable() (err error) {
 	query := fmt.Sprintf(`
 	CREATE TABLE IF NOT EXISTS %s(
@@ -139,9 +136,9 @@ func (table *UserTable) createTable() (err error) {
 }
 
 // Login will try and retrieve the user based on provided email for the table
-// if one exists, and compare the passwords to ensure the same user is logging in
-// It takes in a user object to try and login
-// It return the found user and an error if any exist
+// if one exists, and compare the passwords to ensure the same user is logging in.
+// It takes in a user object to try and login.
+// It return the found user and an error if any exist.
 func (table *UserTable) Login(user User) (found User, err error) {
 	if !govalidator.IsEmail(user.Email) {
 		err = errors.New("Please proved a valid email address")
@@ -183,8 +180,8 @@ func (table *UserTable) Login(user User) (found User, err error) {
 
 // Insert will put a new user row within the table in the DB, verifying
 // all fields are valid.
-// It takes in the user object to insert
-// It returns the new user as in the table and an error if one exists
+// It takes in the user object to insert.
+// It returns the new user as in the table and an error if one exists.
 func (table *UserTable) Insert(user User) (new User, err error) {
 	_, err = govalidator.ValidateStruct(user)
 	if err != nil {
@@ -269,8 +266,8 @@ func (table *UserTable) Insert(user User) (new User, err error) {
 // Get attempts to provide a generalized search through the user table based on the
 // provided queries.
 // It takes a user query for the queryable fields, and an operator such as "AND" or "OR" to
-// define the context of the search
-// It returns all the found users and an error if one exists
+// define the context of the search.
+// It returns all the found users and an error if one exists.
 func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err error) {
 	var query bytes.Buffer
 	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", TABLE))
@@ -330,9 +327,9 @@ func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err e
 	return
 }
 
-// Update will update the user row in the table based on the incoming user object
-// It takes in an id to identify the user in the DB, and updates as a user object
-// It returns the updated user as in the DB, and an error if one exists
+// Update will update the user row in the table based on the incoming user object.
+// It takes in an id to identify the user in the DB, and updates as a user object.
+// It returns the updated user as in the DB, and an error if one exists.
 func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 	users, err := table.Get(UserQuery{Id: id}, "")
 	if err != nil {
@@ -406,9 +403,9 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 	return
 }
 
-// Delete permanently removes the user object from the table
-// It takes in an id for the user we wish to Delete
-// It returns an error if one exists
+// Delete permanently removes the user object from the table.
+// It takes in an id for the user we wish to delete.
+// It returns an error if one exists.
 func (table *UserTable) Delete(id int) (err error) {
 	users, err := table.Get(UserQuery{Id: id}, "")
 	if err != nil {

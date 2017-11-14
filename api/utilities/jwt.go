@@ -4,6 +4,9 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// ExtractClaims will take the claim out of an authorization header.
+// It takes in the JWT tokenString to read the claims from.
+// It returns a map of string to interface for the claims.
 func ExtractClaims(tokenString string) map[string]interface{} {
 	if tokenString == "" {
 		return nil
