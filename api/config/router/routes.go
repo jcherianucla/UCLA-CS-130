@@ -1,3 +1,6 @@
+// The router package acts as the intermediary between the frontend
+// service and the backend, using the controller to provide the handlers
+// for each route.
 package router
 
 import (
@@ -8,6 +11,8 @@ import (
 	"net/http"
 )
 
+// Represents all components of a route. Convenient
+// use with mux router.
 type Route struct {
 	Name        string
 	Method      string
@@ -15,12 +20,15 @@ type Route struct {
 	HandlerFunc http.Handler
 }
 
+// Represents all the routes for the application.
 type Routes struct {
 	userRoutes    []Route
 	classRoutes   []Route
 	projectRoutes []Route
 }
 
+// createUserRoutes will instantiate all routes for
+// users.
 func (routes *Routes) createUserRoutes() {
 	routes.userRoutes = []Route{
 		Route{
@@ -50,9 +58,9 @@ func (routes *Routes) createUserRoutes() {
 	}
 }
 
-/**
- * Bind all specified routes to the mux router
- */
+// BindRoutes will bind all routes to the router.
+// It takes in a reference to the router and the slice
+// of all routes.
 func BindRoutes(r *mux.Router, routes []Route) {
 	for _, route := range routes {
 		r.
@@ -63,6 +71,9 @@ func BindRoutes(r *mux.Router, routes []Route) {
 	}
 }
 
+// NewRouter instantiates a new router with all routes
+// bound to the router.
+// It returns an instance to the router.
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	// Holds all our routes

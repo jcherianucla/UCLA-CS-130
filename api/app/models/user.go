@@ -1,3 +1,6 @@
+// The models package houses the Model layer within the MVC architecture design.
+// This is the lowest layer in the architecture, which directly communicates with
+// the database layer. The models represent an abstraction to the DB object relations.
 package models
 
 import (
@@ -18,26 +21,31 @@ import (
 	"time"
 )
 
+// The table name as set in the Postgres DB creation.
 const (
 	TABLE = "users"
 )
 
+// Params that should be automatically set by the Postgres DB,
+// that is it should never be explicitly set in any code.
 var (
-	// These are auto maintained by the DB
 	AUTO_PARAM = map[string]bool{
 		"id":           true,
 		"time_created": true,
 	}
 )
 
-// Holds the connection to the db instance
+// Represents the connection to the DB instance.
 type UserTable struct {
 	connection *db.Db
 }
 
-// Basic user model
+// Represents a User row in the User table within the DB
+// Validator and json tags are used for convenient serialization and
+// deserialization.
 type User struct {
-	Id           int       `valid:"-" json:"-"`
+	Id int `valid:"-" json:"-"`
+	// Distinguishes privileges between a student and professor
 	Is_professor bool      `valid:"-" json:"is_professor"`
 	Email        string    `valid:"email,required" json:"email"`
 	First_name   string    `valid:"required" json:"first_name"`
@@ -46,7 +54,7 @@ type User struct {
 	Time_created time.Time `valid:"-" json:"-"`
 }
 
-// Queryable over the following
+// Represents all fields a user can be queried over.
 type UserQuery struct {
 	Id           int
 	Is_professor bool
@@ -55,7 +63,9 @@ type UserQuery struct {
 	Last_name    string
 }
 
-// Creates a new user from a request
+// NewUser is used to create a new user object from an incoming HTTP request.
+// It takes in the HTTP request in JSON format.
+// It returns the user constructed and an error if one exists.
 func NewUser(r *http.Request) (user User, err error) {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -63,25 +73,33 @@ func NewUser(r *http.Request) (user User, err error) {
 	}
 	// Converts JSON to user
 	json.Unmarshal(b, &user)
-	// Hashes password
-	user.Password, err = bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost)
 	if err != nil {
 		err = errors.Wrapf(err, "Error hashing password")
 	}
 	return
 }
 
+// GenerateJWT creates a JSON Web Token for a user based on the id,
+// with an expiration time of 1 day
+// It returns the token string
 func (user *User) GenerateJWT() string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  user.Id,
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
-	tokenString, _ := token.SignedString(utilities.GP_TOKEN_SECRET)
+	utilities.Sugar.Infof("Toke: %v", token)
+	tokenString, err := token.SignedString([]byte(utilities.GP_TOKEN_SECRET))
+	utilities.CheckError(err)
+	utilities.Sugar.Infof("Token String: %s", tokenString)
 	return tokenString
 }
 
-// Creates a new user table
+// NewUserTable creates a new table within the database for housing
+// all user objects.
+// It takes in a reference to an open database connection.
+// It returns the constructed table, and an error if one exists.
 func NewUserTable(db *db.Db) (userTable UserTable, err error) {
+	// Ensure connection is alive
 	if db == nil {
 		err = errors.New("Invalid database connection")
 		return
@@ -94,7 +112,8 @@ func NewUserTable(db *db.Db) (userTable UserTable, err error) {
 	return
 }
 
-// Runs the SQL to create the table within the DB
+// createTable runs the actual PSQL query to create the table.
+// It returns an error if one exists.
 func (table *UserTable) createTable() (err error) {
 	query := fmt.Sprintf(`
 	CREATE TABLE IF NOT EXISTS %s(
@@ -106,25 +125,153 @@ func (table *UserTable) createTable() (err error) {
 			password BYTEA,
 			time_created TIMESTAMP DEFAULT now()
 		);`, TABLE)
+
+	utilities.Sugar.Infof("SQL Query: %s", query)
+
+	// Execute the query
 	if _, err = table.connection.Pool.Exec(query); err != nil {
 		err = errors.Wrapf(err, "Table creation query failed")
 	}
 	return
 }
 
-// Get by unique email
-func (table *UserTable) GetByEmail(email string) (user User, err error) {
-	users, err := table.Get(UserQuery{Email: email}, "")
-	if len(users) > 0 {
-		user = users[0]
+// Login will try and retrieve the user based on provided email for the table
+// if one exists, and compare the passwords to ensure the same user is logging in.
+// It takes in a user object to try and login.
+// It return the found user and an error if any exist.
+func (table *UserTable) Login(user User) (found User, err error) {
+	if !govalidator.IsEmail(user.Email) {
+		err = errors.New("Please proved a valid email address")
+		return
+	} else if len(user.Password) == 0 {
+		err = errors.New("Password can't be blank")
+	}
+
+	query := fmt.Sprintf("SELECT * FROM %s WHERE email=$1", TABLE)
+
+	utilities.Sugar.Infof("SQL Query: %s", query)
+	utilities.Sugar.Infof("Value: %s", user.Email)
+
+	stmt, err := table.connection.Pool.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Login query preparation failed")
+	}
+	row := stmt.QueryRow(user.Email)
+	err = row.Scan(&found.Id, &found.Is_professor, &found.Email, &found.First_name, &found.Last_name, &found.Password, &found.Time_created)
+	if err != nil {
+		err = errors.Wrapf(err, "Failed to find user")
+		return
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		err = errors.Wrapf(err, "Password hash failed")
+		return
+	}
+	utilities.Sugar.Infof("In Hash: %s", string(hash))
+	utilities.Sugar.Infof("Found Hash: %s", string(found.Password))
+	// Compare incoming password with db password
+	err = bcrypt.CompareHashAndPassword(hash, found.Password)
+	if err != nil {
+		err = errors.Wrapf(err, "Provided password does not match")
 	}
 	return
 }
 
-// Can get all users based on any queryable fields and the varying operation to combine fields
+// Insert will put a new user row within the table in the DB, verifying
+// all fields are valid.
+// It takes in the user object to insert.
+// It returns the new user as in the table and an error if one exists.
+func (table *UserTable) Insert(user User) (new User, err error) {
+	_, err = govalidator.ValidateStruct(user)
+	if err != nil {
+		err = errors.Wrapf(err, "User model has invalid fields")
+		return
+	}
+	users, err := table.Get(UserQuery{Email: user.Email}, "")
+	if err != nil {
+		err = errors.Wrapf(err, "Failed to search for user")
+		return
+	} else if users != nil {
+		err = errors.New("User already exists")
+		return
+	}
+	var query bytes.Buffer
+	query.WriteString(fmt.Sprintf("INSERT INTO %s (", TABLE))
+	var values []interface{}
+	var vStr, kStr bytes.Buffer
+	vIdx := 1
+	fields := reflect.ValueOf(user)
+	if fields.NumField() < 1 {
+		err = errors.New("Invalid number of fields given")
+		return
+	}
+	first := true
+	for i := 0; i < fields.NumField(); i++ {
+		k := strings.ToLower(fields.Type().Field(i).Name)
+		v := fields.Field(i).Interface()
+		// Skip auto params
+		if AUTO_PARAM[k] {
+			continue
+		}
+		if first {
+			first = false
+		} else {
+			vStr.WriteString(", ")
+			kStr.WriteString(", ")
+		}
+		kStr.WriteString(k)
+		vStr.WriteString(fmt.Sprintf("$%d", vIdx))
+		// Hash the password
+		if k == "Password" {
+			var hash []byte
+			hash, err = bcrypt.GenerateFromPassword([]byte(v), bcrypt.DefaultCost)
+			if err != nil {
+				err = errors.Wrapf(err, "Password hash failed")
+				return
+			}
+			values = append(values, hash)
+		} else {
+			values = append(values, v)
+		}
+		vIdx++
+	}
+	query.WriteString(fmt.Sprintf("%s) VALUES (%s) RETURNING id;", kStr.String(), vStr.String()))
+
+	utilities.Sugar.Infof("SQL Query: %s", query.String())
+	utilities.Sugar.Infof("Values: %v", values)
+
+	stmt, err := table.connection.Pool.Prepare(query.String())
+	if err != nil {
+		err = errors.Wrapf(err, "Insertion query preparation failed")
+		return
+	}
+	err = stmt.QueryRow(values...).Scan(&new.Id)
+	if err != nil {
+		err = errors.Wrapf(err, "Insertion query failed to execute")
+		return
+	}
+	// Retrieve user with the new id
+	users, err = table.Get(UserQuery{Id: new.Id}, "")
+	if err != nil {
+		err = errors.Wrapf(err, "Search error")
+	} else if len(users) != 1 {
+		err = errors.New("User already exists")
+	} else {
+		new = users[0]
+	}
+	return
+}
+
+// Get attempts to provide a generalized search through the user table based on the
+// provided queries.
+// It takes a user query for the queryable fields, and an operator such as "AND" or "OR" to
+// define the context of the search.
+// It returns all the found users and an error if one exists.
 func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err error) {
 	var query bytes.Buffer
 	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", TABLE))
+	// Use reflection to analyze object fields
 	fields := reflect.ValueOf(userQuery)
 	if fields.NumField() <= 0 {
 		err = errors.New("Invalid number of query fields")
@@ -159,12 +306,12 @@ func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err e
 
 	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
-		err = errors.Wrapf(err, "Could not prepare db query for user")
+		err = errors.Wrapf(err, "Get query preparation failed")
 		return
 	}
 	rows, err := stmt.Query(values...)
 	if err != nil {
-		err = errors.Wrapf(err, "Could not retrieve rows for query")
+		err = errors.Wrapf(err, "Get query failed to execute")
 		return
 	}
 	// Get all the user rows that matched the query
@@ -172,7 +319,7 @@ func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err e
 		var user User
 		err = rows.Scan(&user.Id, &user.Is_professor, &user.Email, &user.First_name, &user.Last_name, &user.Password, &user.Time_created)
 		if err != nil {
-			err = errors.Wrapf(err, "Failed to scan row")
+			err = errors.Wrapf(err, "Row read failed")
 			return
 		}
 		users = append(users, user)
@@ -180,84 +327,16 @@ func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err e
 	return
 }
 
-// Inserts a new user into the DB
-func (table *UserTable) Insert(user User) (new User, err error) {
-	_, err = govalidator.ValidateStruct(user)
-	if err != nil {
-		err = errors.Wrapf(err, "Invalid user model")
-		return
-	}
-	users, err := table.Get(UserQuery{Email: user.Email}, "")
-	if err != nil {
-		err = errors.Wrapf(err, "Search error")
-		return
-	} else if users != nil {
-		err = errors.New("Found duplicate user")
-		return
-	}
-	var query bytes.Buffer
-	query.WriteString(fmt.Sprintf("INSERT INTO %s (", TABLE))
-	var values []interface{}
-	var vStr, kStr bytes.Buffer
-	vIdx := 1
-	fields := reflect.ValueOf(user)
-	if fields.NumField() < 1 {
-		err = errors.New("Invalid number of fields given")
-		return
-	}
-	first := true
-	for i := 0; i < fields.NumField(); i++ {
-		k := strings.ToLower(fields.Type().Field(i).Name)
-		v := fmt.Sprintf("%v", fields.Field(i).Interface())
-		// Skip auto params
-		if AUTO_PARAM[k] {
-			continue
-		}
-		if first {
-			first = false
-		} else {
-			vStr.WriteString(", ")
-			kStr.WriteString(", ")
-		}
-		kStr.WriteString(k)
-		vStr.WriteString(fmt.Sprintf("$%d", vIdx))
-		values = append(values, v)
-		vIdx++
-	}
-	query.WriteString(fmt.Sprintf("%s) VALUES (%s) RETURNING id;", kStr.String(), vStr.String()))
-
-	utilities.Sugar.Infof("SQL Query: %s", query.String())
-	utilities.Sugar.Infof("Values: %v", values)
-
-	stmt, err := table.connection.Pool.Prepare(query.String())
-	if err != nil {
-		err = errors.Wrapf(err, "Could not prepare insertion query")
-		return
-	}
-	err = stmt.QueryRow(values...).Scan(&new.Id)
-	if err != nil {
-		err = errors.Wrapf(err, "Could not insert user")
-		return
-	}
-	// Retrieve user with the new id
-	users, err = table.Get(UserQuery{Id: new.Id}, "")
-	if err != nil {
-		err = errors.Wrapf(err, "Failed to get user")
-	} else if len(users) != 1 {
-		err = errors.New("Found duplicate users while inserting")
-	} else {
-		new = users[0]
-	}
-	return
-}
-
+// Update will update the user row in the table based on the incoming user object.
+// It takes in an id to identify the user in the DB, and updates as a user object.
+// It returns the updated user as in the DB, and an error if one exists.
 func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 	users, err := table.Get(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
 		return
 	} else if users == nil {
-		err = errors.New("Couldn't find user")
+		err = errors.New("Failed to find the user")
 		return
 	}
 	var query bytes.Buffer
@@ -273,7 +352,7 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 	for i := 0; i < fields.NumField(); i++ {
 		k := strings.ToLower(fields.Type().Field(i).Name)
 		v := fmt.Sprintf("%v", fields.Field(i).Interface())
-		// Skip auto params or unset fields
+		// Skip auto params or unset fields on the incoming User
 		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i).Interface()) {
 			continue
 		}
@@ -287,7 +366,7 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 		if k == "Password" {
 			hash, cryptErr := bcrypt.GenerateFromPassword([]byte(v), bcrypt.DefaultCost)
 			if cryptErr != nil {
-				err = errors.Wrapf(cryptErr, "Problem creating password hash")
+				err = errors.Wrapf(cryptErr, "Password hash failed")
 				return
 			}
 			values = append(values, hash)
@@ -297,7 +376,6 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 		query.WriteString(fmt.Sprintf("%v=$%d", k, vIdx))
 		vIdx += 1
 	}
-	// End of query
 	query.WriteString(fmt.Sprintf(" WHERE id=%d;", id))
 
 	utilities.Sugar.Infof("SQL Query: %s", query.String())
@@ -305,11 +383,11 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 
 	stmt, err := table.connection.Pool.Prepare(query.String())
 	if err != nil {
-		err = errors.Wrapf(err, "Couldn't prepare update query")
+		err = errors.Wrapf(err, "Update query preparation failed")
 		return
 	}
 	if _, err = stmt.Exec(values...); err != nil {
-		err = errors.Wrapf(err, "Couldn't execute update query")
+		err = errors.Wrapf(err, "Update query failed to execute")
 		return
 	}
 	// Get updated user
@@ -325,13 +403,16 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 	return
 }
 
+// Delete permanently removes the user object from the table.
+// It takes in an id for the user we wish to delete.
+// It returns an error if one exists.
 func (table *UserTable) Delete(id int) (err error) {
 	users, err := table.Get(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
 		return
 	} else if users == nil {
-		err = errors.New("Couldn't find user")
+		err = errors.New("Failed to find user")
 		return
 	}
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", TABLE)
@@ -340,12 +421,12 @@ func (table *UserTable) Delete(id int) (err error) {
 
 	stmt, err := table.connection.Pool.Prepare(query)
 	if err != nil {
-		err = errors.Wrapf(err, "Couldn't prepare delete query")
+		err = errors.Wrapf(err, "Delete query preparation failed")
 		return
 	}
 
 	if _, err = stmt.Exec(strconv.Itoa(id)); err != nil {
-		err = errors.Wrapf(err, "Couldn't execute delete query")
+		err = errors.Wrapf(err, "Delete query failed to execute")
 	}
 	return
 }

@@ -6,15 +6,21 @@ import (
 	"sync"
 )
 
-// Layer passed back to Controllers
+// Represents the layer for the model by exposing the
+// different models' tables
 type layer struct {
 	User *UserTable
 }
 
+// Singleton reference to the model layer
 var instance *layer
+
+// Lock for running only once
 var once sync.Once
 
-// Singleton access to the model layer
+// LayerInstance gets the static singelton reference
+// using double check synchronization
+// It returns the reference to the layer
 func LayerInstance() *layer {
 	once.Do(func() {
 		// Create DB only once

@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+// Logging adds some local logging between each
+// request.
+// It takes the response writer and request to pass
+// through to the next handler.
 func Logging(
 	w http.ResponseWriter,
 	r *http.Request,
