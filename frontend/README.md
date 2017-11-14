@@ -43,6 +43,7 @@ This is the entire frontend for GradePortal written with React.js
 ├── package.json
 ├── README.md
 └── start.sh
+```
 
 # Directory/File Descriptions:
 - build: Contains build configuration data for project creation
@@ -58,4 +59,4 @@ This is the entire frontend for GradePortal written with React.js
 - index.html: Provides the root HTML structure of the React project
 - README.md: Describes the frontend component of the GradePortal project
 - start.sh: Starts the React project through Docker configuration
-```
+
