@@ -3,7 +3,8 @@
 This is the entire frontend for GradePortal written with React.js
 
 # Setup
-- Install docker
+- Install [Docker](https://docs.docker.com/engine/installation/)
+
 - Inside the /frontend directory, run `./start.sh` to build and run the project
   with Docker
 
