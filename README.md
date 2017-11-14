@@ -24,6 +24,11 @@ GradePortal will be a web application (to make it accessible to any individual) 
 * Frontend - React
 * Backend - Golang
 
+## Documentation
+
+* [Frontend](https://github.com/jcherianucla/UCLA-CS-130/blob/master/frontend/README.md)
+* [Backend](https://github.com/jcherianucla/UCLA-CS-130/blob/master/api/README.md)
+
 ## The Team
 
 * Katie Aspinwall
