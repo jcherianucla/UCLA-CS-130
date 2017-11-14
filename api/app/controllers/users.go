@@ -26,12 +26,16 @@ var UsersCreate = http.HandlerFunc(
 		// Set headers
 		w.Header().Set("Content-Type", "application/json")
 		user, err := models.NewUser(r)
+		fmt.Printf("%v", user)
 		user, err = models.LayerInstance().User.Insert(user)
 		var status int
 		var msg string
 		if err != nil {
 			status = 500
 			msg = err.Error()
+		} else {
+			status = 200
+			msg = "Success"
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
 			"status":  status,
@@ -47,6 +51,7 @@ var UsersLogin = http.HandlerFunc(
 		// Set headers
 		w.Header().Set("Content-Type", "application/json")
 		user, err := models.NewUser(r)
+		user, err = models.LayerInstance().User.Login(user)
 		var status int
 		var msg, token string
 		if err != nil {
@@ -54,7 +59,7 @@ var UsersLogin = http.HandlerFunc(
 			msg = err.Error()
 		} else {
 			status = 200
-			msg = fmt.Sprintf("Created user with email: %s", user.Email)
+			msg = "Success"
 			token = user.GenerateJWT()
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
