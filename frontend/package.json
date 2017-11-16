@@ -101,5 +101,8 @@
   "devDependencies": {
     "react-doc-generator": "^1.2.5",
     "react-hot-loader": "^3.1.1"
+  },
+  "scripts": {
+    "doc": "react-doc-generator ./src -o ./docs/DOCUMENTATION.md"
   }
 }
