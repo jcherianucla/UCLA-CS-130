@@ -13,6 +13,8 @@ This is the entire frontend for GradePortal written with React.js
 .
 ├── build
 ├── config
+├── docs
+|   └── DOCUMENTATION.md
 ├── node_modules
 ├── scripts
 ├── src
@@ -49,6 +51,7 @@ This is the entire frontend for GradePortal written with React.js
 # Directory/File Descriptions:
 - build: Contains build configuration data for project creation
 - config: Contains configuration details for development and production environments
+- docs: Contains documentation for the project
 - node_modules: Contains all external NPM packages that are used within the project
 - public: Contains public assets that can be served individually from the server
 - scripts: Contains scripts to build, start, and test the React project
