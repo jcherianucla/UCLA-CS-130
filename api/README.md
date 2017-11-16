@@ -13,18 +13,18 @@ This is the entire backend for GradePortal written in Golang. It is a pure RESTf
 .
 ├── app
 |   ├── controllers
-|   |   ├── users.go
+|   |   └── users.go
 |   ├── models
 |   |   ├── common.go
-|   |   ├── user.go
+|   |   └── user.go
 ├── config
 |   ├── db
-|   |   ├── db.go
+|   |   └── db.go
 |   ├── router
-|   |   ├── routes.go
+|   |   └── routes.go
 ├── middleware
 |   ├── jwt.go
-|   ├── log.go
+|   └── log.go
 ├── utilities
 |   ├── api.go
 |   ├── common.go
@@ -32,13 +32,17 @@ This is the entire backend for GradePortal written in Golang. It is a pure RESTf
 |   ├── db.go
 |   ├── err.go
 |   ├── jwt.go
-|   ├── log.go
+|   └── log.go
 ├── tests 
-|   ├── user_model_test.go
+|   └── user_model_test.go
 ├── docs
 |   ├── doc
 |   ├── lib
 |   ├── pkg
+|   |   ├── github.com
+|   |   |   ├── jcherianucla
+|   |   |   |   ├── gradeportal
+|   |   |   |   |   └── index.html
 ├── app.go
 ├── Makefile
 ├── Dockerfile
@@ -53,8 +57,10 @@ This is the entire backend for GradePortal written in Golang. It is a pure RESTf
 - middleware: Contains the intermediate functionality that wraps each route
 - utilities: Contains the disconnected components from the application to be used in any layer within the application for convenient functionality
 - tests: Contains all the tests for the application.
+- docs: Contains documentation for the backend code generated with godoc
 - app.go: Contains the main server code to spin up the backend service
 - Makefile: Contains build system for running and testing
 - Dockerfile: Specifies Docker configuration to support machine cross-compatibility and ease of setup
+- docs.sh: Recursively downloads webpages from a locally running godoc server
 - README.md: Describes the backend component of the GradePortal portal
 - start.sh: Starts the Golang project through Docker configuration
