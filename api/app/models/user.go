@@ -168,8 +168,6 @@ func (table *UserTable) Login(user User) (found User, err error) {
 		err = errors.Wrapf(err, "Password hash failed")
 		return
 	}
-	utilities.Sugar.Infof("In Hash: %s", string(hash))
-	utilities.Sugar.Infof("Found Hash: %s", string(found.Password))
 	// Compare incoming password with db password
 	err = bcrypt.CompareHashAndPassword(hash, found.Password)
 	if err != nil {
@@ -224,8 +222,9 @@ func (table *UserTable) Insert(user User) (new User, err error) {
 		vStr.WriteString(fmt.Sprintf("$%d", vIdx))
 		// Hash the password
 		if k == "Password" {
+			vStr, _ := v.(string)
 			var hash []byte
-			hash, err = bcrypt.GenerateFromPassword([]byte(v), bcrypt.DefaultCost)
+			hash, err = bcrypt.GenerateFromPassword([]byte(vStr), bcrypt.DefaultCost)
 			if err != nil {
 				err = errors.Wrapf(err, "Password hash failed")
 				return
