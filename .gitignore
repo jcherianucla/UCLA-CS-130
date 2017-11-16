@@ -11,3 +11,5 @@ node_modules
 # Builds
 build/
 
+# iCloud
+*.icloud
