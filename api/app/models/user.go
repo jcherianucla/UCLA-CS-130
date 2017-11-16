@@ -94,6 +94,17 @@ func (user *User) GenerateJWT() string {
 	return tokenString
 }
 
+// Equals is a custom comparator for two user objects on non-auto parameter fields.
+// It takes in a user object representing the other value.
+// It returns a boolean indicating the equality
+func (user *User) Equals(other User) bool {
+	return user.Is_professor == other.Is_professor &&
+		user.Email == other.Email &&
+		user.First_name == other.First_name &&
+		user.Last_name == other.Last_name &&
+		bytes.Equal(user.Password, other.Password)
+}
+
 // NewUserTable creates a new table within the database for housing
 // all user objects.
 // It takes in a reference to an open database connection.
@@ -272,10 +283,6 @@ func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err e
 	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", TABLE))
 	// Use reflection to analyze object fields
 	fields := reflect.ValueOf(userQuery)
-	if fields.NumField() <= 0 {
-		err = errors.New("Invalid number of query fields")
-		return
-	}
 	first := true
 	var values []interface{}
 	vIdx := 1
@@ -335,7 +342,7 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 		err = errors.Wrapf(err, "Search error")
 		return
 	} else if users == nil {
-		err = errors.New("Failed to find the user")
+		err = errors.New("Failed to find user")
 		return
 	}
 	var query bytes.Buffer
@@ -344,13 +351,13 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 	vIdx := 1
 	fields := reflect.ValueOf(updates)
 	if fields.NumField() < 1 {
-		err = errors.New("Invalid number of fields given")
+		err = errors.New("Invalid number of query fields")
 		return
 	}
 	first := true
 	for i := 0; i < fields.NumField(); i++ {
 		k := strings.ToLower(fields.Type().Field(i).Name)
-		v := fmt.Sprintf("%v", fields.Field(i).Interface())
+		v := fields.Field(i).Interface()
 		// Skip auto params or unset fields on the incoming User
 		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i).Interface()) {
 			continue
@@ -363,7 +370,8 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 		}
 		// Hash new password
 		if k == "Password" {
-			hash, cryptErr := bcrypt.GenerateFromPassword([]byte(v), bcrypt.DefaultCost)
+			vStr := v.(string)
+			hash, cryptErr := bcrypt.GenerateFromPassword([]byte(vStr), bcrypt.DefaultCost)
 			if cryptErr != nil {
 				err = errors.Wrapf(cryptErr, "Password hash failed")
 				return
@@ -426,6 +434,24 @@ func (table *UserTable) Delete(id int) (err error) {
 
 	if _, err = stmt.Exec(strconv.Itoa(id)); err != nil {
 		err = errors.Wrapf(err, "Delete query failed to execute")
+	}
+	return
+}
+
+// DeleteAll permanently removes all user objects from the table.
+// It returns an error if one exists.
+func (table *UserTable) DeleteAll() (err error) {
+	query := fmt.Sprintf("DELETE FROM %s;", TABLE)
+	utilities.Sugar.Infof("SQL Query: %s", query)
+
+	stmt, err := table.connection.Pool.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Delete all query preparation failed")
+		return
+	}
+
+	if _, err = stmt.Exec(); err != nil {
+		err = errors.Wrapf(err, "Delete all query failed to execute")
 	}
 	return
 }
