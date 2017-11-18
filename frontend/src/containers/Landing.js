@@ -7,12 +7,8 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 */
 class Landing extends Component {
 
-  professorLogin() {
-    this.props.history.push('/professor/login');
-  }
-
-  studentLogin() {
-    this.props.history.push('/student/login');
+  Login(role) {
+    this.props.history.replace('/login', {role: role});
   }
 
   render() {
@@ -27,10 +23,10 @@ class Landing extends Component {
             <h1 className="landing-title bold">GradePortal</h1>
             <h2 className="landing-subtitle">The real-time project submission and feedback platform for UCLA</h2>
             <div>
-              <button id="landing-login-professor" className="landing-login-button" onClick={() => this.professorLogin()}>
+              <button id="landing-login-professor" className="landing-login-button" onClick={() => this.Login("professor")}>
                 Login as Professor
               </button>
-              <button id="landing-login-student" className="landing-login-button" onClick={() => this.studentLogin()}>
+              <button id="landing-login-student" className="landing-login-button" onClick={() => this.Login("student")}>
                 Login as Student
               </button>
             </div>
