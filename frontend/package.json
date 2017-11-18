@@ -54,7 +54,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "doc": "react-doc-generator . -o DOCUMENTATION.md"
+    "doc": "react-doc-generator ./src -o ./docs/DOCUMENTATION.md"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -101,8 +101,5 @@
   "devDependencies": {
     "react-doc-generator": "^1.2.5",
     "react-hot-loader": "^3.1.1"
-  },
-  "scripts": {
-    "doc": "react-doc-generator ./src -o ./docs/DOCUMENTATION.md"
   }
 }
