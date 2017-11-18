@@ -8,7 +8,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 class Landing extends Component {
 
   Login(role) {
-    this.props.history.replace('/login', {role: role});
+    this.props.history.push('/login', {role: role});
   }
 
   render() {
