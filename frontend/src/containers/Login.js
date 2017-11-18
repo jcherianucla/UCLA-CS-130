@@ -53,17 +53,15 @@ class Login extends Component {
             <form id="login-form">
               <div className="login-form-group">
                 <input className="login-form-input" type="text" required="required" />
-                <span className="highlight"></span>
-                <span className="bar"></span>
+                <span className="login-form-bar"></span>
                 <label className="login-form-label">Email</label>
               </div>
               <div className="login-form-group">
                 <input className="login-form-input secret" type="text" required="required"/>
-                <span className="highlight"></span>
-                <span className="bar"></span>
+                <span className="login-form-bar"></span>
                 <label className="login-form-label">Password</label>
               </div>
-              <input className="btn" type="submit" />
+              <input className="login-form-btn" type="submit" />
             </form>
           }
         </div>
