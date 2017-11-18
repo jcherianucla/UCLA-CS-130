@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Welcome from '../shared/Header.js'
 import '../styles/shared/Content.css';
 
 /**

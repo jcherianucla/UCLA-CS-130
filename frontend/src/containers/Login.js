@@ -41,7 +41,7 @@ class Login extends Component {
         <div className="page">
           <Header title="Welcome to GradePortal!" path="Login" />
           { console.log(this.state) }
-          { this.state.role == "student" ?
+          { this.state.role === "student" ?
             <GoogleLogin
               clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
               buttonText=""

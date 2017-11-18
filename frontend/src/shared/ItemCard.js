@@ -22,7 +22,7 @@ class ItemCard extends Component {
             {this.props.cardText}
           </CardText>
           <CardMedia> 
-            <img src={this.props.plus}/>
+            <img src={this.props.plus} alt="" />
           </CardMedia>
         </Card>
       </MuiThemeProvider>
