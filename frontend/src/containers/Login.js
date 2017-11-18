@@ -23,7 +23,7 @@ class Login extends Component {
   }
 
   classes() {
-    this.props.history.replace('/classes', this.state);
+    this.props.history.push('/classes', this.state);
   }
 
   responseGoogle(response) {
