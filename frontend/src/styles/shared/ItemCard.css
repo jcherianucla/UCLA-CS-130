@@ -10,4 +10,21 @@
   margin-bottom: 50px;
 }
 
+.center-item-card-vertically {
+  line-height: 200px;
+}
 
+.center-item-card-horizontally {
+  width: 100%;
+  text-align: center;
+}
+
+.item-card-image {
+  min-width: 0px;
+  width: 20%;
+  opacity: 0.5;
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}

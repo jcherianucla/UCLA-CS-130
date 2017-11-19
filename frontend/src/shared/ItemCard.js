@@ -21,18 +21,25 @@ class ItemCard extends Component {
       <MuiThemeProvider>
         <a href={this.props.link} onClick={(e) => this.go(e)} >
           <Card className="item-card">
-            <CardHeader 
-              title={this.props.title}
-              titleStyle={{'font-size':'35px', 'color': '#43A5FD', 'font-family': 'Circular-Book'}}
-            />
-            <CardText
-              style={{'padding-top': '0px', 'font-size':'15px', 'color': '#868687', 'font-family': 'Circular-Book'}}
-            >
-              {this.props.cardText}
-            </CardText>
-            <CardMedia> 
-              <img src={this.props.plus} alt="" />
-            </CardMedia>
+            { !this.props.image ?
+              <div>
+                <CardHeader 
+                  title={this.props.title}
+                  titleStyle={{'fontSize':'35px', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}
+                />
+                <CardText
+                  style={{'paddingTop': '0px', 'fontSize':'15px', 'color': '#868687', 'fontFamily': 'Circular-Book'}}
+                >
+                  {this.props.cardText}
+                </CardText>
+              </div>
+              :
+              <CardMedia className="center-item-card-vertically"> 
+                <div className="center-item-card-horizontally">
+                  <img className="item-card-image" src={this.props.image} alt="" />
+                </div>
+              </CardMedia>
+            }
           </Card>
         </a>
       </MuiThemeProvider>

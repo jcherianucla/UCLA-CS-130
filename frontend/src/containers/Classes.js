@@ -86,11 +86,15 @@ class Classes extends Component {
                     />
                   </div>
                 </Col>
-                <Col>
-                  <div>
-                    {this.displayCreateCard()}
-                  </div>
-                </Col>
+                { localStorage.getItem('role') === "professor" ?
+                  <Col>
+                    <div>
+                      <ItemCard image={require("../images/plus.png")}></ItemCard>
+                    </div>
+                  </Col>
+                  :
+                  <div />
+                }
               </Row>
             </Grid>
           

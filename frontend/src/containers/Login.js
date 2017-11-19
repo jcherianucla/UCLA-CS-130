@@ -28,7 +28,7 @@ class Login extends Component {
   }
 
   responseGoogle(response) {
-    let profileObj = response.profileObj;
+    // let profileObj = response.profileObj;
     this.login();
   }
 
