@@ -38,27 +38,52 @@ class Classes extends Component {
               <Row>
                 <Col>
                   <div>
-                    <ItemCard title='CS 31' cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'/>
+                    <ItemCard
+                      title='CS 31'
+                      link='/projects'
+                      history={this.props.history}
+                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
+                    />
                   </div>
                 </Col>
                 <Col>
                   <div>
-                    <ItemCard title='CS 31' cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'/>
+                    <ItemCard
+                      title='CS 31'
+                      link='/projects'
+                      history={this.props.history}
+                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
+                    />
                   </div>
                 </Col>
                 <Col>
                   <div>
-                    <ItemCard title='CS 31' cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'/>
+                    <ItemCard
+                      title='CS 31'
+                      link='/projects'
+                      history={this.props.history}
+                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
+                    />
                   </div>
                 </Col>
                 <Col>
                   <div>
-                    <ItemCard title='CS 31' cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'/>
+                    <ItemCard
+                      title='CS 31'
+                      link='/projects'
+                      history={this.props.history}
+                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
+                    />
                   </div>
                 </Col>
                 <Col>
                   <div>
-                    <ItemCard title='CS 31' cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'/>
+                    <ItemCard
+                      title='CS 31'
+                      link='/projects'
+                      history={this.props.history}
+                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
+                    />
                   </div>
                 </Col>
                 <Col>
