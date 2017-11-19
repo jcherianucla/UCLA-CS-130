@@ -89,7 +89,11 @@ class Classes extends Component {
                 { localStorage.getItem('role') === "professor" ?
                   <Col>
                     <div>
-                      <ItemCard image={require("../images/plus.png")}></ItemCard>
+                      <ItemCard
+                        image={require("../images/plus.png")}
+                        history={this.props.history}
+                        link="/professor/upsert_class">
+                      </ItemCard>
                     </div>
                   </Col>
                   :
