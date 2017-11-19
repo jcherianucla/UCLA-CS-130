@@ -18,20 +18,18 @@ class Login extends Component {
     });
   }
 
-  back() {
-    this.props.history.goBack();
+  classes() {
+    this.props.history.push('/classes');
   }
 
-  classes() {
-    this.props.history.push('/classes', this.state);
+  login() {
+    localStorage.setItem('role', this.state.role);
+    this.classes();
   }
 
   responseGoogle(response) {
-    this.setState({firstName: response.profileObj.givenName});
-    this.setState({lastName: response.profileObj.familyName});
-    this.setState({email: response.profileObj.email});
-    this.setState({type: 'student'});
-    this.classes();
+    let profileObj = response.profileObj;
+    this.login();
   }
 
   render() {
@@ -40,7 +38,6 @@ class Login extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome to GradePortal!" path="Login" />
-          { console.log(this.state) }
           { this.state.role === "student" ?
             <GoogleLogin
               clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
@@ -50,7 +47,7 @@ class Login extends Component {
               onFailure={(response) => this.responseGoogle(response)}
             />
             :
-            <form id="login-form">
+            <form id="login-form" onSubmit={() => this.login()}>
               <div className="login-form-group">
                 <input className="login-form-input" type="text" required="required" />
                 <span className="login-form-bar"></span>

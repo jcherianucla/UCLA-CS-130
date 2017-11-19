@@ -13,14 +13,6 @@ import '../styles/shared/Page.css';
 */
 class Classes extends Component {
 
-  componentWillMount() {
-    console.log(this.props.history);
-  }
-
-  back() {
-    this.props.history.goBack();
-  }
-
   projects() {
     this.props.history.push('/projects');
   }
@@ -30,10 +22,9 @@ class Classes extends Component {
   }
 
   displayCreateCard() {
-    if (this.props.history.location.state.type === "professor") {
+    if (localStorage.getItem('role') === "professor") {
       return (<ItemCard plus="http://www.freepngimg.com/download/dog/1-2-dog-png-10.png"></ItemCard>);
     }
-      
   }
 
   render() {
@@ -41,7 +32,7 @@ class Classes extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title={`Welcome ${this.props.history.location.state.firstName}`} path="Classes" />
+          <Header title="Welcome!" path="Classes" />
 
           <Grid fluid>
               <Row>
