@@ -261,15 +261,13 @@ func (table *UserTable) Insert(user User) (new User, err error) {
 		err = errors.Wrapf(err, "Insertion query failed to execute")
 		return
 	}
+	newID := strconv.Itoa(new.Id)
 	// Retrieve user with the new id
-	users, err = table.Get(UserQuery{Id: new.Id}, "")
+	found, err := table.GetByID(newID)
 	if err != nil {
-		err = errors.Wrapf(err, "Search error")
-	} else if len(users) != 1 {
-		err = errors.New("User already exists")
-	} else {
-		new = users[0]
+		return
 	}
+	new = found
 	return
 }
 
@@ -333,16 +331,36 @@ func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err e
 	return
 }
 
-// Update will update the user row in the table based on the incoming user object.
-// It takes in an id to identify the user in the DB, and updates as a user object.
-// It returns the updated user as in the DB, and an error if one exists.
-func (table *UserTable) Update(id int, updates User) (updated User, err error) {
+// GetByID uses the internal get mechanism for the table to find a user given an id to search on.
+// It takes an ID as a string to convert to an integer to then search on.
+// It returns the found user and an error if one exists.
+func (table *UserTable) GetByID(strId string) (user User, err error) {
+	id, err := strconv.Atoi(strId)
+	if err != nil {
+		err = errors.Wrapf(err, "Invalid ID")
+		return
+	}
 	users, err := table.Get(UserQuery{Id: id}, "")
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
 		return
 	} else if users == nil {
 		err = errors.New("Failed to find user")
+		return
+	} else if len(users) != 1 {
+		err = errors.New("Found duplicate users")
+		return
+	}
+	user = users[0]
+	return
+}
+
+// Update will update the user row in the table based on the incoming user object.
+// It takes in an id to identify the user in the DB, and updates as a user object.
+// It returns the updated user as in the DB, and an error if one exists.
+func (table *UserTable) Update(strId string, updates User) (updated User, err error) {
+	user, err := table.GetByID(strId)
+	if err != nil {
 		return
 	}
 	var query bytes.Buffer
@@ -383,7 +401,7 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 		query.WriteString(fmt.Sprintf("%v=$%d", k, vIdx))
 		vIdx += 1
 	}
-	query.WriteString(fmt.Sprintf(" WHERE id=%d;", id))
+	query.WriteString(fmt.Sprintf(" WHERE id=%s;", strId))
 
 	utilities.Sugar.Infof("SQL Query: %s", query.String())
 	utilities.Sugar.Infof("Values: %v", values)
@@ -398,28 +416,20 @@ func (table *UserTable) Update(id int, updates User) (updated User, err error) {
 		return
 	}
 	// Get updated user
-	users, err = table.Get(UserQuery{Id: id}, "")
+	user, err = table.GetByID(strId)
 	if err != nil {
-		err = errors.Wrapf(err, "Error getting updated user")
-		return
-	} else if len(users) != 1 {
-		err = errors.New("Found duplicate users")
 		return
 	}
-	updated = users[0]
+	updated = user
 	return
 }
 
 // Delete permanently removes the user object from the table.
 // It takes in an id for the user we wish to delete.
 // It returns an error if one exists.
-func (table *UserTable) Delete(id int) (err error) {
-	users, err := table.Get(UserQuery{Id: id}, "")
+func (table *UserTable) Delete(strId string) (err error) {
+	_, err := table.GetByID(strId)
 	if err != nil {
-		err = errors.Wrapf(err, "Search error")
-		return
-	} else if users == nil {
-		err = errors.New("Failed to find user")
 		return
 	}
 	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", TABLE)
@@ -432,7 +442,7 @@ func (table *UserTable) Delete(id int) (err error) {
 		return
 	}
 
-	if _, err = stmt.Exec(strconv.Itoa(id)); err != nil {
+	if _, err = stmt.Exec(strId); err != nil {
 		err = errors.Wrapf(err, "Delete query failed to execute")
 	}
 	return
