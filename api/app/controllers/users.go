@@ -9,14 +9,39 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
+	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
 )
+
+// getClaims will extract the authorization token from a request and get the associated claims for that id.
+func getClaims(r *http.Request) string {
+	tokenString := r.Header.Get("Authorization")[len("Bearer"):]
+	claims := utilities.ExtractClaims(tokenString)
+	return fmt.Sprintf("%v", claims["id"])
+}
 
 // UsersShow will show the home page for the user.
 var UsersShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		params := mux.Vars(r)
+		var status int
+		var msg string
+		user, err := models.LayerInstance.User.GetByID(params["id"])
+		if err != nil {
+			status = 500
+			msg = err.Error()
+		} else {
+			status = 200
+			msg = "Success"
+		}
+		JSON, _ := json.Marshal(map[string]interface{}{
+			"status":  status,
+			"message": msg,
+			"user":    user,
+		})
 	},
 )
 
