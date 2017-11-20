@@ -7,6 +7,7 @@ import (
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
 	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -168,6 +169,8 @@ func TestUserGet(t *testing.T) {
 func TestUserUpdate(t *testing.T) {
 	// Get the relevant ID for user
 	id := getId(tu)
+	validId := strconv.Itoa(id)
+	invalidId := strconv.Itoa(id - 1)
 	cases := []userTest{
 		{test{"No user", true, noUserErr}, tu},
 		{test{"Valid update", false, noErr}, updated},
@@ -177,12 +180,12 @@ func TestUserUpdate(t *testing.T) {
 		t.Run(tc.base.name, func(t *testing.T) {
 			result := models.User{}
 			if tc.base.isErr {
-				_, err := ut.Update((id - 1), tc.user)
+				_, err := ut.Update(invalidId, tc.user)
 				if !strings.Contains(err.Error(), tc.base.expectedErr.Error()) {
 					t.Errorf("Errors do not match up")
 				}
 			} else {
-				result, _ = ut.Update(id, tc.user)
+				result, _ = ut.Update(validId, tc.user)
 				if !tc.user.Equals(result) {
 					t.Errorf("Updated users do not match up")
 				}
@@ -196,6 +199,8 @@ func TestUserUpdate(t *testing.T) {
 func TestUserDelete(t *testing.T) {
 	// Get the relevant ID for user
 	id := getId(updated)
+	validId := strconv.Itoa(id)
+	invalidId := strconv.Itoa(id - 1)
 	cases := []userTest{
 		{test{"No user", true, noUserErr}, tu},
 		{test{"Valid delete", false, noErr}, updated},
@@ -204,14 +209,14 @@ func TestUserDelete(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.base.name, func(t *testing.T) {
 			if tc.base.isErr {
-				err := ut.Delete((id - 1))
+				err := ut.Delete(invalidId)
 				if !strings.Contains(err.Error(), tc.base.expectedErr.Error()) {
 					t.Errorf("Errors do not match up")
 				}
 			} else {
-				_ = ut.Delete(id)
-				users, _ := ut.Get(models.UserQuery{Id: id}, "")
-				if users != nil {
+				_ = ut.Delete(validId)
+				user, _ := ut.GetById(validId)
+				if user != nil {
 					t.Errorf("Did not delete user")
 				}
 			}
