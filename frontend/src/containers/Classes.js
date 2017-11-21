@@ -21,12 +21,6 @@ class Classes extends Component {
     this.props.history.push('/professor/upsert_class');
   }
 
-  displayCreateCard() {
-    if (localStorage.getItem('role') === "professor") {
-      return (<ItemCard plus="http://www.freepngimg.com/download/dog/1-2-dog-png-10.png"></ItemCard>);
-    }
-  }
-
   render() {
     return (
       <div>
