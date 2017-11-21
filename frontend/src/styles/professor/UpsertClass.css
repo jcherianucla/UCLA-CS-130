@@ -1,0 +1,95 @@
+#class-form {
+  text-align: left;
+}
+
+.class-form-group {
+  position: relative;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  display: table;
+}
+
+.class-form-input {
+  display: block;
+  color: #A0A0A0;
+  font-size: 18px;
+  padding: 10px 0px;
+  width: 320px;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #C0C0C0;
+}
+
+.class-form-input:focus {
+  outline: none;
+}
+
+.class-form-input:focus ~ label,
+.class-form-input:valid ~ label {
+  top: -15px;
+  font-size: 14px;
+  color: #43A5FD;
+}
+
+.class-form-input:focus ~ .bar:before {
+  width: 320px;
+}
+
+.class-form-label {
+  position: absolute;
+  color: #A0A0A0;
+  font-size: 18px;
+  left: 5px;
+  top: 10px;
+  -webkit-transition: 300ms ease all;
+  transition: 300ms ease all;
+  pointer-events: none;
+}
+
+.class-form-bar {
+  position: relative;
+  display: block;
+  width: 320px;
+}
+
+.class-form-bar:before {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 0px;
+  position: absolute;
+  background: #43A5FD;
+  -webkit-transition: 300ms ease all;
+  transition: 300ms ease all;
+  left: 0%;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  border: none;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 6px 6px rgba(0,0,0,0.05) !important;
+  color: #868687;
+  background-color: white;
+  padding: 10px 40px;
+  border-radius: 8px;
+  font-size: 15px;
+  margin-bottom: 50px;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+
+
+

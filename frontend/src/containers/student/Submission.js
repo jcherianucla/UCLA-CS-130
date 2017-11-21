@@ -15,12 +15,10 @@ class StudentSubmission extends Component {
   render() {
     return (
       <div>
-        <Header />
         <SidePanel />
-        <h1>Student Submission</h1>
-        <button onClick={() => this.back()}>
-          Back
-        </button>
+        <div className="page">
+          <Header title="Welcome!" path="Submission" />
+        </div>
       </div>
     );
   }
