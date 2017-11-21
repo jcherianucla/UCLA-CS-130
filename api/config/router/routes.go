@@ -32,16 +32,16 @@ type Routes struct {
 func (routes *Routes) createUserRoutes() {
 	routes.userRoutes = []Route{
 		Route{
-			"Show",
-			"GET",
-			utilities.GetAPIInstance().Gen("/users/{id}"),
-			middleware.Authenticate(controllers.UsersShow),
-		},
-		Route{
 			"BOL",
 			"POST",
 			utilities.GetAPIInstance().Gen("/bol"),
 			controllers.UsersBOL,
+		},
+		Route{
+			"Professor Login",
+			"POST",
+			utilities.GetAPIInstance().Gen("/login"),
+			controllers.UsersLogin,
 		},
 		Route{
 			"Create",
@@ -50,10 +50,22 @@ func (routes *Routes) createUserRoutes() {
 			controllers.UsersCreate,
 		},
 		Route{
-			"Professor Login",
-			"POST",
-			utilities.GetAPIInstance().Gen("/login"),
-			controllers.UsersLogin,
+			"Show",
+			"GET",
+			utilities.GetAPIInstance().Gen("/users/{id}"),
+			middleware.Authenticate(controllers.UsersShow),
+		},
+		Route{
+			"Update",
+			"PUT",
+			utilities.GetAPIInstance().Gen("/users/{id}"),
+			middleware.Authenticate(controllers.UsersUpdate),
+		},
+		Route{
+			"Delete",
+			"DELETE",
+			utilities.GetAPIInstance().Gen("/users/{id}"),
+			middleware.Authenticate(controllers.UsersDelete),
 		},
 	}
 }
