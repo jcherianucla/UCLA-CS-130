@@ -428,7 +428,7 @@ func (table *UserTable) Update(strId string, updates User) (updated User, err er
 // It takes in an id for the user we wish to delete.
 // It returns an error if one exists.
 func (table *UserTable) Delete(strId string) (err error) {
-	_, err := table.GetByID(strId)
+	_, err = table.GetByID(strId)
 	if err != nil {
 		return
 	}

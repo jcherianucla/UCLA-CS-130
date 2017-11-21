@@ -215,8 +215,8 @@ func TestUserDelete(t *testing.T) {
 				}
 			} else {
 				_ = ut.Delete(validId)
-				user, _ := ut.GetById(validId)
-				if user != nil {
+				users, _ := ut.Get(models.UserQuery{Id: id}, "")
+				if users != nil {
 					t.Errorf("Did not delete user")
 				}
 			}
