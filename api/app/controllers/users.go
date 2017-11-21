@@ -13,6 +13,7 @@ import (
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
+	"strings"
 )
 
 // getClaims will extract the authorization token from a request and get the associated claims for that id.
@@ -29,7 +30,7 @@ var UsersShow = http.HandlerFunc(
 		params := mux.Vars(r)
 		var status int
 		var msg string
-		user, err := models.LayerInstance.User.GetByID(params["id"])
+		user, err := models.LayerInstance().User.GetByID(params["id"])
 		if err != nil {
 			status = 500
 			msg = err.Error()
@@ -42,6 +43,7 @@ var UsersShow = http.HandlerFunc(
 			"message": msg,
 			"user":    user,
 		})
+		w.Write(JSON)
 	},
 )
 
@@ -51,6 +53,29 @@ var UsersBOL = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		w.Header().Set("Content-Type", "application/json")
+		user, err := models.NewUser(r)
+		var status int
+		var msg string
+		_, err = models.LayerInstance().User.Insert(user)
+		if err == nil || strings.Contains(err.Error(), "User already exists") {
+			user, err = models.LayerInstance().User.Login(user)
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+		} else {
+			status = 500
+			msg = err.Error()
+		}
+		JSON, _ := json.Marshal(map[string]interface{}{
+			"status":  status,
+			"message": msg,
+			"user":    user,
+		})
+		w.Write(JSON)
 	},
 )
 
@@ -61,7 +86,6 @@ var UsersCreate = http.HandlerFunc(
 		// Set headers
 		w.Header().Set("Content-Type", "application/json")
 		user, err := models.NewUser(r)
-		fmt.Printf("%v", user)
 		user, err = models.LayerInstance().User.Insert(user)
 		var status int
 		var msg string
@@ -103,6 +127,65 @@ var UsersLogin = http.HandlerFunc(
 			"status":  status,
 			"message": msg,
 			"token":   token,
+		})
+		w.Write(JSON)
+	},
+)
+
+var UsersUpdate = http.HandlerFunc(
+	func(w http.ResponseWriter, r *http.Request) {
+		// Set headers
+		w.Header().Set("Content-Type", "application/json")
+		params := mux.Vars(r)
+		var status int
+		var msg string
+		var updated = models.User{}
+		if params["id"] != getClaims(r) {
+			status = 500
+			msg = "Invalid permissions to update user"
+		} else {
+			updates, err := models.NewUser(r)
+			updated, err = models.LayerInstance().User.Update(params["id"], updates)
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+		}
+		JSON, _ := json.Marshal(map[string]interface{}{
+			"status":  status,
+			"message": msg,
+			"user":    updated,
+		})
+		w.Write(JSON)
+	},
+)
+
+var UsersDelete = http.HandlerFunc(
+	func(w http.ResponseWriter, r *http.Request) {
+		// Set headers
+		w.Header().Set("Content-Type", "application/json")
+		params := mux.Vars(r)
+		var status int
+		var msg string
+		if params["id"] != getClaims(r) {
+			status = 500
+			msg = "Invalid permissions to delete user"
+		} else {
+			err := models.LayerInstance().User.Delete(params["id"])
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+		}
+		JSON, _ := json.Marshal(map[string]interface{}{
+			"status":  status,
+			"message": msg,
 		})
 		w.Write(JSON)
 	},
