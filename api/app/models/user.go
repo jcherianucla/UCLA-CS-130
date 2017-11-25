@@ -23,7 +23,7 @@ import (
 
 // The table name as set in the Postgres DB creation.
 const (
-	TABLE = "users"
+	USER_TABLE = "users"
 )
 
 // Params that should be automatically set by the Postgres DB,
@@ -73,9 +73,6 @@ func NewUser(r *http.Request) (user User, err error) {
 	}
 	// Converts JSON to user
 	json.Unmarshal(b, &user)
-	if err != nil {
-		err = errors.Wrapf(err, "Error hashing password")
-	}
 	return
 }
 
@@ -135,7 +132,7 @@ func (table *UserTable) createTable() (err error) {
 			last_name TEXT,
 			password BYTEA,
 			time_created TIMESTAMP DEFAULT now()
-		);`, TABLE)
+		);`, USER_TABLE)
 
 	utilities.Sugar.Infof("SQL Query: %s", query)
 
@@ -158,7 +155,7 @@ func (table *UserTable) Login(user User) (found User, err error) {
 		err = errors.New("Password can't be blank")
 	}
 
-	query := fmt.Sprintf("SELECT * FROM %s WHERE email=$1", TABLE)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE email=$1", USER_TABLE)
 
 	utilities.Sugar.Infof("SQL Query: %s", query)
 	utilities.Sugar.Infof("Value: %s", user.Email)
@@ -206,7 +203,7 @@ func (table *UserTable) Insert(user User) (new User, err error) {
 		return
 	}
 	var query bytes.Buffer
-	query.WriteString(fmt.Sprintf("INSERT INTO %s (", TABLE))
+	query.WriteString(fmt.Sprintf("INSERT INTO %s (", USER_TABLE))
 	var values []interface{}
 	var vStr, kStr bytes.Buffer
 	vIdx := 1
@@ -278,7 +275,7 @@ func (table *UserTable) Insert(user User) (new User, err error) {
 // It returns all the found users and an error if one exists.
 func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err error) {
 	var query bytes.Buffer
-	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", TABLE))
+	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", USER_TABLE))
 	// Use reflection to analyze object fields
 	fields := reflect.ValueOf(userQuery)
 	first := true
@@ -364,7 +361,7 @@ func (table *UserTable) Update(strId string, updates User) (updated User, err er
 		return
 	}
 	var query bytes.Buffer
-	query.WriteString(fmt.Sprintf("UPDATE %s SET", TABLE))
+	query.WriteString(fmt.Sprintf("UPDATE %s SET", USER_TABLE))
 	var values []interface{}
 	vIdx := 1
 	fields := reflect.ValueOf(updates)
@@ -432,7 +429,7 @@ func (table *UserTable) Delete(strId string) (err error) {
 	if err != nil {
 		return
 	}
-	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", TABLE)
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", USER_TABLE)
 
 	utilities.Sugar.Infof("SQL Query: %s", query)
 
@@ -451,7 +448,7 @@ func (table *UserTable) Delete(strId string) (err error) {
 // DeleteAll permanently removes all user objects from the table.
 // It returns an error if one exists.
 func (table *UserTable) DeleteAll() (err error) {
-	query := fmt.Sprintf("DELETE FROM %s;", TABLE)
+	query := fmt.Sprintf("DELETE FROM %s;", USER_TABLE)
 	utilities.Sugar.Infof("SQL Query: %s", query)
 
 	stmt, err := table.connection.Pool.Prepare(query)
