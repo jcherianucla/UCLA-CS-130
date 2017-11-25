@@ -70,6 +70,43 @@ func (routes *Routes) createUserRoutes() {
 	}
 }
 
+// createClassRoutes will instantiate all routes for
+// classes.
+func (routes *Routes) createClassRoutes() {
+	routes.classRoutes = []Route{
+		Route{
+			"Create",
+			"POST",
+			utilities.GetAPIInstance().Gen("/classes"),
+			middleware.Authenticate(controllers.ClassesCreate),
+		},
+		Route{
+			"Show All",
+			"GET",
+			utilities.GetAPIInstance().Gen("/classes"),
+			middleware.Authenticate(controllers.ClassesIndex),
+		},
+		Route{
+			"Show",
+			"GET",
+			utilities.GetAPIInstance().Gen("/classes/{id}"),
+			middleware.Authenticate(controllers.ClassesShow),
+		},
+		Route{
+			"Update",
+			"PUT",
+			utilities.GetAPIInstance().Gen("/classes/{id}"),
+			middleware.Authenticate(controllers.ClassesUpdate),
+		},
+		Route{
+			"Delete",
+			"DELETE",
+			utilities.GetAPIInstance().Gen("/classes/{id}"),
+			middleware.Authenticate(controllers.ClassesDelete),
+		},
+	}
+}
+
 // BindRoutes will bind all routes to the router.
 // It takes in a reference to the router and the slice
 // of all routes.
@@ -92,6 +129,9 @@ func NewRouter() *mux.Router {
 	routes := &Routes{}
 	// Create the user routes
 	routes.createUserRoutes()
+	// Create the class routes
+	routes.createClassRoutes()
 	BindRoutes(router, routes.userRoutes)
+	BindRoutes(router, routes.classRoutes)
 	return router
 }
