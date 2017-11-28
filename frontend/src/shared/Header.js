@@ -6,14 +6,19 @@ import '../styles/shared/Header.css';
  */
 class Header extends Component {
 
+  Home() {
+    this.props.history.push('/classes');
+  }
 
- render() {
+  render() {
     return (
     	<div>
 	      <div className="header">
           <ul>
   	      	<li>
-              <div className="logo" />
+              <a href="/classes" onClick={() => this.Home()}>
+                <div className="logo"/>
+              </a>
             </li>
             <li>
               <div className="faq">
@@ -21,9 +26,11 @@ class Header extends Component {
               </div>
             </li>
             <li>
-              <div className="home">
-                <h1>Home</h1>
-              </div>
+              <a href="/classes" onClick={() => this.Home()}>
+                <div className="home">
+                  <h1>Home</h1>
+                </div>
+              </a>
             </li>
           </ul>
 	      </div>
