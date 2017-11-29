@@ -20,21 +20,25 @@ class ProfessorUpsertClass extends Component {
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Class" />
             {/* TODO: Change class creation form to match designs */}
-            <form id="class-form">
-              <div className="class-form-group">
-                <input className="class-form-input" type="text" required="required" />
-                <span className="class-form-bar"></span>
-                <label className="class-form-label">Class Name</label>
-              </div>
-              <div className="class-form-group">
-                <input className="class-form-input secret" type="text" required="required"/>
-                <span className="class-form-bar"></span>
-                <label className="class-form-label">Class Description</label>
-              </div>
-            </form>
-            <div class="upload-btn-wrapper">
-              <button class="btn">Upload .csv</button>
-              <input type="file" name="myfile" accept=".csv"/>
+            <div class="class-create-form">
+              <form >
+                <label class="upsert-label"><b>Class Name</b></label>
+                <input type="text" placeholder="Enter class name"/>
+                
+                <label class="upsert-label"><b>Class Description</b></label>
+                <textarea placeholder="Enter short description of your class" rows="3" cols="40"/>
+
+                <label class="upsert-label"><b>Upload Student Roster</b></label>
+                <div class="upload-btn-wrapper">
+                  <input type="file" name="myfile" accept=".csv"/>
+                  <button class="btn">Upload .csv</button>
+                </div>
+                
+              
+                <div>
+                  <input className="submit-btn" type="submit" />
+                </div>
+              </form>
             </div>
         </div>
       </div>

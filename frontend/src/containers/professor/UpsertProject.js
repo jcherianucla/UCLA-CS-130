@@ -18,24 +18,25 @@ class ProfessorUpsertProject extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Project" />
-            {/* TODO: Change class creation form to match designs */}
-            <form id="class-form">
-              <div className="class-form-group">
-                <input className="class-form-input" type="text" required="required" />
-                <span className="class-form-bar"></span>
-                <label className="class-form-label">Project Name</label>
-              </div>
-              <div className="class-form-group">
-                <input className="class-form-input secret" type="text" required="required"/>
-                <span className="class-form-bar"></span>
-                <label className="class-form-label">Project Description</label>
-              </div>
-            </form>
-            <div class="upload-btn-wrapper">
-              <button class="btn">Upload .sh</button>
-              <input type="file" name="myfile" accept=".csv"/>
+            <div class="class-create-form">
+              <form >
+                <label class="upsert-label"><b>Project Name</b></label>
+                <input type="text" placeholder="Enter project name"/>
+                
+                <label class="upsert-label"><b>Project Description</b></label>
+                <textarea placeholder="Enter short description of your project" rows="3" cols="40"/>
+
+                <label class="upsert-label"><b>Upload Grading Script</b></label>
+                <div class="upload-btn-wrapper">
+                  <input type="file" name="myfile" accept=".sh"/>
+                  <button class="btn">Upload .sh</button>
+                </div>
+                {/* TODO: Add date picker */}
+                <div>
+                  <input className="submit-btn" type="submit" />
+                </div>
+              </form>
             </div>
-            {/* TODO: Add date picker */}
         </div>
       </div>
     );
