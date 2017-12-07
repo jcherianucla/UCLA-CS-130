@@ -1,9 +1,10 @@
 // db package houses the very lowest layer in the overall application
 // architecture that communicates with the PostgreSQL database pool.
-// This connection is used upstream by the model layer.
+// This connection is used upstream by the model layer. The package also provides a minimal ORM for basic CRUD operations on the database.
 package db
 
 import (
+	"bytes"
 	"database/sql"
 	"fmt"
 	"github.com/asaskevich/govalidator"
@@ -30,6 +31,10 @@ var (
 type Db struct {
 	Pool *sql.DB
 	cfg  Config
+}
+
+type idQuery struct {
+	Id int
 }
 
 // Represents the configuration parameters needed to
@@ -82,6 +87,22 @@ func New(cfg Config) (db Db, err error) {
 	return
 }
 
+// CreateTable runs the actual PSQL query to create the table.
+// It takes the specific creation PSQL query to run, as this varies with each object.
+// It returns an error if one exists.
+func (db *Db) CreateTable(query string) (err error) {
+	utilities.Sugar.Infof("SQL Query: %s", query)
+
+	// Execute the query
+	if _, err = db.Pool.Exec(query); err != nil {
+		err = errors.Wrapf(err, "Classes Table creation query failed")
+	}
+	return
+}
+
+// Insert will put a new model row within the specified table in the DB, verifying all fields are valid.
+// It takes in the object to insert, the operator to perform the query with, the table name and the query itself.
+// It returns the new object as in the table and an error if one exists.
 func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[string]interface{}, err error) {
 	modelName := reflect.TypeOf(model).String()
 	_, err = govalidator.ValidateStruct(model)
@@ -89,11 +110,11 @@ func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[strin
 		err = errors.Wrapf(err, "%s model has invalid fields", modelName)
 		return
 	}
-	objs, err := db.Get(mQuery, op)
+	objs, err := db.Get(mQuery, op, table)
 	if err != nil {
 		err = errors.Wrapf(err, "Failed to search for %s", modelName)
 		return
-	} else if users != nil {
+	} else if objs != nil {
 		err = errors.New(fmt.Sprintf("%s already exists", modelName))
 		return
 	}
@@ -148,15 +169,16 @@ func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[strin
 		err = errors.Wrapf(err, "Insertion query preparation failed")
 		return
 	}
-	var id int
-	err = stmt.QueryRow(values...).Scan(id)
+	id := 0
+	err = stmt.QueryRow(values...).Scan(&id)
 	if err != nil {
 		err = errors.Wrapf(err, "Insertion query failed to execute")
 		return
 	}
 	newID := strconv.Itoa(id)
-	// Retrieve user with the new id
-	found, err := db.GetByID(newID)
+	utilities.Sugar.Infof("ID: %s", newID)
+	// Retrieve object with the new id
+	found, err := db.GetByID(newID, table)
 	if err != nil {
 		return
 	}
@@ -164,6 +186,9 @@ func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[strin
 	return
 }
 
+// Get attempts to provide a generalized search through the specified table based on the provided queries.
+// It takes a query for the queryable fields, and an operator such as "AND" or "OR" to define the context of the search. It takes in a table name to act on.
+// It returns all the data for all found objects and an error if one exists.
 func (db *Db) Get(mQuery interface{}, op, table string) (objects []map[string]interface{}, err error) {
 	var query bytes.Buffer
 	query.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", table))
@@ -173,17 +198,17 @@ func (db *Db) Get(mQuery interface{}, op, table string) (objects []map[string]in
 	var values []interface{}
 	vIdx := 1
 	for i := 0; i < fields.NumField(); i++ {
-		if first {
-			query.WriteString(" ")
-			first = false
-		} else {
-			if op != "" {
-				query.WriteString(fmt.Sprintf(" %s ", op))
-			}
-		}
 		v := fields.Field(i).Interface()
 		// Skip fields that are not set to query on
 		if !utilities.IsUndeclared(v) {
+			if first {
+				query.WriteString(" ")
+				first = false
+			} else {
+				if op != "" {
+					query.WriteString(fmt.Sprintf(" %s ", op))
+				}
+			}
 			k := strings.ToLower(fields.Type().Field(i).Name)
 			v = fmt.Sprintf("%v", v)
 			values = append(values, v)
@@ -221,33 +246,146 @@ func (db *Db) Get(mQuery interface{}, op, table string) (objects []map[string]in
 		m := make(map[string]interface{})
 		for i, colName := range cols {
 			val := columnPtrs[i].(*interface{})
-			m[colName] = *val
+			m[strings.Title(colName)] = *val
 		}
 		objects = append(objects, m)
 	}
 	return
 }
 
-func (orm *ORM) GetByID(strId string) (obj map[string]interface{}, err error) {
+// GetByID uses the internal get mechanism for the table to find an object given an id to search on.
+// It takes an ID as a string to convert to an integer to then search on, and a string representing the table name.
+// It returns the data for the found object, or an error if one exists.
+func (db *Db) GetByID(strId, table string) (data map[string]interface{}, err error) {
 	id, err := strconv.Atoi(strId)
 	if err != nil {
 		err = errors.Wrapf(err, "Invalid ID")
 		return
 	}
-	query := map[string]interface{}{
-		"Id": id,
-	}
-	objs, err := orm.Get(query, "")
+	query := idQuery{Id: id}
+	objs, err := db.Get(query, "", table)
 	if err != nil {
 		err = errors.Wrapf(err, "Search error")
 		return
-	} else if users == nil {
+	} else if objs == nil {
 		err = errors.New("Failed to find object")
 		return
-	} else if len(users) != 1 {
+	} else if len(objs) != 1 {
 		err = errors.New("Found duplicate objects")
 		return
 	}
-	obj = objs[0]
+	data = objs[0]
+	return
+}
+
+// Update will update the model row in the table based on the incoming object.
+// It takes in an id to identify the object in the DB, a string representing the table name and the fileds to update the object on.
+// It returns the data representing an updated model.
+func (db *Db) Update(strId, table string, updates interface{}) (data map[string]interface{}, err error) {
+	found, err := db.GetByID(strId, table)
+	if err != nil {
+		return
+	}
+	var query bytes.Buffer
+	query.WriteString(fmt.Sprintf("UPDATE %s SET", table))
+	var values []interface{}
+	vIdx := 1
+	fields := reflect.ValueOf(updates)
+	if fields.NumField() < 1 {
+		err = errors.New("Invalid number of query fields")
+		return
+	}
+	first := true
+	for i := 0; i < fields.NumField(); i++ {
+		k := strings.ToLower(fields.Type().Field(i).Name)
+		v := fields.Field(i).Interface()
+		// Skip auto params or unset fields on the incoming User
+		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i).Interface()) {
+			continue
+		}
+		if first {
+			query.WriteString(" ")
+			first = false
+		} else {
+			query.WriteString(", ")
+		}
+		// Hash new password
+		if k == "Password" {
+			vStr := v.(string)
+			hash, cryptErr := bcrypt.GenerateFromPassword([]byte(vStr), bcrypt.DefaultCost)
+			if cryptErr != nil {
+				err = errors.Wrapf(cryptErr, "Password hash failed")
+				return
+			}
+			values = append(values, hash)
+		} else {
+			values = append(values, v)
+		}
+		query.WriteString(fmt.Sprintf("%v=$%d", k, vIdx))
+		vIdx += 1
+	}
+	query.WriteString(fmt.Sprintf(" WHERE id=%s;", strId))
+
+	utilities.Sugar.Infof("SQL Query: %s", query.String())
+	utilities.Sugar.Infof("Values: %v", values)
+
+	stmt, err := db.Pool.Prepare(query.String())
+	if err != nil {
+		err = errors.Wrapf(err, "Update query preparation failed")
+		return
+	}
+	if _, err = stmt.Exec(values...); err != nil {
+		err = errors.Wrapf(err, "Update query failed to execute")
+		return
+	}
+	// Get updated model
+	found, err = db.GetByID(strId, table)
+	if err != nil {
+		return
+	}
+	data = found
+	return
+}
+
+// Delete permanently removes the object from the table.
+// It takes in an id for the user we wish to delete, and a table name to act on.
+// It returns an error if one exists.
+func (db *Db) Delete(strId, table string) (err error) {
+	_, err = db.GetByID(strId, table)
+	if err != nil {
+		return
+	}
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", table)
+
+	utilities.Sugar.Infof("SQL Query: %s", query)
+
+	stmt, err := db.Pool.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Delete query preparation failed")
+		return
+	}
+
+	if _, err = stmt.Exec(strId); err != nil {
+		err = errors.Wrapf(err, "Delete query failed to execute")
+	}
+	return
+}
+
+// DeleteAll permanently removes all objects from the table.
+// It takes in a string representing the table name.
+// It returns an error if one exists.
+func (db *Db) DeleteAll(table string) (err error) {
+	query := fmt.Sprintf("DELETE FROM %s;", table)
+	utilities.Sugar.Infof("SQL Query: %s", query)
+
+	stmt, err := db.Pool.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Delete all query preparation failed")
+		return
+	}
+
+	if _, err = stmt.Exec(); err != nil {
+		err = errors.Wrapf(err, "Delete all query failed to execute")
+	}
 	return
 }
