@@ -29,3 +29,7 @@ html, body {
 .text-center {
   text-align: center;
 }
+
+.dark-gray {
+  color: #868687;
+}
