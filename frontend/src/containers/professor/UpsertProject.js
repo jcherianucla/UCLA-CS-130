@@ -12,6 +12,10 @@ class ProfessorUpsertProject extends Component {
     this.props.history.goBack();
   }
 
+  projects() {
+    this.props.history.push('/projects');
+  }
+
   render() {
     return (
       <div>
@@ -19,7 +23,7 @@ class ProfessorUpsertProject extends Component {
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Project" />
             <div class="class-create-form">
-              <form >
+              <form onSubmit={() => this.projects()}>
                 <label class="upsert-label"><b>Project Name</b></label>
                 <input type="text" placeholder="Enter project name"/>
                 

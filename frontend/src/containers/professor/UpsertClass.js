@@ -13,15 +13,18 @@ class ProfessorUpsertClass extends Component {
     this.props.history.goBack();
   }
 
+  classes() {
+    this.props.history.push('/classes');
+  }
+
   render() {
     return (
       <div>
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Class" />
-            {/* TODO: Change class creation form to match designs */}
             <div class="class-create-form">
-              <form >
+              <form onSubmit={() => this.classes()}>
                 <label class="upsert-label"><b>Class Name</b></label>
                 <input type="text" placeholder="Enter class name"/>
                 
