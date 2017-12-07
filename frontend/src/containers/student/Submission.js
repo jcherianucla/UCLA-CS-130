@@ -65,7 +65,7 @@ class StudentSubmission extends Component {
                   <Highlight className="cpp">{`
   #include <iostream>
   int main(int argc, char *argv[]) {
-    for (auto i = 0; i < 0xFFFF; i++)
+    for (auto i = 0; i <= 0xFFFF; i++)
       cout << "Hello, World!" << endl;
     return 1;
   }
@@ -73,7 +73,9 @@ class StudentSubmission extends Component {
                 </div>
               </div>
               <div id="right-feedback">
-                <p>jfkajsfaskfjakfj eafjafhakjnjkhkgahskjnask akjsnc jkash cjkascas</p>
+                <h2 id="feedback-score" className="gray">Score: 67%</h2>
+                <br />
+                <p className="error">test_case_3: Off-by-one error</p>
               </div>
             </div>
           }

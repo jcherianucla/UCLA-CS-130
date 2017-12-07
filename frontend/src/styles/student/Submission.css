@@ -6,15 +6,15 @@
 }
 
 #left-feedback {
-  display: inline-block;
+  display: inline-table;
   margin: none;
-  width: 59%;
+  width: 60%;
 }
 
 #right-feedback {
-  display: inline-block;
+  display: inline-table;
   margin: none;
-  width: 39%;
+  width: 40%;
 }
 
 #code-feedback {
