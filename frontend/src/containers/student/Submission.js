@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import Highlight from 'react-highlight';
 import Header from '../../shared/Header.js'
 import SidePanel from '../../shared/SidePanel.js'
 import '../../styles/student/Submission.css';
+import "../../../node_modules/highlight.js/styles/atom-one-light.css";
 
 /**
 * Form where students can upload and submit a project. 
@@ -10,7 +12,7 @@ class StudentSubmission extends Component {
 
   constructor(props) {
     super(props);
-    let due = new Date("2018-11-07T19:06:00");
+    let due = new Date("2016-11-07T19:06:00");
     this.state = {
       due: due,
       delta: due.getTime() - Date.now()
@@ -55,9 +57,25 @@ class StudentSubmission extends Component {
               <input id="upload" type="file" />
             </div>
             :
-            <h1 className="dark-gray text-center">
-              Submissions are now closed
-            </h1>
+            <div>
+              <h1 className="dark-gray text-center">Submission Feedback:</h1>
+              <div id="left-feedback">
+                <button>Submission</button>
+                <div id="code-feedback">
+                  <Highlight className="cpp">{`
+  #include <iostream>
+  int main(int argc, char *argv[]) {
+    for (auto i = 0; i < 0xFFFF; i++)
+      cout << "Hello, World!" << endl;
+    return 1;
+  }
+                  `}</Highlight>
+                </div>
+              </div>
+              <div id="right-feedback">
+                <p>jfkajsfaskfjakfj eafjafhakjnjkhkgahskjnask akjsnc jkash cjkascas</p>
+              </div>
+            </div>
           }
         </div>
       </div>

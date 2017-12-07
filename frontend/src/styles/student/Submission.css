@@ -4,3 +4,15 @@
   margin-right: auto;
   display: block;
 }
+
+#left-feedback {
+  display: inline-block;
+  margin: none;
+  width: 60%;
+}
+
+#right-feedback {
+  display: inline-block;
+  margin: none;
+  width: 40%;
+}
