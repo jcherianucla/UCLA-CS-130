@@ -18,7 +18,7 @@ import (
 
 // getClaims will extract the authorization token from a request and get the associated claims for that id.
 func getClaims(r *http.Request) string {
-	tokenString := r.Header.Get("Authorization")[len("Bearer"):]
+	tokenString := r.Header.Get("Authorization")[len("Bearer "):]
 	claims := utilities.ExtractClaims(tokenString)
 	return fmt.Sprintf("%v", claims["id"])
 }
