@@ -15,8 +15,8 @@ var ClassesIndex = http.HandlerFunc(
 		var status int
 		var msg string
 		strId := getClaims(r)
-		creator_id, _ := strconv.Atoi(strId)
-		classes, err := models.LayerInstance().Class.Get(models.ClassQuery{Creator_Id: creator_id}, "")
+		creator_id, _ := strconv.ParseInt(strId, 10, 64)
+		classes, err := models.LayerInstance().Class.Get(models.ClassQuery{Creator_id: creator_id}, "")
 		if err != nil {
 			status = 500
 			msg = err.Error()
@@ -60,17 +60,23 @@ var ClassesCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		w.Header().Set("Content-Type", "application/json")
-		class, err := models.NewClass(r)
-		creator_id := getClaims(r)
-		class, err = models.LayerInstance().Class.Insert(class, creator_id)
 		var status int
 		var msg string
-		if err != nil {
-			status = 500
-			msg = err.Error()
+		class, err := models.NewClass(r)
+		creator_id := getClaims(r)
+		user, err := models.LayerInstance().User.GetByID(creator_id)
+		if err != nil || !user.Is_professor {
+			status = 400
+			msg = "Invalid permissions to create a class."
 		} else {
-			status = 200
-			msg = "Success"
+			class, err = models.LayerInstance().Class.Insert(class, creator_id)
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
 			"status":  status,
@@ -90,8 +96,10 @@ var ClassesUpdate = http.HandlerFunc(
 		var msg string
 		var updated = models.Class{}
 		class, _ := models.LayerInstance().Class.GetByID(params["id"])
-		if fmt.Sprintf("%v", class.Creator_Id) != getClaims(r) {
-			status = 500
+		creator_id := getClaims(r)
+		user, err := models.LayerInstance().User.GetByID(creator_id)
+		if err != nil || fmt.Sprintf("%v", class.Creator_id) != creator_id || !user.Is_professor {
+			status = 400
 			msg = "Invalid permissions to update class"
 		} else {
 			updates, err := models.NewClass(r)
@@ -121,7 +129,7 @@ var ClassesDelete = http.HandlerFunc(
 		var status int
 		var msg string
 		class, err := models.LayerInstance().Class.GetByID(params["id"])
-		if fmt.Sprintf("%v", class.Creator_Id) != getClaims(r) {
+		if fmt.Sprintf("%v", class.Creator_id) != getClaims(r) {
 			status = 500
 			msg = "Invalid permissions to delete class"
 		} else {
