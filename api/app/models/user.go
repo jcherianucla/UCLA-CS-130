@@ -189,83 +189,91 @@ func (table *UserTable) Login(user User) (found User, err error) {
 // It takes in the user object to insert.
 // It returns the new user as in the table and an error if one exists.
 func (table *UserTable) Insert(user User) (new User, err error) {
-	_, err = govalidator.ValidateStruct(user)
-	if err != nil {
-		err = errors.Wrapf(err, "User model has invalid fields")
-		return
-	}
-	users, err := table.Get(UserQuery{Email: user.Email}, "")
-	if err != nil {
-		err = errors.Wrapf(err, "Failed to search for user")
-		return
-	} else if users != nil {
-		err = errors.New("User already exists")
-		return
-	}
-	var query bytes.Buffer
-	query.WriteString(fmt.Sprintf("INSERT INTO %s (", USER_TABLE))
-	var values []interface{}
-	var vStr, kStr bytes.Buffer
-	vIdx := 1
-	fields := reflect.ValueOf(user)
-	if fields.NumField() < 1 {
-		err = errors.New("Invalid number of fields given")
-		return
-	}
-	first := true
-	for i := 0; i < fields.NumField(); i++ {
-		k := strings.ToLower(fields.Type().Field(i).Name)
-		v := fields.Field(i).Interface()
-		// Skip auto params
-		if AUTO_PARAM[k] {
-			continue
-		}
-		if first {
-			first = false
-		} else {
-			vStr.WriteString(", ")
-			kStr.WriteString(", ")
-		}
-		kStr.WriteString(k)
-		vStr.WriteString(fmt.Sprintf("$%d", vIdx))
-		// Hash the password
-		if k == "Password" {
-			vStr, _ := v.(string)
-			var hash []byte
-			hash, err = bcrypt.GenerateFromPassword([]byte(vStr), bcrypt.DefaultCost)
-			if err != nil {
-				err = errors.Wrapf(err, "Password hash failed")
-				return
-			}
-			values = append(values, hash)
-		} else {
-			values = append(values, v)
-		}
-		vIdx++
-	}
-	query.WriteString(fmt.Sprintf("%s) VALUES (%s) RETURNING id;", kStr.String(), vStr.String()))
-
-	utilities.Sugar.Infof("SQL Query: %s", query.String())
-	utilities.Sugar.Infof("Values: %v", values)
-
-	stmt, err := table.connection.Pool.Prepare(query.String())
-	if err != nil {
-		err = errors.Wrapf(err, "Insertion query preparation failed")
-		return
-	}
-	err = stmt.QueryRow(values...).Scan(&new.Id)
-	if err != nil {
-		err = errors.Wrapf(err, "Insertion query failed to execute")
-		return
-	}
-	newID := strconv.Itoa(new.Id)
-	// Retrieve user with the new id
-	found, err := table.GetByID(newID)
+	obj, err := table.Insert(USER_TABLE, "", user, UserQuery{Email: user.Email})
 	if err != nil {
 		return
 	}
-	new = found
+	utilities.FillStruct(obj, new)
 	return
+	/*
+		_, err = govalidator.ValidateStruct(user)
+		if err != nil {
+			err = errors.Wrapf(err, "User model has invalid fields")
+			return
+		}
+		users, err := table.Get(UserQuery{Email: user.Email}, "")
+		if err != nil {
+			err = errors.Wrapf(err, "Failed to search for user")
+			return
+		} else if users != nil {
+			err = errors.New("User already exists")
+			return
+		}
+		var query bytes.Buffer
+		query.WriteString(fmt.Sprintf("INSERT INTO %s (", USER_TABLE))
+		var values []interface{}
+		var vStr, kStr bytes.Buffer
+		vIdx := 1
+		fields := reflect.ValueOf(user)
+		if fields.NumField() < 1 {
+			err = errors.New("Invalid number of fields given")
+			return
+		}
+		first := true
+		for i := 0; i < fields.NumField(); i++ {
+			k := strings.ToLower(fields.Type().Field(i).Name)
+			v := fields.Field(i).Interface()
+			// Skip auto params
+			if AUTO_PARAM[k] {
+				continue
+			}
+			if first {
+				first = false
+			} else {
+				vStr.WriteString(", ")
+				kStr.WriteString(", ")
+			}
+			kStr.WriteString(k)
+			vStr.WriteString(fmt.Sprintf("$%d", vIdx))
+			// Hash the password
+			if k == "Password" {
+				vStr, _ := v.(string)
+				var hash []byte
+				hash, err = bcrypt.GenerateFromPassword([]byte(vStr), bcrypt.DefaultCost)
+				if err != nil {
+					err = errors.Wrapf(err, "Password hash failed")
+					return
+				}
+				values = append(values, hash)
+			} else {
+				values = append(values, v)
+			}
+			vIdx++
+		}
+		query.WriteString(fmt.Sprintf("%s) VALUES (%s) RETURNING id;", kStr.String(), vStr.String()))
+
+		utilities.Sugar.Infof("SQL Query: %s", query.String())
+		utilities.Sugar.Infof("Values: %v", values)
+
+		stmt, err := table.connection.Pool.Prepare(query.String())
+		if err != nil {
+			err = errors.Wrapf(err, "Insertion query preparation failed")
+			return
+		}
+		err = stmt.QueryRow(values...).Scan(&new.Id)
+		if err != nil {
+			err = errors.Wrapf(err, "Insertion query failed to execute")
+			return
+		}
+		newID := strconv.Itoa(new.Id)
+		// Retrieve user with the new id
+		found, err := table.GetByID(newID)
+		if err != nil {
+			return
+		}
+		new = found
+		return
+	*/
 }
 
 // Get attempts to provide a generalized search through the user table based on the
