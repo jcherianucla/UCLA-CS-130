@@ -29,3 +29,19 @@ html, body {
 .text-center {
   text-align: center;
 }
+
+.dark-gray {
+  color: #868686;
+}
+
+.gray {
+  color: #c0c0c0;
+}
+
+.light-gray {
+  color: #f0f0f0;
+}
+
+.blue {
+  color: #43a5fd;
+}
