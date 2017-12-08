@@ -33,7 +33,7 @@ class ProfessorUpsertClass extends Component {
 
                 <label class="upsert-label"><b>Upload Student Roster</b></label>
                 <div class="upload-btn-wrapper">
-                  <input type="file" name="myfile" accept=".csv"/>
+                  <input class="btn" type="file" name="myfile" accept=".csv"/>
                   <button class="btn">Upload .csv</button>
                 </div>
                 

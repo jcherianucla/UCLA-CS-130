@@ -32,7 +32,7 @@ class ProfessorUpsertProject extends Component {
 
                 <label class="upsert-label"><b>Upload Grading Script</b></label>
                 <div class="upload-btn-wrapper">
-                  <input type="file" name="myfile" accept=".sh"/>
+                  <input class="btn" type="file" name="myfile" accept=".sh"/>
                   <button class="btn">Upload .sh</button>
                 </div>
                 {/* TODO: Add date picker */}
