@@ -4,7 +4,6 @@
 package models
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/asaskevich/govalidator"
@@ -32,14 +31,14 @@ type UserTable struct {
 // Validator and json tags are used for convenient serialization and
 // deserialization.
 type User struct {
-	Id int64 `valid:"-" json:"-"`
+	Id int64 `valid:"-"`
 	// Distinguishes privileges between a student and professor
-	Is_professor bool      `valid:"-" json:"is_professor"`
-	Email        string    `valid:"email,required" json:"email"`
-	First_name   string    `valid:"required" json:"first_name"`
-	Last_name    string    `valid:"required" json:"last_name"`
-	Password     []byte    `valid:"required" json:"password"`
-	Time_created time.Time `valid:"-" json:"-"`
+	Is_professor bool      `valid:"-"`
+	Email        string    `valid:"email,required"`
+	First_name   string    `valid:"required"`
+	Last_name    string    `valid:"required"`
+	Password     string    `valid:"required"`
+	Time_created time.Time `valid:"-"`
 }
 
 // Represents all fields a user can be queried over.
@@ -56,13 +55,13 @@ type UserQuery struct {
 // It returns the user constructed and an error if one exists.
 func NewUser(r *http.Request) (user User, err error) {
 	b, err := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
 	if err != nil {
 		err = errors.Wrapf(err, "Couldn't read request body")
 	}
-	utilities.Sugar.Infof("Body: %s", string(b[:]))
 	// Converts JSON to user
 	json.Unmarshal(b, &user)
-	return
+	return user, err
 }
 
 // GenerateJWT creates a JSON Web Token for a user based on the id,
@@ -73,10 +72,8 @@ func (user *User) GenerateJWT() string {
 		"id":  user.Id,
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
-	utilities.Sugar.Infof("Toke: %v", token)
 	tokenString, err := token.SignedString(utilities.SECRET)
 	utilities.CheckError(err)
-	utilities.Sugar.Infof("Token String: %s", tokenString)
 	return tokenString
 }
 
@@ -88,7 +85,8 @@ func (user *User) Equals(other User) bool {
 		user.Email == other.Email &&
 		user.First_name == other.First_name &&
 		user.Last_name == other.Last_name &&
-		bytes.Equal(user.Password, other.Password)
+		user.Password == other.Password
+	//bytes.Equal(user.Password, other.Password)
 }
 
 // NewUserTable creates a new table within the database for housing
@@ -147,13 +145,8 @@ func (table *UserTable) Login(user User) (found User, err error) {
 		return
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		err = errors.Wrapf(err, "Password hash failed")
-		return
-	}
 	// Compare incoming password with db password
-	err = bcrypt.CompareHashAndPassword(hash, found.Password)
+	err = bcrypt.CompareHashAndPassword([]byte(found.Password), []byte(user.Password))
 	if err != nil {
 		err = errors.Wrapf(err, "Provided password does not match")
 	}
