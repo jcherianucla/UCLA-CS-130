@@ -17,7 +17,7 @@ class Header extends Component {
 	      <div className="header">
           <ul>
   	      	<li>
-              <a href="/classes" onClick={() => this.Home()}>
+              <a href="/" onClick={() => this.Home()}>
                 <div className="logo"/>
               </a>
             </li>
@@ -25,13 +25,6 @@ class Header extends Component {
               <div className="faq">
                 <h1>FAQ</h1>
               </div>
-            </li>
-            <li>
-              <a href="/classes" onClick={() => this.Home()}>
-                <div className="home">
-                  <h1>Home</h1>
-                </div>
-              </a>
             </li>
           </ul>
 	      </div>

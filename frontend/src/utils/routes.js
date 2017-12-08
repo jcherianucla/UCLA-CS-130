@@ -1,6 +1,8 @@
 var routes = {
   "Landing": "/",
   "Classes": "/classes",
+  "Login as Student": "/login",
+  "Login as Professor": "/login",
   "Login": "/login",
   "Projects": "/projects",
   "Analytics": "/professor/analytics",
