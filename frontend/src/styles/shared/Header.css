@@ -49,6 +49,9 @@
 }
 
 .path {
+  display: inline-block;
+  text-decoration: none !important;
+  margin-right: 15px;
 	margin-top: 1vh;
   margin-bottom: 2vh;
 	font-size: 35px;

@@ -13,9 +13,15 @@ class Login extends Component {
 
   componentWillMount() {
     let state = this.props.history.location.state;
-    this.setState({
-      role: state.role
-    });
+    if (state == null) {
+      let role = localStorage.getItem('role');
+      if (role == null) {
+        this.props.history.push('/');
+      }
+      this.setState({role: localStorage.getItem('role')});
+    } else {
+      this.setState({role: state.role});
+    }
   }
 
   classes() {
@@ -37,7 +43,7 @@ class Login extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome to GradePortal!" path="Login" />
+          <Header title="Welcome to GradePortal!" path={["Login"]} />
           { this.state.role === "student" ?
             <GoogleLogin
               clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"

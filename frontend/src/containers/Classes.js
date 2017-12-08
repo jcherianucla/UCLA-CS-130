@@ -26,7 +26,7 @@ class Classes extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path="Classes" />
+          <Header title="Welcome!" path={["Login", "Classes"]} />
 
           <Grid fluid>
               <Row>

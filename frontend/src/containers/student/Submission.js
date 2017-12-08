@@ -71,7 +71,7 @@ class StudentSubmission extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path="Submission" />
+          <Header title="Welcome!" path={["Login", "Classes", "Projects", "Submission"]} />
           { this.state.delta > 0 ?
             <div className="text-center">
               <h1 className="blue text-center">Time to Deadline:</h1>
