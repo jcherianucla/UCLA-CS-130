@@ -17,7 +17,7 @@
   width: 40%;
 }
 
-#code-feedback {
+.code-feedback {
   overflow-y: scroll !important;
   background-color: #fafafa !important;
   border-radius: 0px !important;
@@ -26,4 +26,13 @@
   margin-bottom: 50px;
   max-height: 500px;
   width: 80%;
+  visibility: hidden;
+  height: 0px;
+  margin: 0px;
+}
+
+.active {
+  visibility: visible !important;
+  height: auto !important;
+  margin: fill !important;
 }
