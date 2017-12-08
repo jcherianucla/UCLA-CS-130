@@ -33,6 +33,10 @@ class Login extends Component {
     this.classes();
   }
 
+  changeLogin(role) {
+    this.setState({role: role});
+  }
+
   responseGoogle(response) {
     // let profileObj = response.profileObj;
     this.login();
@@ -53,6 +57,7 @@ class Login extends Component {
                 onSuccess={(response) => this.responseGoogle(response)}
                 onFailure={(response) => this.responseGoogle(response)}
               />
+              <button id="change-login" className="blue text-center" onClick={() => this.changeLogin("professor")}>Or Login as a Professor</button>
             </div>
             :
             <div>
@@ -70,6 +75,7 @@ class Login extends Component {
                 </div>
                 <input className="login-form-btn" type="submit" />
               </form>
+              <button id="change-login" className="blue text-center" onClick={() => this.changeLogin("student")}>Or Login as a Student</button>
             </div>
           }
         </div>

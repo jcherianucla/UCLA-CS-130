@@ -94,3 +94,16 @@
   text-transform: uppercase;
   outline: none;
 }
+
+#change-login {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  border: none;
+  height: auto;
+}
+
+#change-login:focus {
+  outline:0;
+}
