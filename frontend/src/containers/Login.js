@@ -13,9 +13,15 @@ class Login extends Component {
 
   componentWillMount() {
     let state = this.props.history.location.state;
-    this.setState({
-      role: state.role
-    });
+    if (state == null) {
+      let role = localStorage.getItem('role');
+      if (role == null) {
+        this.props.history.push('/');
+      }
+      this.setState({role: localStorage.getItem('role')});
+    } else {
+      this.setState({role: state.role});
+    }
   }
 
   classes() {
@@ -25,6 +31,10 @@ class Login extends Component {
   login() {
     localStorage.setItem('role', this.state.role);
     this.classes();
+  }
+
+  changeLogin(role) {
+    this.setState({role: role});
   }
 
   responseGoogle(response) {
@@ -37,29 +47,36 @@ class Login extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome to GradePortal!" path="Login" />
           { this.state.role === "student" ?
-            <GoogleLogin
-              clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
-              buttonText=""
-              className="google"
-              onSuccess={(response) => this.responseGoogle(response)}
-              onFailure={(response) => this.responseGoogle(response)}
-            />
+            <div>
+              <Header title="Welcome to GradePortal!" path={["Login as Student"]} />
+              <GoogleLogin
+                clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
+                buttonText=""
+                className="google"
+                onSuccess={(response) => this.responseGoogle(response)}
+                onFailure={(response) => this.responseGoogle(response)}
+              />
+              <button id="change-login" className="blue text-center" onClick={() => this.changeLogin("professor")}>Or Login as a Professor</button>
+            </div>
             :
-            <form id="login-form" onSubmit={() => this.login()}>
-              <div className="login-form-group">
-                <input className="login-form-input" type="text" required="required" />
-                <span className="login-form-bar"></span>
-                <label className="login-form-label">Email</label>
-              </div>
-              <div className="login-form-group">
-                <input className="login-form-input secret" type="text" required="required"/>
-                <span className="login-form-bar"></span>
-                <label className="login-form-label">Password</label>
-              </div>
-              <input className="login-form-btn" type="submit" />
-            </form>
+            <div>
+              <Header title="Welcome to GradePortal!" path={["Login as Professor"]} />
+              <form id="login-form" onSubmit={() => this.login()}>
+                <div className="login-form-group">
+                  <input className="login-form-input" type="text" required="required" />
+                  <span className="login-form-bar"></span>
+                  <label className="login-form-label">Email</label>
+                </div>
+                <div className="login-form-group">
+                  <input className="login-form-input secret" type="text" required="required"/>
+                  <span className="login-form-bar"></span>
+                  <label className="login-form-label">Password</label>
+                </div>
+                <input className="login-form-btn" type="submit" />
+              </form>
+              <button id="change-login" className="blue text-center" onClick={() => this.changeLogin("student")}>Or Login as a Student</button>
+            </div>
           }
         </div>
       </div>

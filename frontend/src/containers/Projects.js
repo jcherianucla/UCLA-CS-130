@@ -42,7 +42,7 @@ class Projects extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path="Projects" />
+          <Header title="Welcome!" path={["Login", "Classes", "Projects"]}/>
 
           <Grid fluid>
               <Row>

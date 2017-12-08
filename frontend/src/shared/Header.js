@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/shared/Header.css';
+import routes from '../utils/routes.js';
 
 /**
  * The header that shows up on every page once a user has logged in.
@@ -16,7 +17,7 @@ class Header extends Component {
 	      <div className="header">
           <ul>
   	      	<li>
-              <a href="/classes" onClick={() => this.Home()}>
+              <a href="/" onClick={() => this.Home()}>
                 <div className="logo"/>
               </a>
             </li>
@@ -25,13 +26,6 @@ class Header extends Component {
                 <h1>FAQ</h1>
               </div>
             </li>
-            <li>
-              <a href="/classes" onClick={() => this.Home()}>
-                <div className="home">
-                  <h1>Home</h1>
-                </div>
-              </a>
-            </li>
           </ul>
 	      </div>
 
@@ -39,8 +33,15 @@ class Header extends Component {
 	      	{this.props.title}
 	      </div>
 
-	      <div className="path">
-	        {this.props.path}
+	      <div>
+          {this.props.path.map(function(item, key){
+            return (
+            key === 0 ?
+              <a key={key} className="path" href={routes[item]}>{item}</a>
+            :
+              <a key={key} className="path" href={routes[item]}>> {item}</a>
+            );
+          })}
 	      </div>
       </div>
     );
