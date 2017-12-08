@@ -1,0 +1,115 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "KevIVE31dmkWQvGWT99xgQBEszU=",
+			"path": "github.com/asaskevich/govalidator",
+			"revision": "635ecdbba9da0d6d1ac71d2d36588b899a318a89",
+			"revisionTime": "2017-11-09T09:31:00Z"
+		},
+		{
+			"checksumSHA1": "n2KWrxS+GQrPiFI/RQfKSj1nZTs=",
+			"path": "github.com/auth0/go-jwt-middleware",
+			"revision": "5493cabe49f7bfa6e2ec444a09d334d90cd4e2bd",
+			"revisionTime": "2017-04-25T17:11:59Z"
+		},
+		{
+			"checksumSHA1": "+TKtBzv23ywvmmqRiGEjUba4YmI=",
+			"path": "github.com/dgrijalva/jwt-go",
+			"revision": "dbeaa9332f19a944acb5736b4456cfcc02140e29",
+			"revisionTime": "2017-10-19T21:57:19Z"
+		},
+		{
+			"checksumSHA1": "F5dR3/i70EhSIMZfeIV+H8/PtvM=",
+			"path": "github.com/gorilla/mux",
+			"revision": "392c28fe23e1c45ddba891b0320b3b5df220beea",
+			"revisionTime": "2017-01-18T13:43:44Z"
+		},
+		{
+			"checksumSHA1": "3HVfwgLpCDH8JX211UWdrSi/GU4=",
+			"path": "github.com/lib/pq",
+			"revision": "b609790bd85edf8e9ab7e0f8912750a786177bcf",
+			"revisionTime": "2017-10-22T19:20:43Z"
+		},
+		{
+			"checksumSHA1": "ATnwV0POluBNQEMjPdylodz0oK0=",
+			"path": "github.com/lib/pq/oid",
+			"revision": "b609790bd85edf8e9ab7e0f8912750a786177bcf",
+			"revisionTime": "2017-10-22T19:20:43Z"
+		},
+		{
+			"checksumSHA1": "rJab1YdNhQooDiBWNnt7TLWPyBU=",
+			"path": "github.com/pkg/errors",
+			"revision": "f15c970de5b76fac0b59abb32d62c17cc7bed265",
+			"revisionTime": "2017-10-18T19:55:50Z"
+		},
+		{
+			"checksumSHA1": "ZlmrkfCidRa8G0o5xIW/Kzo+tOc=",
+			"path": "github.com/urfave/negroni",
+			"revision": "65195ccb1c6e8f08b80dd531a1e1ceca265f7c8c",
+			"revisionTime": "2017-05-04T20:00:30Z"
+		},
+		{
+			"checksumSHA1": "P4e4ILJPNiu2e9rW5pNGHPthufQ=",
+			"path": "go.uber.org/atomic",
+			"revision": "1d7f075bbe2659dfefbcb41e135048f29da50547",
+			"revisionTime": "2017-04-30T17:40:09Z"
+		},
+		{
+			"checksumSHA1": "vEJ8gGjW53R8hFpv2wGyBa4p4HE=",
+			"path": "go.uber.org/zap",
+			"revision": "7641ffe6315b3cb6274a020e6db8e87db4d46bc0",
+			"revisionTime": "2017-05-01T16:29:02Z"
+		},
+		{
+			"checksumSHA1": "HYo/9nwrY08NQA+2ItPOAH8IFW8=",
+			"path": "go.uber.org/zap/buffer",
+			"revision": "7641ffe6315b3cb6274a020e6db8e87db4d46bc0",
+			"revisionTime": "2017-05-01T16:29:02Z"
+		},
+		{
+			"checksumSHA1": "MuxOAtZEsJitlWBzhmpm2vGiHok=",
+			"path": "go.uber.org/zap/internal/bufferpool",
+			"revision": "7641ffe6315b3cb6274a020e6db8e87db4d46bc0",
+			"revisionTime": "2017-05-01T16:29:02Z"
+		},
+		{
+			"checksumSHA1": "uC0L9eCSAYcCWNC8udJk/t1vvIU=",
+			"path": "go.uber.org/zap/internal/color",
+			"revision": "7641ffe6315b3cb6274a020e6db8e87db4d46bc0",
+			"revisionTime": "2017-05-01T16:29:02Z"
+		},
+		{
+			"checksumSHA1": "b80CJExrVpXu3SA1iCQ6uLqTn2c=",
+			"path": "go.uber.org/zap/internal/exit",
+			"revision": "7641ffe6315b3cb6274a020e6db8e87db4d46bc0",
+			"revisionTime": "2017-05-01T16:29:02Z"
+		},
+		{
+			"checksumSHA1": "mpgG6h5iItTyTOjG1CsPGYb65bM=",
+			"path": "go.uber.org/zap/internal/multierror",
+			"revision": "7641ffe6315b3cb6274a020e6db8e87db4d46bc0",
+			"revisionTime": "2017-05-01T16:29:02Z"
+		},
+		{
+			"checksumSHA1": "3P9mSNSsCTNZNCdDCgRQ4ID/6cc=",
+			"path": "go.uber.org/zap/zapcore",
+			"revision": "7641ffe6315b3cb6274a020e6db8e87db4d46bc0",
+			"revisionTime": "2017-05-01T16:29:02Z"
+		},
+		{
+			"checksumSHA1": "vE43s37+4CJ2CDU6TlOUOYE0K9c=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "453249f01cfeb54c3d549ddb75ff152ca243f9d8",
+			"revisionTime": "2017-02-08T20:51:15Z"
+		},
+		{
+			"checksumSHA1": "JsJdKXhz87gWenMwBeejTOeNE7k=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "453249f01cfeb54c3d549ddb75ff152ca243f9d8",
+			"revisionTime": "2017-02-08T20:51:15Z"
+		}
+	],
+	"rootPath": "github.com/jcherianucla/UCLA-CS-130/api"
+}
