@@ -24,7 +24,7 @@ type ClassTable struct {
 	connection *db.Db
 }
 
-// Represents a Class row in the Class table within the DB
+// Represents a Class row in the Class table within the DB.
 // Validator and json tags are used for convenient serialization and
 // deserialization.
 type Class struct {
@@ -53,6 +53,7 @@ func NewClass(r *http.Request) (class Class, err error) {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		err = errors.Wrapf(err, "Couldn't read request body")
+		return
 	}
 	// Converts JSON to class
 	json.Unmarshal(b, &class)
@@ -87,7 +88,7 @@ func NewClassTable(db *db.Db) (classTable ClassTable, err error) {
 			description TEXT,
 			quarter TEXT,
 			year TEXT,
-			creator_id int,
+			creator_id INT,
 			time_created TIMESTAMP DEFAULT now()
 		);`, CLASS_TABLE)
 	// Create the actual table
