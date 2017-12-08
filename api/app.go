@@ -22,5 +22,5 @@ func main() {
 	// Initialize global singleton with init
 	_ = models.LayerInstance()
 	// Spin up server
-	http.ListenAndServe(utilities.PORT, n)
+	http.ListenAndServe(":"+utilities.PORT, n)
 }
