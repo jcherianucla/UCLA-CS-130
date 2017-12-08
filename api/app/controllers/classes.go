@@ -9,6 +9,14 @@ import (
 	"strconv"
 )
 
+func hasPermissions(creator_id, class_id string) bool {
+	user, err := models.LayerInstance().User.GetByID(creator_id)
+	class, err := models.LayerInstance().Class.GetByID(class_id)
+	return err == nil &&
+		fmt.Sprintf("%v", class.Creator_id) == creator_id &&
+		user.Is_professor
+}
+
 var ClassesIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -69,7 +77,8 @@ var ClassesCreate = http.HandlerFunc(
 			status = 400
 			msg = "Invalid permissions to create a class."
 		} else {
-			class, err = models.LayerInstance().Class.Insert(class, creator_id)
+			class.Creator_id, _ = strconv.ParseInt(creator_id, 10, 64)
+			class, err = models.LayerInstance().Class.Insert(class)
 			if err != nil {
 				status = 500
 				msg = err.Error()
@@ -95,10 +104,8 @@ var ClassesUpdate = http.HandlerFunc(
 		var status int
 		var msg string
 		var updated = models.Class{}
-		class, _ := models.LayerInstance().Class.GetByID(params["id"])
 		creator_id := getClaims(r)
-		user, err := models.LayerInstance().User.GetByID(creator_id)
-		if err != nil || fmt.Sprintf("%v", class.Creator_id) != creator_id || !user.Is_professor {
+		if !hasPermissions(creator_id, params["id"]) {
 			status = 400
 			msg = "Invalid permissions to update class"
 		} else {
@@ -128,12 +135,12 @@ var ClassesDelete = http.HandlerFunc(
 		params := mux.Vars(r)
 		var status int
 		var msg string
-		class, err := models.LayerInstance().Class.GetByID(params["id"])
-		if fmt.Sprintf("%v", class.Creator_id) != getClaims(r) {
+		creator_id := getClaims(r)
+		if !hasPermissions(creator_id, params["id"]) {
 			status = 500
 			msg = "Invalid permissions to delete class"
 		} else {
-			err = models.LayerInstance().Class.Delete(params["id"])
+			err := models.LayerInstance().Class.Delete(params["id"])
 			if err != nil {
 				status = 500
 				msg = err.Error()

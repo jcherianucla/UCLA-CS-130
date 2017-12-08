@@ -102,7 +102,7 @@ func NewClassTable(db *db.Db) (classTable ClassTable, err error) {
 // all fields are valid.
 // It takes in the class object to insert and the user id to associate to the creator.
 // It returns the new class as in the table and an error if one exists.
-func (table *ClassTable) Insert(class Class, userId string) (new Class, err error) {
+func (table *ClassTable) Insert(class Class) (new Class, err error) {
 	classQuery := ClassQuery{Name: class.Name, Quarter: class.Quarter, Year: class.Year, Creator_id: class.Creator_id}
 	data, err := table.connection.Insert(CLASS_TABLE, "AND", class, classQuery)
 	if err != nil {

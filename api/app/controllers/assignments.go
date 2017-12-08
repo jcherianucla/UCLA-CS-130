@@ -1,9 +1,7 @@
 package controllers
 
-/*
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
 	"net/http"
@@ -15,9 +13,9 @@ var AssignmentsIndex = http.HandlerFunc(
 		w.Header().Set("Content-Type", "application/json")
 		var status int
 		var msg string
-		strId := getClaims(r)
-		user_id, _ := strconv.ParseInt(strId, 10, 64)
-		classes, err := models.LayerInstance().Assignment.Get(models.ClassQuery{Creator_id: creator_id}, "")
+		params := mux.Vars(r)
+		class_id, _ := strconv.ParseInt(params["id"], 10, 64)
+		assignments, err := models.LayerInstance().Assignment.Get(models.AssignmentQuery{Class_id: class_id}, "")
 		if err != nil {
 			status = 500
 			msg = err.Error()
@@ -26,9 +24,9 @@ var AssignmentsIndex = http.HandlerFunc(
 			msg = "Success"
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"classes": classes,
+			"status":      status,
+			"message":     msg,
+			"assignments": assignments,
 		})
 		w.Write(JSON)
 	},
@@ -40,7 +38,7 @@ var AssignmentsShow = http.HandlerFunc(
 		params := mux.Vars(r)
 		var status int
 		var msg string
-		class, err := models.LayerInstance().Assignment.GetByID(params["id"])
+		assignment, err := models.LayerInstance().Assignment.GetByID(params["id"])
 		if err != nil {
 			status = 500
 			msg = err.Error()
@@ -49,9 +47,9 @@ var AssignmentsShow = http.HandlerFunc(
 			msg = "Success"
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   class,
+			"status":     status,
+			"message":    msg,
+			"assignment": assignment,
 		})
 		w.Write(JSON)
 	},
@@ -63,14 +61,14 @@ var AssignmentsCreate = http.HandlerFunc(
 		w.Header().Set("Content-Type", "application/json")
 		var status int
 		var msg string
-		class, err := models.Ne.Assignment.r)
 		creator_id := getClaims(r)
+		assignment, err := models.NewAssignment(r)
 		user, err := models.LayerInstance().User.GetByID(creator_id)
 		if err != nil || !user.Is_professor {
 			status = 400
-			msg = "Invalid permissions to create a class."
+			msg = "Invalid permissions to create an assignment"
 		} else {
-			class, err = models.LayerInstance().Assignment.Insert(class, creator_id)
+			assignment, err = models.LayerInstance().Assignment.Insert(assignment)
 			if err != nil {
 				status = 500
 				msg = err.Error()
@@ -80,9 +78,9 @@ var AssignmentsCreate = http.HandlerFunc(
 			}
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   class,
+			"status":     status,
+			"message":    msg,
+			"assignment": assignment,
 		})
 		w.Write(JSON)
 	},
@@ -95,15 +93,13 @@ var AssignmentsUpdate = http.HandlerFunc(
 		params := mux.Vars(r)
 		var status int
 		var msg string
-		var updated = models.Assignment.}
-		class, _ := models.LayerInstance().Assignment.GetByID(params["id"])
 		creator_id := getClaims(r)
-		user, err := models.LayerInstance().User.GetByID(creator_id)
-		if err != nil || fmt.Sprintf("%v", class.Creator_id) != creator_id || !user.Is_professor {
+		updated, err := models.LayerInstance().Assignment.GetByID(params["id"])
+		if err != nil || !hasPermissions(creator_id, strconv.FormatInt(updated.Class_id, 10)) {
 			status = 400
-			msg = "Invalid permissions to update class"
+			msg = "Invalid permissions to update assignment"
 		} else {
-			updates, err := models.Ne.Assignment.r)
+			updates, err := models.NewAssignment(r)
 			updated, err = models.LayerInstance().Assignment.Update(params["id"], updates)
 			if err != nil {
 				status = 500
@@ -114,9 +110,9 @@ var AssignmentsUpdate = http.HandlerFunc(
 			}
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   updated,
+			"status":     status,
+			"message":    msg,
+			"assignment": updated,
 		})
 		w.Write(JSON)
 	},
@@ -126,13 +122,14 @@ var AssignmentsDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		w.Header().Set("Content-Type", "application/json")
-		params := mux.Vars(r)
 		var status int
 		var msg string
-		class, err := models.LayerInstance().Assignment.GetByID(params["id"])
-		if fmt.Sprintf("%v", class.Creator_id) != getClaims(r) {
+		params := mux.Vars(r)
+		creator_id := getClaims(r)
+		assignment, err := models.LayerInstance().Assignment.GetByID(params["id"])
+		if !hasPermissions(creator_id, strconv.FormatInt(assignment.Class_id, 10)) {
 			status = 500
-			msg = "Invalid permissions to delete class"
+			msg = "Invalid permissions to delete assignment"
 		} else {
 			err = models.LayerInstance().Assignment.Delete(params["id"])
 			if err != nil {
@@ -150,4 +147,3 @@ var AssignmentsDelete = http.HandlerFunc(
 		w.Write(JSON)
 	},
 )
-*/
