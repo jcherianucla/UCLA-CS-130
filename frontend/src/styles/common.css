@@ -35,7 +35,7 @@ html, body {
 }
 
 .gray {
-  color: #c0c0c0;
+  color: #a0a0a0;
 }
 
 .light-gray {
@@ -44,4 +44,8 @@ html, body {
 
 .blue {
   color: #43a5fd;
+}
+
+.error {
+  color: #E72500;
 }

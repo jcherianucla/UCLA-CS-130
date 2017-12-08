@@ -12,6 +12,10 @@ class ProfessorUpsertProject extends Component {
     this.props.history.goBack();
   }
 
+  projects() {
+    this.props.history.push('/projects');
+  }
+
   render() {
     return (
       <div>
@@ -19,7 +23,7 @@ class ProfessorUpsertProject extends Component {
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Project" />
             <div class="class-create-form">
-              <form >
+              <form onSubmit={() => this.projects()}>
                 <label class="upsert-label"><b>Project Name</b></label>
                 <input type="text" placeholder="Enter project name"/>
                 
@@ -28,7 +32,7 @@ class ProfessorUpsertProject extends Component {
 
                 <label class="upsert-label"><b>Upload Grading Script</b></label>
                 <div class="upload-btn-wrapper">
-                  <input type="file" name="myfile" accept=".sh"/>
+                  <input class="btn" type="file" name="myfile" accept=".sh"/>
                   <button class="btn">Upload .sh</button>
                 </div>
                 {/* TODO: Add date picker */}

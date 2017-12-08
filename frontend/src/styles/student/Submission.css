@@ -6,13 +6,24 @@
 }
 
 #left-feedback {
-  display: inline-block;
+  display: inline-table;
   margin: none;
   width: 60%;
 }
 
 #right-feedback {
-  display: inline-block;
+  display: inline-table;
   margin: none;
   width: 40%;
+}
+
+#code-feedback {
+  overflow-y: scroll !important;
+  background-color: #fafafa !important;
+  border-radius: 0px !important;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 6px 6px rgba(0,0,0,0.05) !important;
+  margin-right: 70px;
+  margin-bottom: 50px;
+  max-height: 500px;
+  width: 80%;
 }

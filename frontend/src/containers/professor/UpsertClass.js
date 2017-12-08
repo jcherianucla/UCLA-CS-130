@@ -13,15 +13,18 @@ class ProfessorUpsertClass extends Component {
     this.props.history.goBack();
   }
 
+  classes() {
+    this.props.history.push('/classes');
+  }
+
   render() {
     return (
       <div>
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Class" />
-            {/* TODO: Change class creation form to match designs */}
             <div class="class-create-form">
-              <form >
+              <form onSubmit={() => this.classes()}>
                 <label class="upsert-label"><b>Class Name</b></label>
                 <input type="text" placeholder="Enter class name"/>
                 
@@ -30,7 +33,7 @@ class ProfessorUpsertClass extends Component {
 
                 <label class="upsert-label"><b>Upload Student Roster</b></label>
                 <div class="upload-btn-wrapper">
-                  <input type="file" name="myfile" accept=".csv"/>
+                  <input class="btn" type="file" name="myfile" accept=".csv"/>
                   <button class="btn">Upload .csv</button>
                 </div>
                 
