@@ -8,6 +8,8 @@ WORKDIR /grade-portal
 
 RUN npm install
 
+COPY . /grade-portal
+
 EXPOSE 5000
 
 CMD ["npm", "start"]
