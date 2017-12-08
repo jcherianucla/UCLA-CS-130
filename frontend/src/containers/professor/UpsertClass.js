@@ -18,24 +18,34 @@ class ProfessorUpsertClass extends Component {
     this.props.history.push('/classes');
   }
 
+  getFile() {
+    var x = document.getElementById("upload").value;
+    if (x === "") {
+      document.getElementById("filename").innerHTML = "";
+    } else {
+      document.getElementById("filename").innerHTML = "*" + x.replace(/^.*\\/, "");
+    }
+  }
+
   render() {
     return (
       <div>
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Login", "Classes", "Create/Edit Class"]} />
-            <div class="create-form">
+            <div className="create-form">
               <form onSubmit={() => this.classes()}>
-                <label class="upsert-label"><b>Class Name</b></label>
+                <label className="upsert-label"><b>Class Name</b></label>
                 <input type="text" placeholder="Enter class name"/>
                 
-                <label class="upsert-label"><b>Class Description</b></label>
+                <label className="upsert-label"><b>Class Description</b></label>
                 <textarea placeholder="Enter short description of your class" rows="3" cols="40"/>
 
-                <label class="upsert-label"><b>Upload Student Roster</b></label>
-                <div class="upload-btn-wrapper">
-                  <input class="btn" type="file" name="myfile" accept=".csv"/>
-                  <button class="btn">Upload .csv</button>
+                <label className="upsert-label"><b>Upload Student Roster</b></label>
+                <div className="upload-btn-wrapper">
+                  <input id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile()} accept=".csv"/>
+                  <button className="btn">Upload .csv</button>
+                  <label className="filename" id="filename"></label>
                 </div>
               
                 <div>

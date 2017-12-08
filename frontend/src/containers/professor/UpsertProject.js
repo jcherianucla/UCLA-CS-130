@@ -19,7 +19,11 @@ class ProfessorUpsertProject extends Component {
 
   getFile() {
     var x = document.getElementById("upload").value;
-    console.log(x);
+    if (x === "") {
+      document.getElementById("filename").innerHTML = "";
+    } else {
+      document.getElementById("filename").innerHTML = "*" + x.replace(/^.*\\/, "");
+    }
   }
 
   render() {
@@ -28,27 +32,28 @@ class ProfessorUpsertProject extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Login", "Classes", "Projects", "Create/Edit Project"]} />
-            <div class="create-form">
+            <div className="create-form">
               <form onSubmit={() => this.projects()}>
-                <label class="upsert-label"><b>Project Name</b></label>
+                <label className="upsert-label"><b>Project Name</b></label>
                 <input type="text" placeholder="Enter project name"/>
                 
-                <label class="upsert-label"><b>Project Description</b></label>
+                <label className="upsert-label"><b>Project Description</b></label>
                 <textarea placeholder="Enter short description of your project" rows="3" cols="40"/>
 
-                <label class="upsert-label"><b>Upload Grading Script</b></label>
-                <div class="upload-btn-wrapper">
-                  <input id="upload" class="btn" type="file" name="myfile" onChange={() => this.getFile()}/>
-                  <button class="btn">Upload .sh</button>
+                <label className="upsert-label"><b>Upload Grading Script</b></label>
+                <div className="upload-btn-wrapper">
+                  <input id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile()} accept=".sh"/>
+                  <button className="btn">Upload .sh</button>
+                  <label className="filename" id="filename"></label>
                 </div>
 
-                <div class="deadline-wrapper">
-                  <label class="upsert-label"><b>Project Deadline</b></label>
-                  <input type="text" placeholder="MM" maxlength="2"/> &nbsp; / &nbsp;
-                  <input type="text" placeholder="DD" maxlength="2"/> &nbsp; / &nbsp;
-                  <input type="text" placeholder="YY" maxlength="2"/> &nbsp; &nbsp; &nbsp;
-                  <input type="text" placeholder="00" maxlength="2"/> &nbsp; : &nbsp;
-                  <input type="text" placeholder="00" maxlength="2"/>
+                <div className="deadline-wrapper">
+                  <label className="upsert-label"><b>Project Deadline</b></label>
+                  <input type="text" placeholder="MM" maxLength="2"/> &nbsp; / &nbsp;
+                  <input type="text" placeholder="DD" maxLength="2"/> &nbsp; / &nbsp;
+                  <input type="text" placeholder="YY" maxLength="2"/> &nbsp; &nbsp; &nbsp;
+                  <input type="text" placeholder="00" maxLength="2"/> &nbsp; : &nbsp;
+                  <input type="text" placeholder="00" maxLength="2"/>
                 </div>
 
                 <div>
