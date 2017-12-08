@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/shared/Header.css';
+import routes from '../utils/routes.js';
 
 /**
  * The header that shows up on every page once a user has logged in.
@@ -39,8 +40,15 @@ class Header extends Component {
 	      	{this.props.title}
 	      </div>
 
-	      <div className="path">
-	        {this.props.path}
+	      <div>
+          {this.props.path.map(function(item, key){
+            return (
+            key === 0 ?
+              <a key={key} className="path" href={routes[item]}>{item}</a>
+            :
+              <a key={key} className="path" href={routes[item]}>> {item}</a>
+            );
+          })}
 	      </div>
       </div>
     );

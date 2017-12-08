@@ -15,7 +15,7 @@ class ProfessorAnalytics extends Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header title="Welcome!" path={["Login", "Classes", "Projects", "Analytics"]}/>
         <SidePanel />
         <h1>Professor Analytics</h1>
         <button onClick={() => this.back()}>

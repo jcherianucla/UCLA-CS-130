@@ -23,7 +23,7 @@ class ProfessorUpsertClass extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path="Create/Edit Class" />
+          <Header title="Welcome!" path={["Login", "Classes", "Create/Edit Class"]} />
             <div class="create-form">
               <form onSubmit={() => this.classes()}>
                 <label class="upsert-label"><b>Class Name</b></label>

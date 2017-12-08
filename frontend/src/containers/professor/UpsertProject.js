@@ -27,7 +27,7 @@ class ProfessorUpsertProject extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path="Create/Edit Project" />
+          <Header title="Welcome!" path={["Login", "Classes", "Projects", "Create/Edit Project"]} />
             <div class="create-form">
               <form onSubmit={() => this.projects()}>
                 <label class="upsert-label"><b>Project Name</b></label>
