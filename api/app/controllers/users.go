@@ -23,7 +23,33 @@ func getClaims(r *http.Request) string {
 	return fmt.Sprintf("%v", claims["id"])
 }
 
-// UsersShow will show the home page for the user.
+// UsersIndex will show the home page for the user based
+// purely on the claims.
+var UsersIndex = http.HandlerFunc(
+	func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		user_id := getClaims(r)
+		var status int
+		var msg string
+		user, err := models.LayerInstance().User.GetByID(user_id)
+		if err != nil {
+			status = 500
+			msg = err.Error()
+		} else {
+			status = 200
+			msg = "Success"
+		}
+		JSON, _ := json.Marshal(map[string]interface{}{
+			"status":  status,
+			"message": msg,
+			"user":    user,
+		})
+		w.Write(JSON)
+	},
+)
+
+// UsersShow will show the home page for a user based
+// a provided id as a parameter.
 var UsersShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -54,8 +80,10 @@ var UsersBOL = http.HandlerFunc(
 		// Set headers
 		w.Header().Set("Content-Type", "application/json")
 		user, err := models.NewUser(r)
+		// BOL is for students only
+		user.Is_professor = false
 		var status int
-		var msg string
+		var msg, token string
 		_, err = models.LayerInstance().User.Insert(user)
 		if err == nil || strings.Contains(err.Error(), "User already exists") {
 			user, err = models.LayerInstance().User.Login(user)
@@ -65,6 +93,7 @@ var UsersBOL = http.HandlerFunc(
 			} else {
 				status = 200
 				msg = "Success"
+				token = user.GenerateJWT()
 			}
 		} else {
 			status = 500
@@ -73,7 +102,7 @@ var UsersBOL = http.HandlerFunc(
 		JSON, _ := json.Marshal(map[string]interface{}{
 			"status":  status,
 			"message": msg,
-			"user":    user,
+			"token":   token,
 		})
 		w.Write(JSON)
 	},
