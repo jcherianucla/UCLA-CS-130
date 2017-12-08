@@ -1,0 +1,16 @@
+.deadline-wrapper input[type=text]{
+  display: inline;
+  width: 40px;
+  min-width: 0px;
+  padding: 5px 5px;
+  text-align: center;
+}
+
+.deadline-wrapper {
+  color: #A0A0A0;
+}
+
+
+
+
+

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../../shared/Header.js'
 import SidePanel from '../../shared/SidePanel.js'
+import '../../styles/professor/Form.css';
 import '../../styles/professor/UpsertProject.css';
 
 /**
@@ -22,7 +23,7 @@ class ProfessorUpsertProject extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Project" />
-            <div class="class-create-form">
+            <div class="create-form">
               <form onSubmit={() => this.projects()}>
                 <label class="upsert-label"><b>Project Name</b></label>
                 <input type="text" placeholder="Enter project name"/>
@@ -35,7 +36,16 @@ class ProfessorUpsertProject extends Component {
                   <input class="btn" type="file" name="myfile" accept=".sh"/>
                   <button class="btn">Upload .sh</button>
                 </div>
-                {/* TODO: Add date picker */}
+
+                <div class="deadline-wrapper">
+                  <label class="upsert-label"><b>Project Deadline</b></label>
+                  <input type="text" placeholder="MM" maxlength="2"/> &nbsp; / &nbsp;
+                  <input type="text" placeholder="DD" maxlength="2"/> &nbsp; / &nbsp;
+                  <input type="text" placeholder="YY" maxlength="2"/> &nbsp; &nbsp; &nbsp;
+                  <input type="text" placeholder="00" maxlength="2"/> &nbsp; : &nbsp;
+                  <input type="text" placeholder="00" maxlength="2"/>
+                </div>
+                
                 <div>
                   <input className="submit-btn" type="submit" />
                 </div>

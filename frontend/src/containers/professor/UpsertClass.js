@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../../shared/Header.js'
 import SidePanel from '../../shared/SidePanel.js'
+import '../../styles/professor/Form.css';
 import '../../styles/professor/UpsertClass.css';
 
 /**
@@ -23,7 +24,7 @@ class ProfessorUpsertClass extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path="Create/Edit Class" />
-            <div class="class-create-form">
+            <div class="create-form">
               <form onSubmit={() => this.classes()}>
                 <label class="upsert-label"><b>Class Name</b></label>
                 <input type="text" placeholder="Enter class name"/>
@@ -36,7 +37,6 @@ class ProfessorUpsertClass extends Component {
                   <input class="btn" type="file" name="myfile" accept=".csv"/>
                   <button class="btn">Upload .csv</button>
                 </div>
-                
               
                 <div>
                   <input className="submit-btn" type="submit" />
