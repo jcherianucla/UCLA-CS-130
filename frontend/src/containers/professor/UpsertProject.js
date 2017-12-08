@@ -17,6 +17,11 @@ class ProfessorUpsertProject extends Component {
     this.props.history.push('/projects');
   }
 
+  getFile() {
+    var x = document.getElementById("upload").value;
+    console.log(x);
+  }
+
   render() {
     return (
       <div>
@@ -33,7 +38,7 @@ class ProfessorUpsertProject extends Component {
 
                 <label class="upsert-label"><b>Upload Grading Script</b></label>
                 <div class="upload-btn-wrapper">
-                  <input class="btn" type="file" name="myfile" accept=".sh"/>
+                  <input id="upload" class="btn" type="file" name="myfile" onChange={() => this.getFile()}/>
                   <button class="btn">Upload .sh</button>
                 </div>
 
@@ -45,7 +50,7 @@ class ProfessorUpsertProject extends Component {
                   <input type="text" placeholder="00" maxlength="2"/> &nbsp; : &nbsp;
                   <input type="text" placeholder="00" maxlength="2"/>
                 </div>
-                
+
                 <div>
                   <input className="submit-btn" type="submit" />
                 </div>
