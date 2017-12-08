@@ -9,8 +9,10 @@ import (
 // Represents the layer for the model by exposing the
 // different models' tables
 type layer struct {
-	User  *UserTable
-	Class *ClassTable
+	User       *UserTable
+	Class      *ClassTable
+	Assignment *AssignmentTable
+	Submission *SubmissionTable
 }
 
 // Singleton reference to the model layer
@@ -38,7 +40,11 @@ func LayerInstance() *layer {
 		utilities.CheckError(err)
 		ct, err := NewClassTable(&db)
 		utilities.CheckError(err)
-		instance = &layer{User: &ut, Class: &ct}
+		at, err := NewAssignmentTable(&db)
+		utilities.CheckError(err)
+		st, err := NewSubmissionTable(&db)
+		utilities.CheckError(err)
+		instance = &layer{User: &ut, Class: &ct, Assignment: &at, Submission: &st}
 	})
 	return instance
 }
