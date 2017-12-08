@@ -16,7 +16,7 @@ import (
 func Authenticate(next http.HandlerFunc) http.Handler {
 	JWTMiddleware := jwtmiddleware.New(jwtmiddleware.Options{
 		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
-			return utilities.SECRET, nil
+			return utilities.GP_TOKEN_SECRET, nil
 		},
 		SigningMethod: jwt.SigningMethodHS256,
 	})

@@ -72,7 +72,7 @@ func (user *User) GenerateJWT() string {
 		"id":  user.Id,
 		"exp": time.Now().Add(time.Hour * 24).Unix(),
 	})
-	tokenString, err := token.SignedString(utilities.SECRET)
+	tokenString, err := token.SignedString(utilities.GP_TOKEN_SECRET)
 	utilities.CheckError(err)
 	return tokenString
 }

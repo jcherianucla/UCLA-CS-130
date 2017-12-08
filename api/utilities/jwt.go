@@ -4,7 +4,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-var SECRET = []byte(GP_TOKEN_SECRET)
+var GP_TOKEN_SECRET = GetVar("GP_TOKEN_SECRET", DEFAULT_TOKEN_SECRET)
 
 // ExtractClaims will take the claim out of an authorization header.
 // It takes in the JWT tokenString to read the claims from.
@@ -14,7 +14,7 @@ func ExtractClaims(tokenString string) map[string]interface{} {
 		return nil
 	}
 	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return SECRET, nil
+		return GP_TOKEN_SECRET, nil
 	})
 	Sugar.Infof("Token: %v", token)
 	return token.Claims.(jwt.MapClaims)

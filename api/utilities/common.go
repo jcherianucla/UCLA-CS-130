@@ -3,6 +3,7 @@ package utilities
 import (
 	"fmt"
 	"github.com/pkg/errors"
+	"os"
 	"reflect"
 )
 
@@ -12,6 +13,14 @@ import (
 // It returns the boolean if the field is set or not.
 func IsUndeclared(v interface{}) bool {
 	return reflect.DeepEqual(v, reflect.Zero(reflect.TypeOf(v)).Interface())
+}
+
+func GetVar(name string, _default string) string {
+	env := os.Getenv(name)
+	if env == "" {
+		return _default
+	}
+	return env
 }
 
 func SetField(obj interface{}, key string, value interface{}) error {
