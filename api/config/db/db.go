@@ -145,10 +145,10 @@ func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[strin
 		kStr.WriteString(k)
 		vStr.WriteString(fmt.Sprintf("$%d", vIdx))
 		// Hash the password
-		if k == "Password" {
-			vStr, _ := v.(string)
+		if k == "password" {
+			pass, _ := v.(string)
 			var hash []byte
-			hash, err = bcrypt.GenerateFromPassword([]byte(vStr), bcrypt.DefaultCost)
+			hash, err = bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
 			if err != nil {
 				err = errors.Wrapf(err, "Password hash failed")
 				return
@@ -176,7 +176,6 @@ func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[strin
 		return
 	}
 	newID := strconv.Itoa(id)
-	utilities.Sugar.Infof("ID: %s", newID)
 	// Retrieve object with the new id
 	found, err := db.GetByID(newID, table)
 	if err != nil {

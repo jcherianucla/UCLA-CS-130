@@ -50,7 +50,13 @@ func (routes *Routes) createUserRoutes() {
 			controllers.UsersCreate,
 		},
 		Route{
-			"Show",
+			"Show Current",
+			"GET",
+			utilities.GetAPIInstance().Gen("/user"),
+			middleware.Authenticate(controllers.UsersIndex),
+		},
+		Route{
+			"Show User",
 			"GET",
 			utilities.GetAPIInstance().Gen("/users/{id}"),
 			middleware.Authenticate(controllers.UsersShow),
