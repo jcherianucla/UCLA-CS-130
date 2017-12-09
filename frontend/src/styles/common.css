@@ -49,3 +49,10 @@ html, body {
 .error {
   color: #E72500;
 }
+
+.center-object {
+  width: max-content;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
