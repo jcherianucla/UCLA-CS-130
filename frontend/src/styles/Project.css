@@ -36,3 +36,12 @@
   height: auto !important;
   margin: fill !important;
 }
+
+.blue-circle {
+  margin: auto;
+  float: none;
+}
+
+.c100.blue-circle .bar, .c100.blue-circle .fill {
+  border-color: #43a5fd !important;
+}

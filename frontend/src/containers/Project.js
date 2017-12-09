@@ -3,6 +3,7 @@ import Highlight from 'react-highlight';
 import Header from '../shared/Header.js'
 import SidePanel from '../shared/SidePanel.js'
 import '../styles/Project.css';
+import '../styles/circle.css';
 import "../../node_modules/highlight.js/styles/atom-one-light.css";
 
 /**
@@ -75,11 +76,11 @@ class Project extends Component {
   render() {
     return (
       <div>
-        { this.state.role === "student" ?
-          <div>
-            <SidePanel />
-            <div className="page">
-              <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
+        <SidePanel />
+        <div className="page">
+          <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
+          { this.state.role === "student" ?
+            <div>
               { this.state.delta > 0 ?
                 <div className="text-center">
                   <h1 className="blue text-center">Time to Deadline:</h1>
@@ -98,21 +99,21 @@ class Project extends Component {
                     <button onClick={() => this.activateTab("script")}>Test Script</button>
                     <div id="submission" ref="code-feedback active" className="code-feedback active">
                       <Highlight className="cpp">{`
-    #include <iostream>
-    int main(int argc, char *argv[]) {
-      for (auto i = 0; i <= 0xFFFF; i++)
-        cout << "Hello, World!" << endl;
-      return 1;
-    }
+  #include <iostream>
+  int main(int argc, char *argv[]) {
+    for (auto i = 0; i <= 0xFFFF; i++)
+      cout << "Hello, World!" << endl;
+    return 1;
+  }
                       `}</Highlight>
                     </div>
                     <div id="script" ref="code-feedback" className="code-feedback">
                       <Highlight className="cpp">{`
-    #include <iostream>
-    int main(int argc, char *argv[]) {
-      cout << "test_case_3: Off-by-one error" << endl;
-      return 1;
-    }
+  #include <iostream>
+  int main(int argc, char *argv[]) {
+    cout << "test_case_3: Off-by-one error" << endl;
+    return 1;
+  }
                       `}</Highlight>
                     </div>
                   </div>
@@ -124,12 +125,19 @@ class Project extends Component {
                 </div>
               }
             </div>
+          :
+          <div className="center-object">
+            <h1 className="blue text-center">Total Submissions</h1>
+            <div className="c100 p94 big blue-circle">
+              <span>94%</span>
+              <div className="slice">
+                <div className="bar"></div>
+                <div className="fill"></div>
+              </div>
+            </div>
           </div>
-        :
-          <div>
-            <h1>hi</h1>
-          </div>
-        }
+          }
+        </div>
       </div>
     );
   }
