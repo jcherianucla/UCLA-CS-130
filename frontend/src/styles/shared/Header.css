@@ -39,6 +39,15 @@
   font-size: 12px;
   display: inline-block;
   float: right;
+  margin-right: 50px;
+  color: #3F6BFE;
+}
+
+.logout {
+  height: 60px;
+  font-size: 12px;
+  display: inline-block;
+  float: right;
   margin-right: 100px;
   color: #3F6BFE;
 }
