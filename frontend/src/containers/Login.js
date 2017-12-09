@@ -18,7 +18,7 @@ class Login extends Component {
       if (role == null) {
         this.props.history.push('/');
       }
-      this.setState({role: localStorage.getItem('role')});
+      this.setState({role: role});
     } else {
       this.setState({role: state.role});
     }
