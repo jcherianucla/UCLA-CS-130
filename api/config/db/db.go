@@ -370,6 +370,23 @@ func (db *Db) Delete(strId, table string) (err error) {
 	return
 }
 
+func (db *Db) DeleteByCol(column, strId, table string) (err error) {
+	query := fmt.Sprintf("DELETE FROM %s WHERE %s=$1", table, column)
+	utilities.Sugar.Infof("SQL Query: %s", query)
+	utilities.Sugar.Infof("Value: %s", strId)
+
+	stmt, err := db.Pool.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Delete query preparation failed")
+		return
+	}
+
+	if _, err = stmt.Exec(strId); err != nil {
+		err = errors.Wrapf(err, "Delete query failed to execute")
+	}
+	return
+}
+
 // DeleteAll permanently removes all objects from the table.
 // It takes in a string representing the table name.
 // It returns an error if one exists.
