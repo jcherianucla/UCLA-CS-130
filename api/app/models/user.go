@@ -200,6 +200,22 @@ func (table *UserTable) GetByID(strId string) (user User, err error) {
 	return
 }
 
+func (table *UserTable) GetByEmail(email string) (user User, err error) {
+	objs, err := table.connection.Get(UserQuery{Email: email}, "", USER_TABLE)
+	if err != nil {
+		err = errors.Wrapf(err, "Search error")
+		return
+	} else if objs == nil {
+		err = errors.New(fmt.Sprintf("Couldn't find user with email: %s", email))
+		return
+	} else if len(objs) != 1 {
+		err = errors.New(fmt.Sprintf("Found duplicate users with email: %s", email))
+		return
+	}
+	err = utilities.FillStruct(objs[0], &user)
+	return
+}
+
 // Update will update the user row in the table based on the incoming user object.
 // It takes in an id to identify the user in the DB, and updates as a user object.
 // It returns the updated user as in the DB, and an error if one exists.
