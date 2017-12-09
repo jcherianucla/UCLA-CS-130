@@ -38,10 +38,24 @@
 }
 
 .blue-circle {
-  margin: auto;
-  float: none;
+  margin: auto !important;
+  margin-bottom: 100px !important;
 }
 
 .c100.blue-circle .bar, .c100.blue-circle .fill {
   border-color: #43a5fd !important;
+}
+
+.left-analytics {
+  display: inline;
+  width: 30%;
+  margin: 50px;
+  float: left;
+}
+
+.right-analytics {
+  display: inline;
+  width: 10%;
+  margin: auto;
+  float: left;
 }

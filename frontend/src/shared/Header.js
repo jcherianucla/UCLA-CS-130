@@ -34,7 +34,7 @@ class Header extends Component {
 	      </div>
 
 	      <div>
-          {this.props.path.map(function(item, key){
+          {this.props.path.map(function(item, key, arr){
             var path;
             let name;
             if (item.constructor === Array) {
@@ -47,12 +47,22 @@ class Header extends Component {
               name = item;
               path = routes[item];
             }
-            return (
-            key === 0 ?
-              <a key={key} className="path" href={path}>{name}</a>
-            :
-              <a key={key} className="path" href={path}>> {name}</a>
-            );
+            if (key === 0) {
+              if (key === arr.length - 1) {
+                return(<p className="path">{name}</p>);
+              }
+              else {
+                return(<a key={key} className="path" href={path}>{name}</a>);
+              }
+            }
+            else {
+              if (key === arr.length - 1) {
+                return(<p className="path">> {name}</p>);
+              }
+              else {
+                return(<a key={key} className="path" href={path}>> {name}</a>);
+              }
+            }
           })}
 	      </div>
       </div>

@@ -31,7 +31,7 @@ class ProfessorUpsertClass extends Component {
           { window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create" ?
             <Header title="Welcome!" path={["Login", "Classes", "Create Class"]} />
             :
-            <Header title="Welcome!" path={["Login", "Classes", "Edit Class"]} />
+            <Header title="Welcome!" path={["Login", "Classes", ["Edit Class", this.props.match.params.class_id]]} />
           }
             <div className="create-form">
               <form onSubmit={() => this.classes()}>

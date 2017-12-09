@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
 import Highlight from 'react-highlight';
+import { Bar, BarChart, XAxis, YAxis } from 'recharts';
 import Header from '../shared/Header.js'
 import SidePanel from '../shared/SidePanel.js'
 import '../styles/Project.css';
 import '../styles/circle.css';
 import "../../node_modules/highlight.js/styles/atom-one-light.css";
+
+const data = [
+  {name: '0-10', students: 2},
+  {name: '10-20', students: 3},
+  {name: '20-30', students: 3},
+  {name: '30-40', students: 5},
+  {name: '40-50', students: 8},
+  {name: '50-60', students: 15},
+  {name: '60-70', students: 31},
+  {name: '70-80', students: 52},
+  {name: '80-90', students: 64},
+  {name: '90-100', students: 37},
+];
 
 /**
 * Form where students and professors can view details about a project
@@ -126,15 +140,26 @@ class Project extends Component {
               }
             </div>
           :
-          <div className="center-object">
+          <div>
             <h1 className="blue text-center">Total Submissions</h1>
-            <div className="c100 p94 big blue-circle">
-              <span>94%</span>
-              <div className="slice">
-                <div className="bar"></div>
-                <div className="fill"></div>
+            <div className="center-object">
+              <div className="c100 p94 big blue-circle">
+                <span>94%</span>
+                <div className="slice">
+                  <div className="bar"></div>
+                  <div className="fill"></div>
+                </div>
               </div>
             </div>
+            <h1 className="blue text-center">Score Breakdown</h1>
+            <div className="center-object">
+              <BarChart width={800} height={300} data={data}>
+                <XAxis dataKey="name" />
+                <YAxis name="students" />
+                <Bar type="monotone" dataKey="students" barSize={30} fill="#8884d8"/>
+              </BarChart>
+            </div>
+            <br /><br />
           </div>
           }
         </div>
