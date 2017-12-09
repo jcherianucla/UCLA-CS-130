@@ -13,28 +13,12 @@ import '../styles/Projects.css';
 */
 class Projects extends Component {
 
-  back() {
-    this.props.history.goBack();
+  professorUpdateProject(class_id, project_id) {
+    this.props.history.push('/classes/' + class_id + '/projects' + project_id + '/edit');
   }
 
-  studentSubmission() {
-    this.props.history.push('/student/submission');
-  }
-
-  professorUpsertProject() {
-    this.props.history.push('/professor/upsert_project');
-  }
-
-  professorAnalytics() {
-    this.props.history.push('/professor/analytics');
-  }
-
-  projectLink() {
-    if (localStorage.getItem('role') === "professor") {
-      return ('/professor/upsert_project');    
-    } else {
-      return ('/student/submission');
-    }
+  projectLink(project_id) {
+    return ("/classes/" + this.props.match.params.class_id + "/projects/" + project_id);
   }
 
   render() {
@@ -42,7 +26,7 @@ class Projects extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Login", "Classes", "Projects"]}/>
+          <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id]]}/>
 
           <Grid fluid>
               <Row>
@@ -50,7 +34,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 1'
-                      link={this.projectLink()}
+                      link={this.projectLink(1)}
                       history={this.props.history}
                       cardText='Project 1 description'
                     />
@@ -60,7 +44,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 2'
-                      link={this.projectLink()}
+                      link={this.projectLink(2)}
                       history={this.props.history}
                       cardText='Project 2 description'
                     />
@@ -70,7 +54,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 3'
-                      link={this.projectLink()}
+                      link={this.projectLink(3)}
                       history={this.props.history}
                       cardText='Project 3 description'
                     />
@@ -80,7 +64,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 4'
-                      link={this.projectLink()}
+                      link={this.projectLink(4)}
                       history={this.props.history}
                       cardText='Project 4 description'
                     />
@@ -90,7 +74,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 5'
-                      link={this.projectLink()}
+                      link={this.projectLink(5)}
                       history={this.props.history}
                       cardText='Project 5 description'
                     />
@@ -102,7 +86,7 @@ class Projects extends Component {
                       <ItemCard
                         image={require("../images/plus.png")}
                         history={this.props.history}
-                        link="/professor/upsert_project">
+                        link={"/classes/" + this.props.match.params.class_id + "/projects/create"}>
                       </ItemCard>
                     </div>
                   </Col>

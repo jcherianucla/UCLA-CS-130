@@ -35,11 +35,23 @@ class Header extends Component {
 
 	      <div>
           {this.props.path.map(function(item, key){
+            var path;
+            let name;
+            if (item.constructor === Array) {
+              name = item[item.length - 1];
+              path = routes[item[0]]
+              for (var i = 1; i < item.length; i++) {
+                path = path.replace(/:[\w]*/, item[i]);
+              }
+            } else {
+              name = item;
+              path = routes[item];
+            }
             return (
             key === 0 ?
-              <a key={key} className="path" href={routes[item]}>{item}</a>
+              <a key={key} className="path" href={path}>{name}</a>
             :
-              <a key={key} className="path" href={routes[item]}>> {item}</a>
+              <a key={key} className="path" href={path}>> {name}</a>
             );
           })}
 	      </div>

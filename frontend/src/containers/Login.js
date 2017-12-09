@@ -18,7 +18,7 @@ class Login extends Component {
       if (role == null) {
         this.props.history.push('/');
       }
-      this.setState({role: localStorage.getItem('role')});
+      this.setState({role: role});
     } else {
       this.setState({role: state.role});
     }
@@ -47,9 +47,11 @@ class Login extends Component {
       <div>
         <SidePanel />
         <div className="page">
+          <Header title="Welcome to GradePortal!" path={[]} />
+          <br /><br />
           { this.state.role === "student" ?
             <div>
-              <Header title="Welcome to GradePortal!" path={["Login as Student"]} />
+              <h1 class="blue text-center">Login as a Student</h1>
               <GoogleLogin
                 clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
                 buttonText=""
@@ -61,7 +63,7 @@ class Login extends Component {
             </div>
             :
             <div>
-              <Header title="Welcome to GradePortal!" path={["Login as Professor"]} />
+              <h1 class="blue text-center">Login as a Professor</h1>
               <form id="login-form" onSubmit={() => this.login()}>
                 <div className="login-form-group">
                   <input className="login-form-input" type="text" required="required" />

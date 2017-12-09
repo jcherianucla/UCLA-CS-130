@@ -9,12 +9,8 @@ import '../../styles/professor/UpsertProject.css';
 */
 class ProfessorUpsertProject extends Component {
 
-  back() {
-    this.props.history.goBack();
-  }
-
-  projects() {
-    this.props.history.push('/projects');
+  projects(class_id) {
+    this.props.history.push('/classes/' + this.props.match.params.class_id);
   }
 
   getFile() {
@@ -31,7 +27,11 @@ class ProfessorUpsertProject extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Login", "Classes", "Projects", "Create/Edit Project"]} />
+          { window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create" ?
+            <Header title="Welcome!" path={["Login", "Classes", "Projects", "Create Project"]} />
+            :
+            <Header title="Welcome!" path={["Login", "Classes", "Projects", "Edit Project"]} />
+          }
             <div className="create-form">
               <form onSubmit={() => this.projects()}>
                 <label className="upsert-label"><b>Project Name</b></label>
