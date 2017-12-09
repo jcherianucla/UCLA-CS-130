@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
+	// Testing
+	//"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
 	"strconv"
 )
@@ -83,8 +85,18 @@ var ClassesCreate = http.HandlerFunc(
 				status = 500
 				msg = err.Error()
 			} else {
-				status = 200
-				msg = "Success"
+				// Enroll students from csv
+				f, _, err := r.FormFile("myfile")
+				if err == nil {
+					err = models.LayerInstance().Enrolled.Insert(strconv.FormatInt(class.Id, 10), f)
+				}
+				if err != nil {
+					status = 500
+					msg = err.Error()
+				} else {
+					status = 200
+					msg = "Success"
+				}
 			}
 		}
 		JSON, _ := json.Marshal(map[string]interface{}{
