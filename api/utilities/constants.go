@@ -7,3 +7,4 @@ const (
 
 // The port that the backend server runs on
 var PORT = GetVar("PORT", "8080")
+var DEFAULT_PASSWORD = GetVar("STUDENT_PASSWORD", "password")
