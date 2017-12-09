@@ -13,6 +13,7 @@ type layer struct {
 	Class      *ClassTable
 	Assignment *AssignmentTable
 	Submission *SubmissionTable
+	Enrolled   *EnrolledTable
 }
 
 // Singleton reference to the model layer
@@ -44,7 +45,9 @@ func LayerInstance() *layer {
 		utilities.CheckError(err)
 		st, err := NewSubmissionTable(&db)
 		utilities.CheckError(err)
-		instance = &layer{User: &ut, Class: &ct, Assignment: &at, Submission: &st}
+		et, err := NewEnrolledTable(&db)
+		utilities.CheckError(err)
+		instance = &layer{User: &ut, Class: &ct, Assignment: &at, Submission: &st, Enrolled: &et}
 	})
 	return instance
 }
