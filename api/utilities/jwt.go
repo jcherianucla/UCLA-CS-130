@@ -4,7 +4,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-var GP_TOKEN_SECRET = GetVar("GP_TOKEN_SECRET", DEFAULT_TOKEN_SECRET)
+var GP_TOKEN_SECRET = []byte(GetVar("GP_TOKEN_SECRET", DEFAULT_TOKEN_SECRET))
 
 // ExtractClaims will take the claim out of an authorization header.
 // It takes in the JWT tokenString to read the claims from.
