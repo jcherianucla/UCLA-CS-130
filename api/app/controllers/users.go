@@ -82,6 +82,7 @@ var UsersBOL = http.HandlerFunc(
 		user, err := models.NewUser(r)
 		// BOL is for students only
 		user.Is_professor = false
+		user.Password = utilities.DEFAULT_PASSWORD
 		var status int
 		var msg, token string
 		_, err = models.LayerInstance().User.Insert(user)
