@@ -4,12 +4,11 @@
 package models
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/gorilla/schema"
 	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/pkg/errors"
-	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -47,16 +46,16 @@ type ClassQuery struct {
 }
 
 // NewClass is used to create a new class object from an incoming HTTP request.
-// It takes in the HTTP request in JSON format.
+// It takes in the HTTP request as a multipart form.
 // It returns the class constructed and an error if one exists.
 func NewClass(r *http.Request) (class Class, err error) {
-	b, err := ioutil.ReadAll(r.Body)
+	err = r.ParseMultipartForm(32 << 20)
 	if err != nil {
-		err = errors.Wrapf(err, "Couldn't read request body")
 		return
 	}
-	// Converts JSON to class
-	json.Unmarshal(b, &class)
+	decoder := schema.NewDecoder()
+	err = decoder.Decode(&class, r.PostForm)
+	utilities.Sugar.Infof("Class: %v", class)
 	return
 }
 
