@@ -10,10 +10,6 @@ import '../../styles/professor/UpsertClass.css';
 
 class ProfessorUpsertClass extends Component {
 
-  back() {
-    this.props.history.goBack();
-  }
-
   classes() {
     this.props.history.push('/classes');
   }
@@ -32,7 +28,11 @@ class ProfessorUpsertClass extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Login", "Classes", "Create/Edit Class"]} />
+          { window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create" ?
+            <Header title="Welcome!" path={["Login", "Classes", "Create Class"]} />
+            :
+            <Header title="Welcome!" path={["Login", "Classes", "Edit Class"]} />
+          }
             <div className="create-form">
               <form onSubmit={() => this.classes()}>
                 <label className="upsert-label"><b>Class Name</b></label>

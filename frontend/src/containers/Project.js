@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Highlight from 'react-highlight';
-import Header from '../../shared/Header.js'
-import SidePanel from '../../shared/SidePanel.js'
-import '../../styles/student/Submission.css';
-import "../../../node_modules/highlight.js/styles/atom-one-light.css";
+import Header from '../shared/Header.js'
+import SidePanel from '../shared/SidePanel.js'
+import '../styles/Project.css';
+import "../../node_modules/highlight.js/styles/atom-one-light.css";
 
 /**
-* Form where students can upload and submit a project. 
+* Form where students and professors can view details about a project
 */
-class StudentSubmission extends Component {
+class Project extends Component {
 
   constructor(props) {
     super(props);
@@ -71,7 +71,7 @@ class StudentSubmission extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Login", "Classes", "Projects", "Submission"]} />
+          <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
           { this.state.delta > 0 ?
             <div className="text-center">
               <h1 className="blue text-center">Time to Deadline:</h1>
@@ -121,4 +121,4 @@ class StudentSubmission extends Component {
   }
 }
 
-export default StudentSubmission;
+export default Project;

@@ -13,12 +13,8 @@ import '../styles/shared/Page.css';
 */
 class Classes extends Component {
 
-  projects() {
-    this.props.history.push('/projects');
-  }
-
-  professorUpsertClass() {
-    this.props.history.push('/professor/upsert_class');
+  professorUpdateClass(class_id) {
+    this.props.history.push('/classes/' + class_id + '/edit');
   }
 
   render() {
@@ -27,14 +23,13 @@ class Classes extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Login", "Classes"]} />
-
           <Grid fluid>
               <Row>
                 <Col>
                   <div>
                     <ItemCard
                       title='CS 31'
-                      link='/projects'
+                      link='/classes/1'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
                     />
@@ -44,7 +39,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
-                      link='/projects'
+                      link='/classes/2'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
                     />
@@ -54,7 +49,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
-                      link='/projects'
+                      link='/classes/3'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
                     />
@@ -64,7 +59,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
-                      link='/projects'
+                      link='/classes/4'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
                     />
@@ -74,7 +69,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
-                      link='/projects'
+                      link='/classes/5'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
                     />
@@ -86,7 +81,7 @@ class Classes extends Component {
                       <ItemCard
                         image={require("../images/plus.png")}
                         history={this.props.history}
-                        link="/professor/upsert_class">
+                        link="/classes/create">
                       </ItemCard>
                     </div>
                   </Col>
