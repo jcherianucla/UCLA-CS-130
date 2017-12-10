@@ -16,7 +16,8 @@ class Projects extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      'projects': []
+      'projects': [],
+      'class_name': this.props.match.params.class_id
     }
   }
 
@@ -24,7 +25,28 @@ class Projects extends Component {
     if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
       this.props.history.push('/login');
     }
+    this.loadCurrentClass();
     this.loadCards(this.props.match.params.class_id);
+  }
+
+  loadCurrentClass() {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.class !== null && responseJSON.class.name !== null) {
+        self.setState({'class_name': responseJSON.class.name});
+      }
+    });
   }
 
   professorUpdateProjectLink(class_id, project_id) {
@@ -69,7 +91,7 @@ class Projects extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]}/>
+          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]} props={this.state}/>
           <p ref="error" className="red"></p>
           <Grid fluid>
               <Row>

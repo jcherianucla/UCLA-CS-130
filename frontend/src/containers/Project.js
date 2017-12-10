@@ -30,14 +30,58 @@ class Project extends Component {
     let due = new Date("2016-11-07T19:06:00");
     this.state = {
       due: due,
-      delta: due.getTime() - Date.now()
+      delta: due.getTime() - Date.now(),
+      class_name: this.props.match.params.class_id,
+      project_name: this.props.match.params.project_id
     }
+  }
+
+  loadCurrentClass() {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.class !== null && responseJSON.class.name !== null) {
+        self.setState({'class_name': responseJSON.class.name});
+      }
+    });
+  }
+
+  loadCurrentProject() {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments/' + self.props.match.params.project_id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.assignment !== null && responseJSON.assignment.name !== null) {
+        self.setState({'project_name': responseJSON.assignment.name});
+      }
+    });
   }
 
   componentWillMount () {
     if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
       this.props.history.push('/login');
     }
+    this.loadCurrentClass();
+    this.loadCurrentProject();
     let role = localStorage.getItem('role');
     if (role == null) {
       this.props.history.push('/login');
@@ -98,11 +142,12 @@ class Project extends Component {
   }
 
   render() {
+    let self = this;
     return (
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
+          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]} props={this.state}/>
           <div>
             <p className="dark-gray"><b>Project Description:</b> Project 2 Description goes here. It will be whatever the professor types in on the create for the project creation. We will update it to be something dynamic when we hook up the frontend and backend soon </p>
           </div>
