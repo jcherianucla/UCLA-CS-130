@@ -10,10 +10,6 @@ import '../../styles/professor/UpsertClass.css';
 
 class ProfessorUpsertClass extends Component {
 
-  classes() {
-    this.props.history.push('/classes');
-  }
-
   getFile() {
     var x = document.getElementById("upload").value;
     if (x === "") {
@@ -23,20 +19,23 @@ class ProfessorUpsertClass extends Component {
     }
   }
 
-  createClass(name, description, quarter, year) {
+  createClass(e) {
+    let token = localStorage.getItem('token');
     let self = this
+    e.preventDefault();
+    var data = new FormData();
+    data.append('name', self.refs.name.value);
+    data.append('description', self.refs.description.value);
+    data.append('myfile', self.refs.myfile.files[0]);
+
+    console.log(data);
     fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
       },
-      body: JSON.stringify({
-        name: name,
-        description: description,
-        quarter: "Fall",
-        year: "2017"
+      body: data
       })
-    })
     .then((response) => response.json())
     .then(function (responseJSON) {
       console.log(responseJSON);
@@ -61,16 +60,16 @@ class ProfessorUpsertClass extends Component {
             <br /><br />
             <p ref="error" className="red"></p>
             <div className="create-form">
-              <form onSubmit={() => this.classes()}>
+              <form onSubmit={(e) => this.createClass(e)} encType="multipart/form-data" method="post">
                 <label className="upsert-label"><b>Class Name</b></label>
-                <input type="text" placeholder="Enter class name"/>
+                <input ref="name" id="name" name="name" type="text" placeholder="Enter class name"/>
                 
                 <label className="upsert-label"><b>Class Description</b></label>
-                <textarea placeholder="Enter short description of your class" rows="3" cols="40"/>
+                <textarea ref="description" id="description" name="description" placeholder="Enter short description of your class" rows="3" cols="40"/>
 
                 <label className="upsert-label"><b>Upload Student Roster</b></label>
                 <div className="upload-btn-wrapper">
-                  <input id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile()} accept=".csv"/>
+                  <input ref="myfile" id="myfile" name="myfile" id="upload" className="btn" type="file" onChange={() => this.getFile()} accept=".csv"/>
                   <button className="btn">Upload .csv</button>
                   <label className="filename" id="filename"></label>
                 </div>

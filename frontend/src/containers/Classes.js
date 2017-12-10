@@ -13,6 +13,17 @@ import '../styles/shared/Page.css';
 */
 class Classes extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      'classes': []
+    }
+  }
+
+  componentWillMount() {
+    this.loadCards();
+  }
+
   professorUpdateProjectLink(class_id) {
     return '/classes/' + class_id + '/edit';
   }
@@ -38,30 +49,15 @@ class Classes extends Component {
       if (responseJSON.message !== 'Success') {
         self.refs.error.innerHTML = responseJSON.message;
       } else {
-        self.createCards(responseJSON.classes);
+        if (responseJSON.classes !== null) {
+          self.setState({'classes': responseJSON.classes});
+        }
       }
     });
   }
 
-  createCards(classes) {
-    classes.map(function(item, key){
-      return(
-        <Col>
-          <div>
-            <ItemCard
-              title={item.name}
-              editLink={this.professorUpdateProjectLink(item.id)}
-              link={'/classes/' + item.id}
-              history={this.props.history}
-              cardText={item.description}
-            />
-          </div>
-        </Col>
-      );
-    })
-  }
-
   render() {
+    let self = this;
     return (
       <div>
         <SidePanel />
@@ -71,7 +67,23 @@ class Classes extends Component {
           <p ref="error" className="red"></p>
           <Grid fluid>
             <Row>
-              { this.loadCards() }
+              {
+                this.state.classes.map(function(item, key){
+                  return(
+                    <Col>
+                      <div>
+                        <ItemCard
+                          title={item.name}
+                          editLink={'/classes/' + item.id + '/edit'}
+                          link={'/classes/' + item.id}
+                          history={self.props.history}
+                          cardText={item.description}
+                        />
+                      </div>
+                    </Col>
+                  );
+                })
+              }
               { localStorage.getItem('role') === "professor" ?
                 <Col>
                   <div>
