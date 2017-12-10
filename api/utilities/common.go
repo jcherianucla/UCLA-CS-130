@@ -35,18 +35,20 @@ func SetField(obj interface{}, key string, value interface{}) error {
 	}
 
 	structFieldType := structFieldValue.Type()
+	var val reflect.Value
 	if key == "Password" {
 		t, _ := value.([]byte)
-		val := reflect.ValueOf(string(t))
-		structFieldValue.Set(val)
+		val = reflect.ValueOf(string(t))
+	} else if key == "Lang" {
+		t, _ := value.(Language)
+		val = reflect.ValueOf(t)
 	} else {
-		val := reflect.ValueOf(value)
-		if structFieldType != val.Type() {
+		val = reflect.ValueOf(value)
+		if structFieldType != val.Type() && key != "Lang" {
 			return errors.New("Provided value type didn't match obj field type")
 		}
-
-		structFieldValue.Set(val)
 	}
+	structFieldValue.Set(val)
 	return nil
 }
 

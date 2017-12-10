@@ -67,7 +67,7 @@ class Header extends Component {
             }
             if (key === 0) {
               if (key === arr.length - 1) {
-                return(<p className="path">{name}</p>);
+                return(<p key={key} className="path">{name}</p>);
               }
               else {
                 return(<a key={key} className="path" href={path}>{name}</a>);
@@ -75,7 +75,7 @@ class Header extends Component {
             }
             else {
               if (key === arr.length - 1) {
-                return(<p className="path">> {name}</p>);
+                return(<p key={key} className="path">> {name}</p>);
               }
               else {
                 return(<a key={key} className="path" href={path}>> {name}</a>);

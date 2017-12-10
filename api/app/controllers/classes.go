@@ -20,11 +20,9 @@ func hasPermissions(creator_id, class_id string) bool {
 
 var ClassesIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		utilities.Sugar.Infof("HEVOFNCDJROQPNVBWRTFJNBEFQEF")
 		// Set headers
 		utilities.SetupResponse(&w)
 		if r.Method != "OPTIONS" {
-			utilities.Sugar.Infof("Suh")
 			var status int
 			var msg string
 			var classes []models.Class
@@ -173,7 +171,6 @@ var ClassesDelete = http.HandlerFunc(
 			} else {
 				// Delete class and the enrollments
 				err := models.LayerInstance().Class.Delete(params["id"])
-				err = models.LayerInstance().Enrolled.DeleteClass(params["id"])
 				if err != nil {
 					status = 500
 					msg = err.Error()
