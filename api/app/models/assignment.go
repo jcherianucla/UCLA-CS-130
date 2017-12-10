@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -89,30 +90,39 @@ func convertToBytes(r io.Reader) (f []byte, err error) {
 	return
 }
 
+func storeFile(r *http.Request, m *map[string]interface{}, key string) error {
+	f, _, err := r.FormFile(key)
+	defer f.Close()
+	if err != nil {
+		return err
+	}
+	(*m)[strings.Title(key)], err = convertToBytes(f)
+	return err
+}
+
 func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	err = r.ParseMultipartForm(utilities.MAX_STORAGE)
 	if err != nil {
 		return
 	}
 	m := make(map[string]interface{})
+	// Fill up basic information
 	for k, v := range r.PostForm {
-		if k == "deadline" {
-			m[k], err = time.Parse("12-29-95 24:00", v[0])
-		} else if k == "language" {
+		k = strings.Title(k)
+		utilities.Sugar.Infof("Key: %s | Value: %s", k, v)
+		if k == "Deadline" {
+			m[k], err = time.Parse("01-02-06 15:04", v[0])
+		} else if k == "Language" {
 			m[k] = SetLanguage(v[0])
-		} else if k == "grade_script" || k == "sanity_script" {
-			f, _, err := r.FormFile(k)
-			defer f.Close()
-			if err != nil {
-				break
-			}
-			m[k], err = convertToBytes(f)
 		} else {
 			m[k] = v[0]
 		}
 	}
+	storeFile(r, &m, "grade_script")
+	storeFile(r, &m, "sanity_script")
+	utilities.Sugar.Infof("Map: %v", m)
 	err = utilities.FillStruct(m, &assignment)
-	utilities.Sugar.Infof("M: %v", m)
+	utilities.Sugar.Infof("Assignment: %v", assignment)
 	return
 }
 
