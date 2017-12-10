@@ -63,7 +63,6 @@ class Classes extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Classes"]} />
-          <br /> <br />
           <p ref="error" className="red"></p>
           <Grid fluid>
             <Row>
