@@ -48,9 +48,11 @@ class ItemCard extends Component {
               </div>
               :
               <CardMedia className="center-item-card-vertically"> 
-                <div className="center-item-card-horizontally">
-                  <img className="item-card-image" src={this.props.image} alt="" />
-                </div>
+                <a href={this.props.link} onClick={(e) => this.go(e)} >
+                  <div className="center-item-card-horizontally">
+                      <img className="item-card-image" src={this.props.image} alt="" />
+                  </div>
+                </a>
               </CardMedia>
             }
           </Card>
