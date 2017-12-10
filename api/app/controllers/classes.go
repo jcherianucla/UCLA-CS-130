@@ -171,7 +171,6 @@ var ClassesDelete = http.HandlerFunc(
 			} else {
 				// Delete class and the enrollments
 				err := models.LayerInstance().Class.Delete(params["id"])
-				err = models.LayerInstance().Enrolled.DeleteClass(params["id"])
 				if err != nil {
 					status = 500
 					msg = err.Error()

@@ -10,6 +10,7 @@ import (
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/pkg/errors"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -159,12 +160,37 @@ func (table *ClassTable) Update(strId string, updates Class) (updated Class, err
 // Delete permanently removes the class object from the table.
 // It takes in an id for the class we wish to delete.
 // It returns an error if one exists.
-func (table *ClassTable) Delete(strId string) error {
-	return table.connection.Delete(strId, CLASS_TABLE)
+func (table *ClassTable) Delete(strId string) (err error) {
+	// Un-enroll everyone in the class
+	err = LayerInstance().Enrolled.DeleteClass(strId)
+	// Delete all assignments
+	err = LayerInstance().Assignment.DeleteAll()
+	// Delete the class
+	err = table.connection.Delete(strId, CLASS_TABLE)
+	return
 }
 
 // DeleteAll permanently removes all class objects from the table.
 // It returns an error if one exists.
-func (table *ClassTable) DeleteAll() error {
-	return table.connection.DeleteAll(CLASS_TABLE)
+func (table *ClassTable) DeleteAll() (err error) {
+	query := fmt.Sprintf("SELECT id FROM %s", CLASS_TABLE)
+
+	utilities.Sugar.Infof("SQL Query: %v", query)
+	rows, err := table.connection.Pool.Query(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Delete all query failed")
+		return
+	}
+	// Delete all the classes by calling the relational delete
+	for rows.Next() {
+		var id int64
+		if err = rows.Scan(&id); err != nil {
+			err = errors.Wrapf(err, "Failed to scan into id")
+			return
+		}
+		if err = table.Delete(strconv.FormatInt(id, 10)); err != nil {
+			return
+		}
+	}
+	return
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -57,10 +58,10 @@ func convertToBytes(r io.Reader) (f []byte, err error) {
 
 func storeFile(r *http.Request, m *map[string]interface{}, key string) error {
 	f, _, err := r.FormFile(key)
-	defer f.Close()
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 	(*m)[strings.Title(key)], err = convertToBytes(f)
 	return err
 }
@@ -74,7 +75,6 @@ func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	// Fill up basic information
 	for k, v := range r.PostForm {
 		k = strings.Title(k)
-		//utilities.Sugar.Infof("Key: %s | Value: %s", k, v)
 		if k == "Deadline" {
 			m[k], err = time.Parse("01-02-06 15:04", v[0])
 		} else if k == "Language" {
@@ -168,6 +168,26 @@ func (table *AssignmentTable) Delete(strId string) error {
 	return table.connection.Delete(strId, ASSIGNMENT_TABLE)
 }
 
-func (table *AssignmentTable) DeleteAll() error {
-	return table.connection.DeleteAll(ASSIGNMENT_TABLE)
+func (table *AssignmentTable) DeleteAll() (err error) {
+	query := fmt.Sprintf("SELECT id FROM %s", ASSIGNMENT_TABLE)
+
+	utilities.Sugar.Infof("SQL Query: %v", query)
+
+	rows, err := table.connection.Pool.Query(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Delete all query failed")
+		return
+	}
+	// Delete all the assignments by calling the relational delete
+	for rows.Next() {
+		var id int64
+		if err = rows.Scan(&id); err != nil {
+			err = errors.Wrapf(err, "Failed to scan into id")
+			return
+		}
+		if err = table.Delete(strconv.FormatInt(id, 10)); err != nil {
+			return
+		}
+	}
+	return
 }
