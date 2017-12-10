@@ -123,7 +123,7 @@ func NewUserTable(db *db.Db) (userTable UserTable, err error) {
 // It return the found user and an error if any exist.
 func (table *UserTable) Login(user User) (found User, err error) {
 	if !govalidator.IsEmail(user.Email) {
-		err = errors.New("Please proved a valid email address")
+		err = errors.New("Please provide a valid email address")
 		return
 	} else if len(user.Password) == 0 {
 		err = errors.New("Password can't be blank")

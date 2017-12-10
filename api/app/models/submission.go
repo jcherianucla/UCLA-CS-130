@@ -2,12 +2,10 @@ package models
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/pkg/errors"
-	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -34,7 +32,7 @@ type Submission struct {
 	Assignment_id int64     `valid:"required" json:"assignment_id"`
 	User_id       int64     `valid:"required" json:"student_id"`
 	Time_created  time.Time `valid:"-" json:"-"`
-	Time_update   time.Time `valid:"-" json:"-"`
+	Time_updated  time.Time `valid:"-" json:"-"`
 }
 
 // Represents all fields a submission can be queried over.
@@ -45,13 +43,12 @@ type SubmissionQuery struct {
 }
 
 func NewSubmission(r *http.Request) (submission Submission, err error) {
-	b, err := ioutil.ReadAll(r.Body)
+	err = r.ParseMultipartForm(utilities.MAX_STORAGE)
 	if err != nil {
-		err = errors.Wrapf(err, "Couldn't read request body")
 		return
 	}
-	// Converts JSON to submission
-	json.Unmarshal(b, &submission)
+	f, _, err := r.FormFile("upload")
+	submission.File, err = convertToBytes(f)
 	return
 }
 

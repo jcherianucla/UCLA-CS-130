@@ -65,6 +65,7 @@ var AssignmentsCreate = http.HandlerFunc(
 		var status int
 		var msg string
 		creator_id := getClaims(r)
+		params := mux.Vars(r)
 		assignment, err := models.NewAssignment(r)
 		user, err := models.LayerInstance().User.GetByID(creator_id)
 		if err != nil || !user.Is_professor {
@@ -72,6 +73,8 @@ var AssignmentsCreate = http.HandlerFunc(
 			msg = "Invalid permissions to create an assignment"
 		} else {
 			assignment, err = models.LayerInstance().Assignment.Insert(assignment)
+			class_id, _ := strconv.ParseInt(params["id"], 10, 64)
+			assignment.Class_id = class_id
 			if err != nil {
 				status = 500
 				msg = err.Error()
