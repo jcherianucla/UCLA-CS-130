@@ -13,34 +13,79 @@ class Login extends Component {
 
   componentWillMount() {
     let state = this.props.history.location.state;
-    if (state == null) {
-      let role = localStorage.getItem('role');
-      if (role == null) {
-        this.props.history.push('/');
-      }
-      this.setState({role: role});
-    } else {
+    if (state != null) {
       this.setState({role: state.role});
+    }
+    else {
+      let role = localStorage.getItem('role');
+      if (role != null) {
+        this.setState({role: role});
+      }
+    }
+    if (localStorage.getItem('role') !== "" && localStorage.getItem('token') !== "") {
+      this.props.history.push('/classes');
     }
   }
 
-  classes() {
-    this.props.history.push('/classes');
+  loginAsStudent(firstName, lastName, email) {
+    localStorage.setItem('role', 'student');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/bol', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+      })
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        localStorage.setItem('token', responseJSON.token);
+        self.props.history.push('/classes');
+      }
+    });
   }
 
-  login() {
-    localStorage.setItem('role', this.state.role);
-    localStorage.setItem('token', "1234321");
-    this.classes();
+  loginAsProfessor(e) {
+    e.preventDefault();
+    localStorage.setItem('role', 'professor');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: self.refs.email.value,
+        password: self.refs.password.value,
+      })
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        localStorage.setItem('token', responseJSON.token);
+        self.props.history.push('/classes');
+      }
+    });
   }
 
   changeLogin(role) {
+    this.refs.error.innerHTML = "";
     this.setState({role: role});
   }
 
   responseGoogle(response) {
-    // let profileObj = response.profileObj;
-    this.login();
+    this.loginAsStudent(response.profileObj.givenName, response.profileObj.familyName, response.profileObj.email);
   }
 
   render() {
@@ -50,9 +95,10 @@ class Login extends Component {
         <div className="page">
           <Header title="Welcome to GradePortal!" path={[]} />
           <br /><br />
+          <p ref="error" className="red"></p>
           { this.state.role === "student" ?
             <div>
-              <h1 class="blue text-center">Login as a Student</h1>
+              <h1 className="blue text-center">Login as a Student</h1>
               <GoogleLogin
                 clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
                 buttonText=""
@@ -64,15 +110,15 @@ class Login extends Component {
             </div>
             :
             <div>
-              <h1 class="blue text-center">Login as a Professor</h1>
-              <form id="login-form" onSubmit={() => this.login()}>
+              <h1 className="blue text-center">Login as a Professor</h1>
+              <form id="login-form" onSubmit={(e) => this.loginAsProfessor(e)}>
                 <div className="login-form-group">
-                  <input className="login-form-input" type="text" required="required" />
+                  <input ref="email" className="login-form-input" type="text" required="required" />
                   <span className="login-form-bar"></span>
                   <label className="login-form-label">Email</label>
                 </div>
                 <div className="login-form-group">
-                  <input className="login-form-input secret" type="text" required="required"/>
+                  <input ref="password" className="login-form-input secret" type="text" required="required"/>
                   <span className="login-form-bar"></span>
                   <label className="login-form-label">Password</label>
                 </div>

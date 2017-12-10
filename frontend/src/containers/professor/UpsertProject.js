@@ -28,9 +28,9 @@ class ProfessorUpsertProject extends Component {
         <SidePanel />
         <div className="page">
           { window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create" ?
-            <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], "Create Project"]} />
+            <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], "Create Project"]} />
             :
-            <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], ["Edit Project", this.props.match.params.class_id, this.props.match.params.project_id]]} />
+            <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Edit Project", this.props.match.params.class_id, this.props.match.params.project_id]]} />
           }
             <div className="create-form">
               <form onSubmit={() => this.projects()}>

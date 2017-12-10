@@ -99,7 +99,7 @@ class Project extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
+          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
           <div>
             <p className="dark-gray"><b>Project Description:</b> Project 2 Description goes here. It will be whatever the professor types in on the create for the project creation. We will update it to be something dynamic when we hook up the frontend and backend soon </p>
           </div>
@@ -144,7 +144,7 @@ class Project extends Component {
                   <div id="right-feedback">
                     <h2 id="feedback-score" className="gray">Score: 67%</h2>
                     <br />
-                    <p className="error">test_case_3: Off-by-one error</p>
+                    <p className="red">test_case_3: Off-by-one error</p>
                   </div>
                 </div>
               }

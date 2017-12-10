@@ -26,7 +26,7 @@ class Projects extends Component {
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id]]}/>
+          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]}/>
 
           <Grid fluid>
               <Row>
