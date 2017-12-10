@@ -51,7 +51,7 @@ class Login extends Component {
   }
 
   loginAsProfessor() {
-    this.setState({role: 'professor'});
+    localStorage.setItem('role', 'professor');
     this.props.history.push('/classes')
   }
 
