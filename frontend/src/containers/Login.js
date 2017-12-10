@@ -113,14 +113,14 @@ class Login extends Component {
               <h1 className="blue text-center">Login as a Professor</h1>
               <form id="login-form" onSubmit={(e) => this.loginAsProfessor(e)}>
                 <div className="login-form-group">
-                  <input className="login-form-input" type="text" required="required" />
+                  <input ref="email" className="login-form-input" type="text" required="required" />
                   <span className="login-form-bar"></span>
-                  <label ref="email" className="login-form-label">Email</label>
+                  <label className="login-form-label">Email</label>
                 </div>
                 <div className="login-form-group">
-                  <input className="login-form-input secret" type="text" required="required"/>
+                  <input ref="password" className="login-form-input secret" type="text" required="required"/>
                   <span className="login-form-bar"></span>
-                  <label ref="password" className="login-form-label">Password</label>
+                  <label className="login-form-label">Password</label>
                 </div>
                 <input className="login-form-btn" type="submit" />
               </form>
