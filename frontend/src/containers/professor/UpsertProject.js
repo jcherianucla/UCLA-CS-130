@@ -83,10 +83,10 @@ class ProfessorUpsertProject extends Component {
             <div className="create-form">
               <form onSubmit={(e) => this.createProject(e)} encType="multipart/form-data" method="post">
                 <label className="upsert-label"><b>Project Name</b></label>
-                <input ref="name" type="text" placeholder="Enter project name"/>
+                <input ref="name" type="text" placeholder="Enter project name" required/>
                 
                 <label className="upsert-label"><b>Project Description</b></label>
-                <textarea ref="description" placeholder="Enter short description of your project" rows="3" cols="40"/>
+                <textarea ref="description" placeholder="Enter short description of your project" rows="3" cols="40" required/>
 
                 <label className="upsert-label"><b>Upload Grading Script</b></label>
                 <div className="upload-btn-wrapper">
@@ -104,11 +104,11 @@ class ProfessorUpsertProject extends Component {
 
                 <div className="deadline-wrapper">
                   <label className="upsert-label"><b>Project Deadline</b></label>
-                  <input type="number" id="month" onInput={() => this.constrainLength("month")} ref="month" placeholder="MM" maxLength="2" min="0" max="12"/> &nbsp; / &nbsp;
-                  <input type="number" id="day" onInput={() => this.constrainLength("day")} ref="day" placeholder="DD" maxLength="2" min="1" max="31"/> &nbsp; / &nbsp;
-                  <input type="number" id="year" onInput={() => this.constrainLength("year")} ref="year" placeholder="YY" maxLength="2"/> &nbsp; &nbsp; &nbsp;
-                  <input type="number" id="hour" onInput={() => this.constrainLength("hour")} ref="hour" placeholder="00" maxLength="2" min="0" max ="23"/> &nbsp; : &nbsp;
-                  <input type="number" id="minute" onInput={() => this.constrainLength("minute")} ref="minute" placeholder="00" maxLength="2" min="0" max="59"/>
+                  <input type="number" id="month" onInput={() => this.constrainLength("month")} ref="month" placeholder="MM" maxLength="2" min="0" max="12" required/> &nbsp; / &nbsp;
+                  <input type="number" id="day" onInput={() => this.constrainLength("day")} ref="day" placeholder="DD" maxLength="2" min="1" max="31" required/> &nbsp; / &nbsp;
+                  <input type="number" id="year" onInput={() => this.constrainLength("year")} ref="year" placeholder="YY" maxLength="2" required/> &nbsp; &nbsp; &nbsp;
+                  <input type="number" id="hour" onInput={() => this.constrainLength("hour")} ref="hour" placeholder="00" maxLength="2" min="0" max ="23" required/> &nbsp; : &nbsp;
+                  <input type="number" id="minute" onInput={() => this.constrainLength("minute")} ref="minute" placeholder="00" maxLength="2" min="0" max="59" required/>
                 </div>
 
                 <div>
