@@ -22,9 +22,9 @@ type Route struct {
 
 // Represents all the routes for the application.
 type Routes struct {
-	userRoutes    []Route
-	classRoutes   []Route
-	projectRoutes []Route
+	userRoutes       []Route
+	classRoutes      []Route
+	assignmentRoutes []Route
 }
 
 // createUserRoutes will instantiate all routes for
@@ -113,6 +113,44 @@ func (routes *Routes) createClassRoutes() {
 	}
 }
 
+// createAssignmentRoutes will instantiate all routes for
+// assignments.
+func (routes *Routes) createAssignmentRoutes() {
+	classStr := "/classes/{id}"
+	routes.assignmentRoutes = []Route{
+		Route{
+			"Create",
+			"POST",
+			utilities.GetAPIInstance().Gen(classStr + "/assignments"),
+			middleware.Authenticate(controllers.AssignmentsCreate),
+		},
+		Route{
+			"Show All",
+			"GET",
+			utilities.GetAPIInstance().Gen(classStr + "/assignments"),
+			middleware.Authenticate(controllers.AssignmentsIndex),
+		},
+		Route{
+			"Show",
+			"GET",
+			utilities.GetAPIInstance().Gen(classStr + "/assignments/{id}"),
+			middleware.Authenticate(controllers.AssignmentsShow),
+		},
+		Route{
+			"Update",
+			"PUT",
+			utilities.GetAPIInstance().Gen(classStr + "/assignments/{id}"),
+			middleware.Authenticate(controllers.AssignmentsUpdate),
+		},
+		Route{
+			"Delete",
+			"DELETE",
+			utilities.GetAPIInstance().Gen(classStr + "/assignments/{id}"),
+			middleware.Authenticate(controllers.AssignmentsDelete),
+		},
+	}
+}
+
 // BindRoutes will bind all routes to the router.
 // It takes in a reference to the router and the slice
 // of all routes.
@@ -137,7 +175,10 @@ func NewRouter() *mux.Router {
 	routes.createUserRoutes()
 	// Create the class routes
 	routes.createClassRoutes()
+	// Create the assignment routes
+	routes.createAssignmentRoutes()
 	BindRoutes(router, routes.userRoutes)
 	BindRoutes(router, routes.classRoutes)
+	BindRoutes(router, routes.assignmentRoutes)
 	return router
 }

@@ -13,8 +13,12 @@ import '../styles/shared/Page.css';
 */
 class Classes extends Component {
 
+  professorUpdateProjectLink(class_id) {
+    return '/classes/' + class_id + '/edit';
+  }
+
   professorUpdateClass(class_id) {
-    this.props.history.push('/classes/' + class_id + '/edit');
+    this.props.history.push(this.professorUpdateProjectLink(class_id));
   }
 
   loadCards() {
@@ -46,6 +50,7 @@ class Classes extends Component {
           <div>
             <ItemCard
               title={item.name}
+              editLink={this.professorUpdateProjectLink(item.id)}
               link={'/classes/' + item.id}
               history={this.props.history}
               cardText={item.description}
@@ -65,23 +70,23 @@ class Classes extends Component {
           <br /> <br />
           <p ref="error" className="red"></p>
           <Grid fluid>
-              <Row>
-                { this.loadCards() }
-                { localStorage.getItem('role') === "professor" ?
-                  <Col>
-                    <div>
-                      <ItemCard
-                        image={require("../images/plus.png")}
-                        history={this.props.history}
-                        link="/classes/create">
-                      </ItemCard>
-                    </div>
-                  </Col>
-                  :
-                  <div />
-                }
-              </Row>
-            </Grid>
+            <Row>
+              { this.loadCards() }
+              { localStorage.getItem('role') === "professor" ?
+                <Col>
+                  <div>
+                    <ItemCard
+                      image={require("../images/plus.png")}
+                      history={this.props.history}
+                      link="/classes/create">
+                    </ItemCard>
+                  </div>
+                </Col>
+                :
+                <div />
+              }
+            </Row>
+          </Grid>
           
         </div>
  

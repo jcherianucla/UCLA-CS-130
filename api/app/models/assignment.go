@@ -1,11 +1,12 @@
 package models
 
 import (
+	"bytes"
 	"fmt"
-	"github.com/gorilla/schema"
 	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/pkg/errors"
+	"io"
 	"net/http"
 	"time"
 )
@@ -78,13 +79,40 @@ type AssignmentQuery struct {
 	Class_id int64
 }
 
+func convertToBytes(r io.Reader) (f []byte, err error) {
+	buf := bytes.NewBuffer(nil)
+	if _, err = io.Copy(buf, r); err != nil {
+		err = errors.Wrapf(err, "Failed to copy over file contents to DB")
+		return
+	}
+	f = buf.Bytes()
+	return
+}
+
 func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	err = r.ParseMultipartForm(utilities.MAX_STORAGE)
 	if err != nil {
 		return
 	}
-	decoder := schema.NewDecoder()
-	err = decoder.Decode(&assignment, r.PostForm)
+	m := make(map[string]interface{})
+	for k, v := range r.PostForm {
+		if k == "deadline" {
+			m[k], err = time.Parse("12-29-95 24:00", v[0])
+		} else if k == "language" {
+			m[k] = SetLanguage(v[0])
+		} else if k == "grade_script" || k == "sanity_script" {
+			f, _, err := r.FormFile(k)
+			defer f.Close()
+			if err != nil {
+				break
+			}
+			m[k], err = convertToBytes(f)
+		} else {
+			m[k] = v[0]
+		}
+	}
+	err = utilities.FillStruct(m, &assignment)
+	utilities.Sugar.Infof("M: %v", m)
 	return
 }
 
