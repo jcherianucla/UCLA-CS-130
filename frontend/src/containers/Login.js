@@ -24,14 +24,34 @@ class Login extends Component {
     }
   }
 
-  classes() {
-    this.props.history.push('/classes');
+  loginAsStudent(firstName, lastName, email) {
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/bol', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+      })
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        alert(responseJSON.message);
+      } else {
+        localStorage.setItem('token', responseJSON.token);
+        localStorage.setItem('role', 'student');
+        self.props.history.push('/classes');
+      }
+    });
   }
 
-  login() {
-    localStorage.setItem('role', this.state.role);
-    localStorage.setItem('token', "1234321");
-    this.classes();
+  loginAsProfessor() {
+    this.props.history.push('/classes')
   }
 
   changeLogin(role) {
@@ -39,8 +59,7 @@ class Login extends Component {
   }
 
   responseGoogle(response) {
-    // let profileObj = response.profileObj;
-    this.login();
+    this.loginAsStudent(response.profileObj.givenName, response.profileObj.familyName, response.profileObj.email);
   }
 
   render() {
@@ -52,7 +71,7 @@ class Login extends Component {
           <br /><br />
           { this.state.role === "student" ?
             <div>
-              <h1 class="blue text-center">Login as a Student</h1>
+              <h1 className="blue text-center">Login as a Student</h1>
               <GoogleLogin
                 clientId="770443881218-53j89rnpv5539ad9dn69vd4mj51lmr1n.apps.googleusercontent.com"
                 buttonText=""
@@ -64,8 +83,8 @@ class Login extends Component {
             </div>
             :
             <div>
-              <h1 class="blue text-center">Login as a Professor</h1>
-              <form id="login-form" onSubmit={() => this.login()}>
+              <h1 className="blue text-center">Login as a Professor</h1>
+              <form id="login-form" onSubmit={() => this.loginAsProfessor()}>
                 <div className="login-form-group">
                   <input className="login-form-input" type="text" required="required" />
                   <span className="login-form-bar"></span>

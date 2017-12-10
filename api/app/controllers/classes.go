@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
-	// Testing
-	//"github.com/jcherianucla/UCLA-CS-130/api/utilities"
+	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
 	"strconv"
 )
@@ -21,7 +20,8 @@ func hasPermissions(creator_id, class_id string) bool {
 
 var ClassesIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+		// Set headers
+		utilities.SetupResponse(&w)
 		var status int
 		var msg string
 		var classes []models.Class
@@ -51,7 +51,8 @@ var ClassesIndex = http.HandlerFunc(
 
 var ClassesShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+		// Set headers
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string
@@ -75,7 +76,7 @@ var ClassesShow = http.HandlerFunc(
 var ClassesCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		var status int
 		var msg string
 		class, err := models.NewClass(r)
@@ -118,7 +119,7 @@ var ClassesCreate = http.HandlerFunc(
 var ClassesUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string
@@ -150,7 +151,7 @@ var ClassesUpdate = http.HandlerFunc(
 var ClassesDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string

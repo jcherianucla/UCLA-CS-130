@@ -27,7 +27,8 @@ func getClaims(r *http.Request) string {
 // purely on the claims.
 var UsersIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+		// Set headers
+		utilities.SetupResponse(&w)
 		user_id := getClaims(r)
 		var status int
 		var msg string
@@ -52,7 +53,8 @@ var UsersIndex = http.HandlerFunc(
 // a provided id as a parameter.
 var UsersShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+		// Set headers
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string
@@ -78,7 +80,7 @@ var UsersShow = http.HandlerFunc(
 var UsersBOL = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		user, err := models.NewUser(r)
 		// BOL is for students only
 		user.Is_professor = false
@@ -114,7 +116,7 @@ var UsersBOL = http.HandlerFunc(
 var UsersCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		user, err := models.NewUser(r)
 		user, err = models.LayerInstance().User.Insert(user)
 		var status int
@@ -140,7 +142,7 @@ var UsersCreate = http.HandlerFunc(
 var UsersLogin = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		user, err := models.NewUser(r)
 		user, err = models.LayerInstance().User.Login(user)
 		var status int
@@ -165,7 +167,7 @@ var UsersLogin = http.HandlerFunc(
 var UsersUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string
@@ -196,7 +198,7 @@ var UsersUpdate = http.HandlerFunc(
 var UsersDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string

@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
+	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
 	"strconv"
 )
 
 var AssignmentsIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+		// Set headers
+		utilities.SetupResponse(&w)
 		var status int
 		var msg string
 		params := mux.Vars(r)
@@ -34,7 +36,8 @@ var AssignmentsIndex = http.HandlerFunc(
 
 var AssignmentsShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+		// Set headers
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string
@@ -58,7 +61,7 @@ var AssignmentsShow = http.HandlerFunc(
 var AssignmentsCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		var status int
 		var msg string
 		creator_id := getClaims(r)
@@ -89,7 +92,7 @@ var AssignmentsCreate = http.HandlerFunc(
 var AssignmentsUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		params := mux.Vars(r)
 		var status int
 		var msg string
@@ -121,7 +124,7 @@ var AssignmentsUpdate = http.HandlerFunc(
 var AssignmentsDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
+		utilities.SetupResponse(&w)
 		var status int
 		var msg string
 		params := mux.Vars(r)
