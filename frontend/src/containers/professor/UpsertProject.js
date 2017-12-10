@@ -104,11 +104,11 @@ class ProfessorUpsertProject extends Component {
 
                 <div className="deadline-wrapper">
                   <label className="upsert-label"><b>Project Deadline</b></label>
-                  <input type="number" id="month" onInput={() => this.constrainLength("month")} ref="month" placeholder="MM" maxLength="2"/> &nbsp; / &nbsp;
-                  <input type="number" id="day" onInput={() => this.constrainLength("day")} ref="day" placeholder="DD" maxLength="2"/> &nbsp; / &nbsp;
+                  <input type="number" id="month" onInput={() => this.constrainLength("month")} ref="month" placeholder="MM" maxLength="2" min="0" max="12"/> &nbsp; / &nbsp;
+                  <input type="number" id="day" onInput={() => this.constrainLength("day")} ref="day" placeholder="DD" maxLength="2" min="1" max="31"/> &nbsp; / &nbsp;
                   <input type="number" id="year" onInput={() => this.constrainLength("year")} ref="year" placeholder="YY" maxLength="2"/> &nbsp; &nbsp; &nbsp;
-                  <input type="number" id="hour" onInput={() => this.constrainLength("hour")} ref="hour" placeholder="00" maxLength="2"/> &nbsp; : &nbsp;
-                  <input type="number" id="minute" onInput={() => this.constrainLength("minute")} ref="minute" placeholder="00" maxLength="2"/>
+                  <input type="number" id="hour" onInput={() => this.constrainLength("hour")} ref="hour" placeholder="00" maxLength="2" min="0" max ="23"/> &nbsp; : &nbsp;
+                  <input type="number" id="minute" onInput={() => this.constrainLength("minute")} ref="minute" placeholder="00" maxLength="2" min="0" max="59"/>
                 </div>
 
                 <div>
