@@ -63,14 +63,13 @@ class Classes extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Classes"]} />
-          <br /> <br />
           <p ref="error" className="red"></p>
           <Grid fluid>
             <Row>
               {
                 this.state.classes.map(function(item, key){
                   return(
-                    <Col>
+                    <Col key={item.id}>
                       <div>
                         <ItemCard
                           title={item.name}

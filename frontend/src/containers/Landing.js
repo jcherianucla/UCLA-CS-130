@@ -7,7 +7,14 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 */
 class Landing extends Component {
 
+  componentWillMount() {
+
+  }
+
   Login(role) {
+    if (localStorage.getItem('role') !== role) {
+      localStorage.setItem('token', '');
+    }
     this.props.history.push('/login', {role: role});
   }
 
