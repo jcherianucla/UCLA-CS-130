@@ -13,13 +13,48 @@ class ProfessorUpsertProject extends Component {
     this.props.history.push('/classes/' + this.props.match.params.class_id);
   }
 
-  getFile() {
-    var x = document.getElementById("upload").value;
+  getFile(upload, filename) {
+    var x = document.getElementById(upload).value;
     if (x === "") {
-      document.getElementById("filename").innerHTML = "";
+      document.getElementById(filename).innerHTML = "";
     } else {
-      document.getElementById("filename").innerHTML = "*" + x.replace(/^.*\\/, "");
+      document.getElementById(filename).innerHTML = "*" + x.replace(/^.*\\/, "");
     }
+  }
+
+  createProject(e) {
+    let token = localStorage.getItem('token');
+    let self = this
+    e.preventDefault();
+
+    let deadline = self.refs.month.value + '-' + self.refs.day.value + '-' + self.refs.year.value + ' ' + self.refs.hour.value + ':' + self.refs.minute.value;
+    console.log(deadline);
+
+    var data = new FormData();
+    data.append('name', self.refs.name.value);
+    data.append('description', self.refs.description.value);
+    data.append('grade_script', self.refs.grading.files[0]);
+    data.append('sanity_script', self.refs.sanity.files[0]);
+    data.append('language', 'C++');
+    data.append('deadline', deadline);
+
+    console.log(data);
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      body: data
+      })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        self.props.history.push('/classes/' + self.props.match.params.class_id);
+      }
+    });
   }
 
   render() {
@@ -32,28 +67,37 @@ class ProfessorUpsertProject extends Component {
             :
             <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Edit Project", this.props.match.params.class_id, this.props.match.params.project_id]]} />
           }
+          <br /> <br />
+          <p ref="error" className="red"></p>
             <div className="create-form">
-              <form onSubmit={() => this.projects()}>
+              <form onSubmit={(e) => this.createProject(e)} encType="multipart/form-data" method="post">
                 <label className="upsert-label"><b>Project Name</b></label>
-                <input type="text" placeholder="Enter project name"/>
+                <input ref="name" type="text" placeholder="Enter project name"/>
                 
                 <label className="upsert-label"><b>Project Description</b></label>
-                <textarea placeholder="Enter short description of your project" rows="3" cols="40"/>
+                <textarea ref="description" placeholder="Enter short description of your project" rows="3" cols="40"/>
 
                 <label className="upsert-label"><b>Upload Grading Script</b></label>
                 <div className="upload-btn-wrapper">
-                  <input id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile()} accept=".sh"/>
+                  <input ref="grading" id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload', 'filename')} accept=".sh"/>
                   <button className="btn">Upload .sh</button>
                   <label className="filename" id="filename"></label>
                 </div>
 
+                <label className="upsert-label"><b>Upload Sanity Testing Script</b></label>
+                <div className="upload-btn-wrapper">
+                  <input ref="sanity" id="upload2" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload2', 'filename2')} accept=".sh"/>
+                  <button className="btn">Upload .sh</button>
+                  <label className="filename" id="filename2"></label>
+                </div>
+
                 <div className="deadline-wrapper">
                   <label className="upsert-label"><b>Project Deadline</b></label>
-                  <input type="text" placeholder="MM" maxLength="2"/> &nbsp; / &nbsp;
-                  <input type="text" placeholder="DD" maxLength="2"/> &nbsp; / &nbsp;
-                  <input type="text" placeholder="YY" maxLength="2"/> &nbsp; &nbsp; &nbsp;
-                  <input type="text" placeholder="00" maxLength="2"/> &nbsp; : &nbsp;
-                  <input type="text" placeholder="00" maxLength="2"/>
+                  <input ref="month" type="text" placeholder="MM" maxLength="2"/> &nbsp; / &nbsp;
+                  <input ref="day" type="text" placeholder="DD" maxLength="2"/> &nbsp; / &nbsp;
+                  <input ref="year" type="text" placeholder="YY" maxLength="2"/> &nbsp; &nbsp; &nbsp;
+                  <input ref="hour" type="text" placeholder="00" maxLength="2"/> &nbsp; : &nbsp;
+                  <input ref="minute" type="text" placeholder="00" maxLength="2"/>
                 </div>
 
                 <div>
