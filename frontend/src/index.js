@@ -12,6 +12,7 @@ import Project from './containers/Project';
 import Projects from './containers/Projects';
 import ProfessorUpsertClass from './containers/professor/UpsertClass';
 import ProfessorUpsertProject from './containers/professor/UpsertProject';
+import FAQ from './containers/FAQ';
 
 const base = document.querySelector('base')
 const baseHref = base ? base.getAttribute('href') : '/'
@@ -29,6 +30,7 @@ ReactDOM.render(
         <Route path="/classes/:class_id/projects/create" exact={true} component={ProfessorUpsertProject} />
         <Route path="/classes/:class_id/projects/:project_id" exact={true} component={Project} />
         <Route path="/classes/:class_id/projects/:project_id/edit" exact={true} component={ProfessorUpsertProject} />
+        <Route path="/faq" exact={true} component={FAQ} />
       </Switch>
     </BrowserRouter>
   </AppContainer>,
