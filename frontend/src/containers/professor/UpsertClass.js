@@ -10,9 +10,40 @@ import '../../styles/professor/UpsertClass.css';
 
 class ProfessorUpsertClass extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      'projects': [],
+      'class_name': this.props.match.params.class_id
+    }
+    this.loadCurrentClass();
+  }
+
   componentWillMount() {
     if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
       this.props.history.push('/login');
+    }
+  }
+
+  loadCurrentClass() {
+    if (this.props.match.params.class_id) {
+      let token = localStorage.getItem('token');
+      let self = this
+      fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then(function (responseJSON) {
+        console.log(responseJSON);
+        if (responseJSON.class !== null && responseJSON.class.name !== null) {
+          self.setState({'class_name': responseJSON.class.name});
+        }
+      });
     }
   }
 
@@ -59,9 +90,9 @@ class ProfessorUpsertClass extends Component {
         <SidePanel />
         <div className="page">
           { window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create" ?
-            <Header title="Welcome!" path={["Classes", "Create Class"]} />
+            <Header title="Welcome!" path={["Classes", "Create Class"]} props={this.state}/>
             :
-            <Header title="Welcome!" path={["Classes", ["Edit Class", this.props.match.params.class_id]]} />
+            <Header title="Welcome!" path={["Classes", ["Edit Class", this.props.match.params.class_id]]} props={this.state}/>
           }
             <p ref="error" className="red"></p>
             <div className="create-form">
