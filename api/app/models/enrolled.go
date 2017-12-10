@@ -130,7 +130,7 @@ func (table *EnrolledTable) GetStudents(classId string) (students []User, err er
 	}
 	for rows.Next() {
 		var student Student
-		err = rows.Scan(&student.Id, &student.User_id, &student.Class_id)
+		err = rows.Scan(&student.Id, &student.User_id, &student.Class_id, &student.Time_created)
 		if err != nil {
 			err = errors.Wrapf(err, "Get query failed to execute")
 			return
@@ -138,6 +138,37 @@ func (table *EnrolledTable) GetStudents(classId string) (students []User, err er
 		user, err := LayerInstance().User.GetByID(strconv.FormatInt(student.User_id, 10))
 		if err == nil {
 			students = append(students, user)
+		}
+	}
+	return
+}
+
+func (table *EnrolledTable) GetClasses(userId string) (classes []Class, err error) {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE user_id=$1", ENROLLED_TABLE)
+
+	utilities.Sugar.Infof("SQL Query: %s", query)
+	utilities.Sugar.Infof("Value: %v", userId)
+
+	stmt, err := table.connection.Pool.Prepare(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Get query preparation failed")
+		return
+	}
+	rows, err := stmt.Query(userId)
+	if err != nil {
+		err = errors.Wrapf(err, "Get query failed to execute")
+		return
+	}
+	for rows.Next() {
+		var student Student
+		err = rows.Scan(&student.Id, &student.User_id, &student.Class_id, &student.Time_created)
+		if err != nil {
+			err = errors.Wrapf(err, "Get query failed to execute")
+			return
+		}
+		class, err := LayerInstance().Class.GetByID(strconv.FormatInt(student.Class_id, 10))
+		if err == nil {
+			classes = append(classes, class)
 		}
 	}
 	return

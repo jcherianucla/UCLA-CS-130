@@ -49,13 +49,12 @@ type ClassQuery struct {
 // It takes in the HTTP request as a multipart form.
 // It returns the class constructed and an error if one exists.
 func NewClass(r *http.Request) (class Class, err error) {
-	err = r.ParseMultipartForm(32 << 20)
+	err = r.ParseMultipartForm(utilities.MAX_STORAGE)
 	if err != nil {
 		return
 	}
 	decoder := schema.NewDecoder()
 	err = decoder.Decode(&class, r.PostForm)
-	utilities.Sugar.Infof("Class: %v", class)
 	return
 }
 

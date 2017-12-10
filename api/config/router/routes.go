@@ -119,7 +119,7 @@ func (routes *Routes) createClassRoutes() {
 func BindRoutes(r *mux.Router, routes []Route) {
 	for _, route := range routes {
 		r.
-			Methods(route.Method).
+			Methods(route.Method, "OPTIONS").
 			Path(route.URI).
 			Name(route.Name).
 			Handler(route.HandlerFunc)

@@ -80,9 +80,16 @@ class Project extends Component {
 
   activateTab(id) {
     for (var ref in this.refs) {
-      this.refs[ref].className = "code-feedback";
-      if (this.refs[ref].id === id) {
-        this.refs[ref].className = "code-feedback active";
+      if (ref === "submission-button" || ref === "submission-button active") {
+        this.refs[ref].className = "submission-button";
+        if (this.refs[ref].id === id) {
+          this.refs[ref].className = "submission-button active";
+        }
+      } else {
+        this.refs[ref].className = "code-feedback";
+        if (this.refs[ref].id === id) {
+          this.refs[ref].className = "code-feedback active";
+        }
       }
     }
   }
@@ -93,6 +100,9 @@ class Project extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
+          <div>
+            <p className="dark-gray"><b>Project Description:</b> Project 2 Description goes here. It will be whatever the professor types in on the create for the project creation. We will update it to be something dynamic when we hook up the frontend and backend soon </p>
+          </div>
           { this.state.role === "student" ?
             <div>
               { this.state.delta > 0 ?
@@ -109,8 +119,8 @@ class Project extends Component {
                 <div>
                   <h1 className="dark-gray text-center">Submission Feedback:</h1>
                   <div id="left-feedback">
-                    <button onClick={() => this.activateTab("submission")}>Submission</button>
-                    <button onClick={() => this.activateTab("script")}>Test Script</button>
+                    <button id="submission" ref="submission-button active" className="submission-button active" onClick={() => this.activateTab("submission")}>Submission</button>
+                    <button id="script" ref="submission-button" className="submission-button" onClick={() => this.activateTab("script")}>Test Script</button>
                     <div id="submission" ref="code-feedback active" className="code-feedback active">
                       <Highlight className="cpp">{`
   #include <iostream>
