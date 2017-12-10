@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-flexbox-grid';
 import Header from '../shared/Header.js'
 import SidePanel from '../shared/SidePanel.js'
-import ItemCard from '../shared/ItemCard.js'
 import '../styles/Classes.css';
 import '../styles/shared/Page.css';
 
