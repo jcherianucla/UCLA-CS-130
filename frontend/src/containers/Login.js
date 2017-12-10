@@ -51,6 +51,7 @@ class Login extends Component {
   }
 
   loginAsProfessor() {
+    this.setState({role: 'professor'});
     this.props.history.push('/classes')
   }
 
