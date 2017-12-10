@@ -23,6 +23,31 @@ class ProfessorUpsertClass extends Component {
     }
   }
 
+  createClass(name, description, quarter, year) {
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        quarter: "Fall",
+        year: "2017"
+      })
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        self.props.history.push('/classes');
+      }
+    });
+  }
+
   render() {
     return (
       <div>
@@ -33,6 +58,8 @@ class ProfessorUpsertClass extends Component {
             :
             <Header title="Welcome!" path={["Classes", ["Edit Class", this.props.match.params.class_id]]} />
           }
+            <br /><br />
+            <p ref="error" className="red"></p>
             <div className="create-form">
               <form onSubmit={() => this.classes()}>
                 <label className="upsert-label"><b>Class Name</b></label>
