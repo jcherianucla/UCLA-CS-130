@@ -4,6 +4,7 @@ package utilities
 
 import (
 	"fmt"
+	"net/http"
 	"sync"
 )
 
@@ -43,4 +44,11 @@ func GetAPIInstance() *api {
 		instance = &api{base: 1, sub: 0}
 	})
 	return instance
+}
+
+func SetupResponse(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	(*w).Header().Set("Content-Type", "application/json")
 }
