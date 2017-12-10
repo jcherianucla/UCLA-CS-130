@@ -46,8 +46,12 @@ html, body {
   color: #43a5fd;
 }
 
-.error {
+.red {
   color: #E72500;
+}
+
+.error {
+  margin-left: 20px;
 }
 
 .center-object {

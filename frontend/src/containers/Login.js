@@ -28,6 +28,7 @@ class Login extends Component {
   }
 
   loginAsStudent(firstName, lastName, email) {
+    localStorage.setItem('role', 'student');
     let self = this
     fetch('http://grade-portal-api.herokuapp.com/api/v1.0/bol', {
       method: 'POST',
@@ -44,21 +45,42 @@ class Login extends Component {
     .then(function (responseJSON) {
       console.log(responseJSON);
       if (responseJSON.message !== 'Success') {
-        alert(responseJSON.message);
+        self.refs.error.innerHTML = responseJSON.message;
       } else {
         localStorage.setItem('token', responseJSON.token);
-        localStorage.setItem('role', 'student');
         self.props.history.push('/classes');
       }
     });
   }
 
-  loginAsProfessor() {
+  loginAsProfessor(e) {
+    e.preventDefault();
     localStorage.setItem('role', 'professor');
-    this.props.history.push('/classes')
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: self.refs.email.value,
+        password: self.refs.password.value,
+      })
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        localStorage.setItem('token', responseJSON.token);
+        self.props.history.push('/classes');
+      }
+    });
   }
 
   changeLogin(role) {
+    this.refs.error.innerHTML = "";
     this.setState({role: role});
   }
 
@@ -73,6 +95,7 @@ class Login extends Component {
         <div className="page">
           <Header title="Welcome to GradePortal!" path={[]} />
           <br /><br />
+          <p ref="error" className="red"></p>
           { this.state.role === "student" ?
             <div>
               <h1 className="blue text-center">Login as a Student</h1>
@@ -88,16 +111,16 @@ class Login extends Component {
             :
             <div>
               <h1 className="blue text-center">Login as a Professor</h1>
-              <form id="login-form" onSubmit={() => this.loginAsProfessor()}>
+              <form id="login-form" onSubmit={(e) => this.loginAsProfessor(e)}>
                 <div className="login-form-group">
                   <input className="login-form-input" type="text" required="required" />
                   <span className="login-form-bar"></span>
-                  <label className="login-form-label">Email</label>
+                  <label ref="email" className="login-form-label">Email</label>
                 </div>
                 <div className="login-form-group">
                   <input className="login-form-input secret" type="text" required="required"/>
                   <span className="login-form-bar"></span>
-                  <label className="login-form-label">Password</label>
+                  <label ref="password" className="login-form-label">Password</label>
                 </div>
                 <input className="login-form-btn" type="submit" />
               </form>
