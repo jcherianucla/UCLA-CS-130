@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card, CardMedia, CardHeader, CardText} from 'material-ui';
+import {Card, CardActions, CardMedia, CardHeader, CardText, FlatButton} from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import '../styles/shared/ItemCard.css';
 
@@ -32,6 +32,10 @@ class ItemCard extends Component {
                 >
                   {this.props.cardText}
                 </CardText>
+                <CardActions>
+                  <FlatButton label="Delete" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
+                  <FlatButton label="Edit" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
+                </CardActions>
               </div>
               :
               <CardMedia className="center-item-card-vertically"> 
