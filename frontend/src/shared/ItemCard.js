@@ -32,10 +32,14 @@ class ItemCard extends Component {
                 >
                   {this.props.cardText}
                 </CardText>
-                <CardActions>
-                  <FlatButton label="Delete" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
-                  <FlatButton label="Edit" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
-                </CardActions>
+                { localStorage.getItem('role') === "professor" ?
+                    <CardActions>
+                      <FlatButton label="Delete" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
+                      <FlatButton label="Edit" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
+                    </CardActions> 
+                    :
+                    <CardActions /> 
+                }
               </div>
               :
               <CardMedia className="center-item-card-vertically"> 
