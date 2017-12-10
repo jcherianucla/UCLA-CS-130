@@ -80,9 +80,16 @@ class Project extends Component {
 
   activateTab(id) {
     for (var ref in this.refs) {
-      this.refs[ref].className = "code-feedback";
-      if (this.refs[ref].id === id) {
-        this.refs[ref].className = "code-feedback active";
+      if (ref === "submission-button" || ref === "submission-button active") {
+        this.refs[ref].className = "submission-button";
+        if (this.refs[ref].id === id) {
+          this.refs[ref].className = "submission-button active";
+        }
+      } else {
+        this.refs[ref].className = "code-feedback";
+        if (this.refs[ref].id === id) {
+          this.refs[ref].className = "code-feedback active";
+        }
       }
     }
   }
@@ -112,8 +119,8 @@ class Project extends Component {
                 <div>
                   <h1 className="dark-gray text-center">Submission Feedback:</h1>
                   <div id="left-feedback">
-                    <button className="submission-button" onClick={() => this.activateTab("submission")}>Submission</button>
-                    <button className="submission-button" onClick={() => this.activateTab("script")}>Test Script</button>
+                    <button id="submission" ref="submission-button active" className="submission-button active" onClick={() => this.activateTab("submission")}>Submission</button>
+                    <button id="script" ref="submission-button" className="submission-button" onClick={() => this.activateTab("script")}>Test Script</button>
                     <div id="submission" ref="code-feedback active" className="code-feedback active">
                       <Highlight className="cpp">{`
   #include <iostream>
