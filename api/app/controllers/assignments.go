@@ -17,7 +17,7 @@ var AssignmentsIndex = http.HandlerFunc(
 			var status int
 			var msg string
 			params := mux.Vars(r)
-			class_id, _ := strconv.ParseInt(params["id"], 10, 64)
+			class_id, _ := strconv.ParseInt(params["cid"], 10, 64)
 			assignments, err := models.LayerInstance().Assignment.Get(models.AssignmentQuery{Class_id: class_id}, "")
 			if err != nil {
 				status = 500
@@ -44,7 +44,15 @@ var AssignmentsShow = http.HandlerFunc(
 			params := mux.Vars(r)
 			var status int
 			var msg string
-			assignment, err := models.LayerInstance().Assignment.GetByID(params["id"])
+			var result interface{}
+			userId := getClaims(r)
+			user, err := models.LayerInstance().User.GetByID(userId)
+			if !user.Is_professor {
+				result, err = models.LayerInstance().Assignment.GetByID(params["aid"])
+				if !utilities.BeforeDeadline(result.(models.Assignment).Deadline) {
+
+				}
+			}
 			if err != nil {
 				status = 500
 				msg = err.Error()
@@ -53,9 +61,9 @@ var AssignmentsShow = http.HandlerFunc(
 				msg = "Success"
 			}
 			JSON, _ := json.Marshal(map[string]interface{}{
-				"status":     status,
-				"message":    msg,
-				"assignment": assignment,
+				"status":  status,
+				"message": msg,
+				"result":  result,
 			})
 			w.Write(JSON)
 		}
@@ -77,15 +85,19 @@ var AssignmentsCreate = http.HandlerFunc(
 				status = 400
 				msg = "Invalid permissions to create an assignment"
 			} else {
-				class_id, _ := strconv.ParseInt(params["id"], 10, 64)
-				assignment.Class_id = class_id
-				assignment, err = models.LayerInstance().Assignment.Insert(assignment)
+				class_id, _ := strconv.ParseInt(params["cid"], 10, 64)
+				_, err := models.LayerInstance().Class.GetByID(params["cid"])
+				if err == nil {
+					assignment.Class_id = class_id
+					assignment, err = models.LayerInstance().Assignment.Insert(assignment)
+					if err == nil {
+						status = 200
+						msg = "Success"
+					}
+				}
 				if err != nil {
 					status = 500
 					msg = err.Error()
-				} else {
-					status = 200
-					msg = "Success"
 				}
 			}
 			JSON, _ := json.Marshal(map[string]interface{}{
@@ -107,13 +119,13 @@ var AssignmentsUpdate = http.HandlerFunc(
 			var status int
 			var msg string
 			creator_id := getClaims(r)
-			updated, err := models.LayerInstance().Assignment.GetByID(params["id"])
+			updated, err := models.LayerInstance().Assignment.GetByID(params["aid"])
 			if err != nil || !hasPermissions(creator_id, strconv.FormatInt(updated.Class_id, 10)) {
 				status = 400
 				msg = "Invalid permissions to update assignment"
 			} else {
 				updates, err := models.NewAssignment(r)
-				updated, err = models.LayerInstance().Assignment.Update(params["id"], updates)
+				updated, err = models.LayerInstance().Assignment.Update(params["aid"], updates)
 				if err != nil {
 					status = 500
 					msg = err.Error()
@@ -141,12 +153,12 @@ var AssignmentsDelete = http.HandlerFunc(
 			var msg string
 			params := mux.Vars(r)
 			creator_id := getClaims(r)
-			assignment, err := models.LayerInstance().Assignment.GetByID(params["id"])
+			assignment, err := models.LayerInstance().Assignment.GetByID(params["aid"])
 			if !hasPermissions(creator_id, strconv.FormatInt(assignment.Class_id, 10)) {
 				status = 500
 				msg = "Invalid permissions to delete assignment"
 			} else {
-				err = models.LayerInstance().Assignment.Delete(params["id"])
+				err = models.LayerInstance().Assignment.Delete(params["aid"])
 				if err != nil {
 					status = 500
 					msg = err.Error()
