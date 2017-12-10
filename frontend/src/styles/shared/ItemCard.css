@@ -28,3 +28,7 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.card-text {
+  height: 60px;
+}
