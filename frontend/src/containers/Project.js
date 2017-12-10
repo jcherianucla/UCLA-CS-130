@@ -93,6 +93,9 @@ class Project extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Login", "Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]}/>
+          <div>
+            <p className="dark-gray"><b>Project Description:</b> Project 2 Description goes here. It will be whatever the professor types in on the create for the project creation. We will update it to be something dynamic when we hook up the frontend and backend soon </p>
+          </div>
           { this.state.role === "student" ?
             <div>
               { this.state.delta > 0 ?

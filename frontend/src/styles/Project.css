@@ -73,3 +73,7 @@
 .submission-button:focus {
   color: #868686;
 }
+
+.recharts-wrapper {
+  left: -50px;
+}
