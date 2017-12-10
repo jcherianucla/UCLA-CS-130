@@ -27,7 +27,7 @@ type ClassTable struct {
 // Validator and json tags are used for convenient serialization and
 // deserialization.
 type Class struct {
-	Id           int64     `valid:"-" json:"-"`
+	Id           int64     `valid:"-" json:"id"`
 	Name         string    `valid:"required" json:"name"`
 	Description  string    `valid:"-" json:"description"`
 	Quarter      string    `valid:"required" json:"quarter"`
