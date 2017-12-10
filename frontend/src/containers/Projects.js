@@ -77,6 +77,7 @@ class Projects extends Component {
                         <div>
                           <ItemCard
                             title={item.name}
+                            deleteLink={'http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments/'+ item.id}
                             editLink={self.professorUpdateProjectLink(self.props.match.params.class_id, item.id)}
                             link={'/classes/' + self.props.match.params.class_id + '/projects/' + item.id}
                             history={self.props.history}

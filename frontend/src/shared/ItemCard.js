@@ -25,7 +25,7 @@ class ItemCard extends Component {
     console.log('Reloading classes page');
   }
 
-  deleteClass(deleteLink) {
+  deleteProjectOrClass(deleteLink) {
     let token = localStorage.getItem('token');
     let self = this
     fetch(deleteLink, {
@@ -62,7 +62,7 @@ class ItemCard extends Component {
                 </CardText>
                 { localStorage.getItem('role') === "professor" ?
                     <CardActions>
-                      <FlatButton label="Delete" onClick={() => this.deleteClass(this.props.deleteLink)} style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
+                      <FlatButton label="Delete" onClick={() => this.deleteProjectOrClass(this.props.deleteLink)} style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
                       <FlatButton label="Edit" onClick={() => this.editProjectOrClass(this.props.editLink)} style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
                     </CardActions> 
                     :
