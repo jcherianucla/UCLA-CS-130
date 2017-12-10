@@ -12,6 +12,9 @@ import '../styles/shared/Page.css';
 class Login extends Component {
 
   componentWillMount() {
+    if (localStorage.getItem('role') !== "" && localStorage.getItem('token') !== "") {
+      this.props.history.push('/classes');
+    }
     let state = this.props.history.location.state;
     if (state == null) {
       let role = localStorage.getItem('role');
