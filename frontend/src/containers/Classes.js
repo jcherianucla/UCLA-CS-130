@@ -70,7 +70,7 @@ class Classes extends Component {
               {
                 this.state.classes.map(function(item, key){
                   return(
-                    <Col>
+                    <Col key={item.id}>
                       <div>
                         <ItemCard
                           title={item.name}
