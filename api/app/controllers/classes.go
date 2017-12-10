@@ -24,9 +24,15 @@ var ClassesIndex = http.HandlerFunc(
 		w.Header().Set("Content-Type", "application/json")
 		var status int
 		var msg string
+		var classes []models.Class
 		strId := getClaims(r)
-		creator_id, _ := strconv.ParseInt(strId, 10, 64)
-		classes, err := models.LayerInstance().Class.Get(models.ClassQuery{Creator_id: creator_id}, "")
+		user, err := models.LayerInstance().User.GetByID(strId)
+		if user.Is_professor {
+			creator_id, _ := strconv.ParseInt(strId, 10, 64)
+			classes, err = models.LayerInstance().Class.Get(models.ClassQuery{Creator_id: creator_id}, "")
+		} else {
+			classes, err = models.LayerInstance().Enrolled.GetClasses(strId)
+		}
 		if err != nil {
 			status = 500
 			msg = err.Error()
@@ -91,6 +97,7 @@ var ClassesCreate = http.HandlerFunc(
 					err = models.LayerInstance().Enrolled.Insert(strconv.FormatInt(class.Id, 10), f)
 				}
 				if err != nil {
+					_ = models.LayerInstance().Class.Delete(strconv.FormatInt(class.Id, 10))
 					status = 500
 					msg = err.Error()
 				} else {
@@ -152,7 +159,9 @@ var ClassesDelete = http.HandlerFunc(
 			status = 500
 			msg = "Invalid permissions to delete class"
 		} else {
+			// Delete class and the enrollments
 			err := models.LayerInstance().Class.Delete(params["id"])
+			err = models.LayerInstance().Enrolled.DeleteClass(params["id"])
 			if err != nil {
 				status = 500
 				msg = err.Error()
