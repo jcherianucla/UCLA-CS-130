@@ -70,7 +70,6 @@ class Projects extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]}/>
-          <br /> <br />
           <p ref="error" className="red"></p>
           <Grid fluid>
               <Row>

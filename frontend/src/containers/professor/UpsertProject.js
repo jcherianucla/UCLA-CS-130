@@ -73,7 +73,6 @@ class ProfessorUpsertProject extends Component {
             :
             <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Edit Project", this.props.match.params.class_id, this.props.match.params.project_id]]} />
           }
-          <br /> <br />
           <p ref="error" className="red"></p>
             <div className="create-form">
               <form onSubmit={(e) => this.createProject(e)} encType="multipart/form-data" method="post">
