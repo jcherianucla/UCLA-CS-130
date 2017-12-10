@@ -144,7 +144,7 @@ class Project extends Component {
                   <div id="right-feedback">
                     <h2 id="feedback-score" className="gray">Score: 67%</h2>
                     <br />
-                    <p className="error">test_case_3: Off-by-one error</p>
+                    <p className="red">test_case_3: Off-by-one error</p>
                   </div>
                 </div>
               }
