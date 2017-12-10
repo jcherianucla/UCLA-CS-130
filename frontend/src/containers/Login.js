@@ -12,18 +12,18 @@ import '../styles/shared/Page.css';
 class Login extends Component {
 
   componentWillMount() {
+    let state = this.props.history.location.state;
+    if (state != null) {
+      this.setState({role: state.role});
+    }
+    else {
+      let role = localStorage.getItem('role');
+      if (role != null) {
+        this.setState({role: role});
+      }
+    }
     if (localStorage.getItem('role') !== "" && localStorage.getItem('token') !== "") {
       this.props.history.push('/classes');
-    }
-    let state = this.props.history.location.state;
-    if (state == null) {
-      let role = localStorage.getItem('role');
-      if (role == null) {
-        this.props.history.push('/');
-      }
-      this.setState({role: role});
-    } else {
-      this.setState({role: state.role});
     }
   }
 
