@@ -10,6 +10,12 @@ import '../../styles/professor/UpsertClass.css';
 
 class ProfessorUpsertClass extends Component {
 
+  componentWillMount() {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
+  }
+
   getFile() {
     var x = document.getElementById("upload").value;
     if (x === "") {

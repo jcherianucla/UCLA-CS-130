@@ -35,6 +35,9 @@ class Project extends Component {
   }
 
   componentWillMount () {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
     let role = localStorage.getItem('role');
     if (role == null) {
       this.props.history.push('/login');

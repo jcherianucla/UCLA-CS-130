@@ -9,6 +9,12 @@ import '../../styles/professor/UpsertProject.css';
 */
 class ProfessorUpsertProject extends Component {
 
+  componentWillMount() {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
+  }
+
   projects(class_id) {
     this.props.history.push('/classes/' + this.props.match.params.class_id);
   }
