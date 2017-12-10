@@ -20,32 +20,36 @@ func hasPermissions(creator_id, class_id string) bool {
 
 var ClassesIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
+		utilities.Sugar.Infof("HEVOFNCDJROQPNVBWRTFJNBEFQEF")
 		// Set headers
 		utilities.SetupResponse(&w)
-		var status int
-		var msg string
-		var classes []models.Class
-		strId := getClaims(r)
-		user, err := models.LayerInstance().User.GetByID(strId)
-		if user.Is_professor {
-			creator_id, _ := strconv.ParseInt(strId, 10, 64)
-			classes, err = models.LayerInstance().Class.Get(models.ClassQuery{Creator_id: creator_id}, "")
-		} else {
-			classes, err = models.LayerInstance().Enrolled.GetClasses(strId)
+		if r.Method != "OPTIONS" {
+			utilities.Sugar.Infof("Suh")
+			var status int
+			var msg string
+			var classes []models.Class
+			strId := getClaims(r)
+			user, err := models.LayerInstance().User.GetByID(strId)
+			if user.Is_professor {
+				creator_id, _ := strconv.ParseInt(strId, 10, 64)
+				classes, err = models.LayerInstance().Class.Get(models.ClassQuery{Creator_id: creator_id}, "")
+			} else {
+				classes, err = models.LayerInstance().Enrolled.GetClasses(strId)
+			}
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"classes": classes,
+			})
+			w.Write(JSON)
 		}
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
-		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"classes": classes,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -53,23 +57,25 @@ var ClassesShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		class, err := models.LayerInstance().Class.GetByID(params["id"])
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
+		if r.Method != "OPTIONS" {
+			params := mux.Vars(r)
+			var status int
+			var msg string
+			class, err := models.LayerInstance().Class.GetByID(params["id"])
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"class":   class,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   class,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -77,42 +83,44 @@ var ClassesCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		var status int
-		var msg string
-		class, err := models.NewClass(r)
-		creator_id := getClaims(r)
-		user, err := models.LayerInstance().User.GetByID(creator_id)
-		if err != nil || !user.Is_professor {
-			status = 400
-			msg = "Invalid permissions to create a class."
-		} else {
-			class.Creator_id, _ = strconv.ParseInt(creator_id, 10, 64)
-			class, err = models.LayerInstance().Class.Insert(class)
-			if err != nil {
-				status = 500
-				msg = err.Error()
+		if r.Method != "OPTIONS" {
+			var status int
+			var msg string
+			class, err := models.NewClass(r)
+			creator_id := getClaims(r)
+			user, err := models.LayerInstance().User.GetByID(creator_id)
+			if err != nil || !user.Is_professor {
+				status = 400
+				msg = "Invalid permissions to create a class."
 			} else {
-				// Enroll students from csv
-				f, _, err := r.FormFile("myfile")
-				if err == nil {
-					err = models.LayerInstance().Enrolled.Insert(strconv.FormatInt(class.Id, 10), f)
-				}
+				class.Creator_id, _ = strconv.ParseInt(creator_id, 10, 64)
+				class, err = models.LayerInstance().Class.Insert(class)
 				if err != nil {
-					_ = models.LayerInstance().Class.Delete(strconv.FormatInt(class.Id, 10))
 					status = 500
 					msg = err.Error()
 				} else {
-					status = 200
-					msg = "Success"
+					// Enroll students from csv
+					f, _, err := r.FormFile("myfile")
+					if err == nil {
+						err = models.LayerInstance().Enrolled.Insert(strconv.FormatInt(class.Id, 10), f)
+					}
+					if err != nil {
+						_ = models.LayerInstance().Class.Delete(strconv.FormatInt(class.Id, 10))
+						status = 500
+						msg = err.Error()
+					} else {
+						status = 200
+						msg = "Success"
+					}
 				}
 			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"class":   class,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   class,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -120,31 +128,33 @@ var ClassesUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		var updated = models.Class{}
-		creator_id := getClaims(r)
-		if !hasPermissions(creator_id, params["id"]) {
-			status = 400
-			msg = "Invalid permissions to update class"
-		} else {
-			updates, err := models.NewClass(r)
-			updated, err = models.LayerInstance().Class.Update(params["id"], updates)
-			if err != nil {
-				status = 500
-				msg = err.Error()
+		if r.Method != "OPTIONS" {
+			params := mux.Vars(r)
+			var status int
+			var msg string
+			var updated = models.Class{}
+			creator_id := getClaims(r)
+			if !hasPermissions(creator_id, params["id"]) {
+				status = 400
+				msg = "Invalid permissions to update class"
 			} else {
-				status = 200
-				msg = "Success"
+				updates, err := models.NewClass(r)
+				updated, err = models.LayerInstance().Class.Update(params["id"], updates)
+				if err != nil {
+					status = 500
+					msg = err.Error()
+				} else {
+					status = 200
+					msg = "Success"
+				}
 			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"class":   updated,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   updated,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -152,29 +162,31 @@ var ClassesDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		creator_id := getClaims(r)
-		if !hasPermissions(creator_id, params["id"]) {
-			status = 500
-			msg = "Invalid permissions to delete class"
-		} else {
-			// Delete class and the enrollments
-			err := models.LayerInstance().Class.Delete(params["id"])
-			err = models.LayerInstance().Enrolled.DeleteClass(params["id"])
-			if err != nil {
+		if r.Method != "OPTIONS" {
+			params := mux.Vars(r)
+			var status int
+			var msg string
+			creator_id := getClaims(r)
+			if !hasPermissions(creator_id, params["id"]) {
 				status = 500
-				msg = err.Error()
+				msg = "Invalid permissions to delete class"
 			} else {
-				status = 200
-				msg = "Success"
+				// Delete class and the enrollments
+				err := models.LayerInstance().Class.Delete(params["id"])
+				err = models.LayerInstance().Enrolled.DeleteClass(params["id"])
+				if err != nil {
+					status = 500
+					msg = err.Error()
+				} else {
+					status = 200
+					msg = "Success"
+				}
 			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-		})
-		w.Write(JSON)
 	},
 )

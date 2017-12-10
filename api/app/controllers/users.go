@@ -28,24 +28,26 @@ func getClaims(r *http.Request) string {
 var UsersIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		utilities.SetupResponse(&w)
-		user_id := getClaims(r)
-		var status int
-		var msg string
-		user, err := models.LayerInstance().User.GetByID(user_id)
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
+		if r.Method != "OPTIONS" {
+			utilities.SetupResponse(&w)
+			user_id := getClaims(r)
+			var status int
+			var msg string
+			user, err := models.LayerInstance().User.GetByID(user_id)
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"user":    user,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"user":    user,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -55,23 +57,25 @@ var UsersShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		user, err := models.LayerInstance().User.GetByID(params["id"])
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
+		if r.Method != "OPTIONS" {
+			params := mux.Vars(r)
+			var status int
+			var msg string
+			user, err := models.LayerInstance().User.GetByID(params["id"])
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"user":    user,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"user":    user,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -81,33 +85,35 @@ var UsersBOL = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		user, err := models.NewUser(r)
-		// BOL is for students only
-		user.Is_professor = false
-		user.Password = utilities.DEFAULT_PASSWORD
-		var status int
-		var msg, token string
-		_, err = models.LayerInstance().User.Insert(user)
-		if err == nil || strings.Contains(err.Error(), "User already exists") {
-			user, err = models.LayerInstance().User.Login(user)
-			if err != nil {
+		if r.Method != "OPTIONS" {
+			user, err := models.NewUser(r)
+			// BOL is for students only
+			user.Is_professor = false
+			user.Password = utilities.DEFAULT_PASSWORD
+			var status int
+			var msg, token string
+			_, err = models.LayerInstance().User.Insert(user)
+			if err == nil || strings.Contains(err.Error(), "User already exists") {
+				user, err = models.LayerInstance().User.Login(user)
+				if err != nil {
+					status = 500
+					msg = err.Error()
+				} else {
+					status = 200
+					msg = "Success"
+					token = user.GenerateJWT()
+				}
+			} else {
 				status = 500
 				msg = err.Error()
-			} else {
-				status = 200
-				msg = "Success"
-				token = user.GenerateJWT()
 			}
-		} else {
-			status = 500
-			msg = err.Error()
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"token":   token,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"token":   token,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -117,23 +123,25 @@ var UsersCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		user, err := models.NewUser(r)
-		user, err = models.LayerInstance().User.Insert(user)
-		var status int
-		var msg string
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
+		if r.Method != "OPTIONS" {
+			user, err := models.NewUser(r)
+			user, err = models.LayerInstance().User.Insert(user)
+			var status int
+			var msg string
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"user":    user,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"user":    user,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -143,24 +151,26 @@ var UsersLogin = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		user, err := models.NewUser(r)
-		user, err = models.LayerInstance().User.Login(user)
-		var status int
-		var msg, token string
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
-			token = user.GenerateJWT()
+		if r.Method != "OPTIONS" {
+			user, err := models.NewUser(r)
+			user, err = models.LayerInstance().User.Login(user)
+			var status int
+			var msg, token string
+			if err != nil {
+				status = 500
+				msg = err.Error()
+			} else {
+				status = 200
+				msg = "Success"
+				token = user.GenerateJWT()
+			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"token":   token,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"token":   token,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -168,30 +178,32 @@ var UsersUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		var updated = models.User{}
-		if params["id"] != getClaims(r) {
-			status = 500
-			msg = "Invalid permissions to update user"
-		} else {
-			updates, err := models.NewUser(r)
-			updated, err = models.LayerInstance().User.Update(params["id"], updates)
-			if err != nil {
+		if r.Method != "OPTIONS" {
+			params := mux.Vars(r)
+			var status int
+			var msg string
+			var updated = models.User{}
+			if params["id"] != getClaims(r) {
 				status = 500
-				msg = err.Error()
+				msg = "Invalid permissions to update user"
 			} else {
-				status = 200
-				msg = "Success"
+				updates, err := models.NewUser(r)
+				updated, err = models.LayerInstance().User.Update(params["id"], updates)
+				if err != nil {
+					status = 500
+					msg = err.Error()
+				} else {
+					status = 200
+					msg = "Success"
+				}
 			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+				"user":    updated,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"user":    updated,
-		})
-		w.Write(JSON)
 	},
 )
 
@@ -199,31 +211,33 @@ var UsersDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
 		utilities.SetupResponse(&w)
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		if params["id"] != getClaims(r) {
-			status = 500
-			msg = "Invalid permissions to delete user"
-		} else {
-			user, err := models.LayerInstance().User.GetByID(params["id"])
-			if !user.Is_professor {
-				// Unenroll a student from the classes
-				_ = models.LayerInstance().Enrolled.Unenroll(params["id"])
-			}
-			err = models.LayerInstance().User.Delete(params["id"])
-			if err != nil {
+		if r.Method != "OPTIONS" {
+			params := mux.Vars(r)
+			var status int
+			var msg string
+			if params["id"] != getClaims(r) {
 				status = 500
-				msg = err.Error()
+				msg = "Invalid permissions to delete user"
 			} else {
-				status = 200
-				msg = "Success"
+				user, err := models.LayerInstance().User.GetByID(params["id"])
+				if !user.Is_professor {
+					// Unenroll a student from the classes
+					_ = models.LayerInstance().Enrolled.Unenroll(params["id"])
+				}
+				err = models.LayerInstance().User.Delete(params["id"])
+				if err != nil {
+					status = 500
+					msg = err.Error()
+				} else {
+					status = 200
+					msg = "Success"
+				}
 			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":  status,
+				"message": msg,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-		})
-		w.Write(JSON)
 	},
 )
