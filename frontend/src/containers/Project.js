@@ -109,8 +109,8 @@ class Project extends Component {
                 <div>
                   <h1 className="dark-gray text-center">Submission Feedback:</h1>
                   <div id="left-feedback">
-                    <button onClick={() => this.activateTab("submission")}>Submission</button>
-                    <button onClick={() => this.activateTab("script")}>Test Script</button>
+                    <button className="submission-button" onClick={() => this.activateTab("submission")}>Submission</button>
+                    <button className="submission-button" onClick={() => this.activateTab("script")}>Test Script</button>
                     <div id="submission" ref="code-feedback active" className="code-feedback active">
                       <Highlight className="cpp">{`
   #include <iostream>
