@@ -21,6 +21,9 @@ class Classes extends Component {
   }
 
   componentWillMount() {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
     this.loadCards();
   }
 
@@ -63,18 +66,18 @@ class Classes extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Classes"]} />
-          <br /> <br />
           <p ref="error" className="red"></p>
           <Grid fluid>
             <Row>
               {
                 this.state.classes.map(function(item, key){
                   return(
-                    <Col>
+                    <Col key={item.id}>
                       <div>
                         <ItemCard
                           title={item.name}
                           editLink={'/classes/' + item.id + '/edit'}
+                          deleteLink={'http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + item.id}
                           link={'/classes/' + item.id}
                           history={self.props.history}
                           cardText={item.description}

@@ -13,6 +13,42 @@ import '../styles/Projects.css';
 */
 class Projects extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      'projects': [],
+      'class_name': this.props.match.params.class_id
+    }
+  }
+
+  componentWillMount() {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
+    this.loadCurrentClass();
+    this.loadCards(this.props.match.params.class_id);
+  }
+
+  loadCurrentClass() {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.class !== null && responseJSON.class.name !== null) {
+        self.setState({'class_name': responseJSON.class.name});
+      }
+    });
+  }
+
   professorUpdateProjectLink(class_id, project_id) {
     return '/classes/' + class_id + '/projects/' + project_id + '/edit';
   }
@@ -25,70 +61,58 @@ class Projects extends Component {
     return ("/classes/" + this.props.match.params.class_id + "/projects/" + project_id);
   }
 
+  loadCards(class_id) {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + class_id + '/assignments', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        if (responseJSON.assignments !== null) {
+          self.setState({'projects': responseJSON.assignments});
+        }
+      }
+    });
+  }
+
   render() {
+    let self = this;
     return (
       <div>
         <SidePanel />
         <div className="page">
-          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]}/>
-
+          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]} props={this.state}/>
+          <p ref="error" className="red"></p>
           <Grid fluid>
               <Row>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='Project 1'
-                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 1)}
-                      link={this.projectLink(1)}
-                      history={this.props.history}
-                      cardText='Project 1 description'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='Project 2'
-                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 2)}
-                      link={this.projectLink(2)}
-                      history={this.props.history}
-                      cardText='Project 2 description'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='Project 3'
-                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 3)}
-                      link={this.projectLink(3)}
-                      history={this.props.history}
-                      cardText='Project 3 description'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='Project 4'
-                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 4)}
-                      link={this.projectLink(4)}
-                      history={this.props.history}
-                      cardText='Project 4 description'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='Project 5'
-                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 5)}
-                      link={this.projectLink(5)}
-                      history={this.props.history}
-                      cardText='Project 5 description'
-                    />
-                  </div>
-                </Col>
+                {
+                  this.state.projects.map(function(item, key){
+                    return(
+                      <Col>
+                        <div>
+                          <ItemCard
+                            title={item.name}
+                            deleteLink={'http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments/'+ item.id}
+                            editLink={self.professorUpdateProjectLink(self.props.match.params.class_id, item.id)}
+                            link={'/classes/' + self.props.match.params.class_id + '/projects/' + item.id}
+                            history={self.props.history}
+                            cardText={item.description}
+                          />
+                        </div>
+                      </Col>
+                    );
+                  })
+                }
                 { localStorage.getItem('role') === "professor" ?
                   <Col>
                     <div>
