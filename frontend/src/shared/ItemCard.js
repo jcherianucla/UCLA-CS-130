@@ -27,7 +27,7 @@ class ItemCard extends Component {
                   title={this.props.title}
                   titleStyle={{'fontSize':'35px', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}
                 />
-                <CardText
+                <CardText className="card-text"
                   style={{'paddingTop': '0px', 'fontSize':'15px', 'color': '#868687', 'fontFamily': 'Circular-Book'}}
                 >
                   {this.props.cardText}
