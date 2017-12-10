@@ -2,6 +2,7 @@
 package main
 
 import (
+	"github.com/gorilla/handlers"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
 	"github.com/jcherianucla/UCLA-CS-130/api/config/router"
 	"github.com/jcherianucla/UCLA-CS-130/api/middleware"
@@ -17,7 +18,7 @@ func main() {
 		negroni.HandlerFunc(middleware.Logging),
 		negroni.NewLogger(),
 	)
-	n.UseHandler(r)
+	n.UseHandler(handlers.CORS()(r))
 
 	// Initialize global singleton with init
 	_ = models.LayerInstance()

@@ -11,6 +11,10 @@ class Header extends Component {
     this.props.history.push('/classes');
   }
 
+  Logout() {
+    localStorage.setItem('token', "");
+  }
+
   render() {
     return (
     	<div>
@@ -20,6 +24,14 @@ class Header extends Component {
               <a href="/" onClick={() => this.Home()}>
                 <div className="logo"/>
               </a>
+            </li>
+            <li>
+              <a href="/" onClick={() => this.Logout()}>
+                <div className="logout">
+                  <h1>Logout</h1>
+                </div>
+              </a>
+              
             </li>
             <li>
               <div className="faq">

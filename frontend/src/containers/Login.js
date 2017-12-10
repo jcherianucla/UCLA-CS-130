@@ -30,6 +30,7 @@ class Login extends Component {
 
   login() {
     localStorage.setItem('role', this.state.role);
+    localStorage.setItem('token', "1234321");
     this.classes();
   }
 

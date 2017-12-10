@@ -1,12 +1,11 @@
 package models
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/gorilla/schema"
 	"github.com/jcherianucla/UCLA-CS-130/api/config/db"
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"github.com/pkg/errors"
-	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -80,13 +79,12 @@ type AssignmentQuery struct {
 }
 
 func NewAssignment(r *http.Request) (assignment Assignment, err error) {
-	b, err := ioutil.ReadAll(r.Body)
+	err = r.ParseMultipartForm(utilities.MAX_STORAGE)
 	if err != nil {
-		err = errors.Wrapf(err, "Couldn't read request body")
 		return
 	}
-	// Converts JSON to assignment
-	json.Unmarshal(b, &assignment)
+	decoder := schema.NewDecoder()
+	err = decoder.Decode(&assignment, r.PostForm)
 	return
 }
 

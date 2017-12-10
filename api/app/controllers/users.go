@@ -204,7 +204,12 @@ var UsersDelete = http.HandlerFunc(
 			status = 500
 			msg = "Invalid permissions to delete user"
 		} else {
-			err := models.LayerInstance().User.Delete(params["id"])
+			user, err := models.LayerInstance().User.GetByID(params["id"])
+			if !user.Is_professor {
+				// Unenroll a student from the classes
+				_ = models.LayerInstance().Enrolled.Unenroll(params["id"])
+			}
+			err = models.LayerInstance().User.Delete(params["id"])
 			if err != nil {
 				status = 500
 				msg = err.Error()

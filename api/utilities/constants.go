@@ -3,6 +3,8 @@ package utilities
 const (
 	// Default secret for JWT
 	DEFAULT_TOKEN_SECRET = "47X86A1Fnr6TqkpEyK0X"
+	// Default storage size for Multipart forms
+	MAX_STORAGE = 32 << 20
 )
 
 // The port that the backend server runs on
