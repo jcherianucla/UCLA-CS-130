@@ -27,7 +27,7 @@ type AssignmentTable struct {
 // Validator and json tags are used for convenient serialization and
 // deserialization.
 type Assignment struct {
-	Id            int64              `valid:"-" json:"-"`
+	Id            int64              `valid:"-" json:"id"`
 	Name          string             `valid:"required" json:"name"`
 	Description   string             `valid:"-" json:"description"`
 	Deadline      time.Time          `valid:"required" json:"deadline"`
