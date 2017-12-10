@@ -20,6 +20,29 @@ class ItemCard extends Component {
     this.props.history.push(editLink);
   }
 
+  reloadClasses() {
+    window.location.reload();
+    console.log('Reloading classes page');
+  }
+
+  deleteProjectOrClass(deleteLink) {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch(deleteLink, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+    })
+    .then(response => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message === 'Success') {
+        self.reloadClasses();
+      }
+    })
+  }
+
   render() {
     return (
       <MuiThemeProvider>
@@ -39,8 +62,8 @@ class ItemCard extends Component {
                 </CardText>
                 { localStorage.getItem('role') === "professor" ?
                     <CardActions>
-                      <FlatButton label="Delete" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
-                      <FlatButton onClick={() => this.editProjectOrClass(this.props.editLink)} label="Edit" style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
+                      <FlatButton label="Delete" onClick={() => this.deleteProjectOrClass(this.props.deleteLink)} style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
+                      <FlatButton label="Edit" onClick={() => this.editProjectOrClass(this.props.editLink)} style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>
                     </CardActions> 
                     :
                     <CardActions /> 

@@ -21,6 +21,9 @@ class Projects extends Component {
   }
 
   componentWillMount() {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
     this.loadCards(this.props.match.params.class_id);
   }
 
@@ -77,6 +80,7 @@ class Projects extends Component {
                         <div>
                           <ItemCard
                             title={item.name}
+                            deleteLink={'http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments/'+ item.id}
                             editLink={self.professorUpdateProjectLink(self.props.match.params.class_id, item.id)}
                             link={'/classes/' + self.props.match.params.class_id + '/projects/' + item.id}
                             history={self.props.history}
