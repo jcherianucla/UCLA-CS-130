@@ -57,6 +57,12 @@ class ProfessorUpsertProject extends Component {
     });
   }
 
+  constrainLength(id) {
+    var x = document.getElementById(id);
+    if (x.value.length > x.maxLength)
+      x.value = x.value.slice(0, x.maxLength);
+  }
+
   render() {
     return (
       <div>
@@ -92,11 +98,11 @@ class ProfessorUpsertProject extends Component {
 
                 <div className="deadline-wrapper">
                   <label className="upsert-label"><b>Project Deadline</b></label>
-                  <input ref="month" type="text" placeholder="MM" maxLength="2"/> &nbsp; / &nbsp;
-                  <input ref="day" type="text" placeholder="DD" maxLength="2"/> &nbsp; / &nbsp;
-                  <input ref="year" type="text" placeholder="YY" maxLength="2"/> &nbsp; &nbsp; &nbsp;
-                  <input ref="hour" type="text" placeholder="00" maxLength="2"/> &nbsp; : &nbsp;
-                  <input ref="minute" type="text" placeholder="00" maxLength="2"/>
+                  <input type="number" id="month" onInput={() => this.constrainLength("month")} ref="month" placeholder="MM" maxLength="2"/> &nbsp; / &nbsp;
+                  <input type="number" id="day" onInput={() => this.constrainLength("day")} ref="day" placeholder="DD" maxLength="2"/> &nbsp; / &nbsp;
+                  <input type="number" id="year" onInput={() => this.constrainLength("year")} ref="year" placeholder="YY" maxLength="2"/> &nbsp; &nbsp; &nbsp;
+                  <input type="number" id="hour" onInput={() => this.constrainLength("hour")} ref="hour" placeholder="00" maxLength="2"/> &nbsp; : &nbsp;
+                  <input type="number" id="minute" onInput={() => this.constrainLength("minute")} ref="minute" placeholder="00" maxLength="2"/>
                 </div>
 
                 <div>

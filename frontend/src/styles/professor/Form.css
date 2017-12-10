@@ -37,13 +37,13 @@
   margin-left: 20px;
 }
 
-.create-form input[type=text]::placeholder, textarea::placeholder {
+.create-form input[type=text]::placeholder, input[type=number], textarea::placeholder {
   color: #A0A0A0;
   display: block;
   font-size: 14px;
 }
 
-.create-form input[type=text], textarea {
+.create-form input[type=text], input[type=number], textarea {
   border-radius: 5px !important;
   box-shadow: 0 10px 10px rgba(0,0,0,0.05), 0 6px 6px rgba(0,0,0,0.05) !important;
   width: 40%;
