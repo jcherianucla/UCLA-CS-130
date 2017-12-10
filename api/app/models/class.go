@@ -30,8 +30,8 @@ type Class struct {
 	Id           int64     `valid:"-" json:"id"`
 	Name         string    `valid:"required" json:"name"`
 	Description  string    `valid:"-" json:"description"`
-	Quarter      string    `valid:"required" json:"quarter"`
-	Year         string    `valid:"required" json:"year"`
+	Quarter      string    `valid:"-" json:"quarter"`
+	Year         string    `valid:"-" json:"year"`
 	Creator_id   int64     `valid:"-" json:"creator_id"`
 	Time_created time.Time `valid:"-" json:"-"`
 }
