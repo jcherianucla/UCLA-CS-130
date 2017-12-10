@@ -17,64 +17,56 @@ class Classes extends Component {
     this.props.history.push('/classes/' + class_id + '/edit');
   }
 
+  loadCards() {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        self.createCards(responseJSON.classes);
+      }
+    });
+  }
+
+  createCards(classes) {
+    classes.map(function(item, key){
+      return(
+        <Col>
+          <div>
+            <ItemCard
+              title={item.name}
+              link={'/classes/' + item.id}
+              history={this.props.history}
+              cardText={item.description}
+            />
+          </div>
+        </Col>
+      );
+    })
+  }
+
   render() {
     return (
       <div>
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Classes"]} />
+          <br /> <br />
+          <p ref="error" className="red"></p>
           <Grid fluid>
               <Row>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='CS 31'
-                      link='/classes/1'
-                      history={this.props.history}
-                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='CS 31'
-                      link='/classes/2'
-                      history={this.props.history}
-                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='CS 31'
-                      link='/classes/3'
-                      history={this.props.history}
-                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='CS 31'
-                      link='/classes/4'
-                      history={this.props.history}
-                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
-                    />
-                  </div>
-                </Col>
-                <Col>
-                  <div>
-                    <ItemCard
-                      title='CS 31'
-                      link='/classes/5'
-                      history={this.props.history}
-                      cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
-                    />
-                  </div>
-                </Col>
+                { this.loadCards() }
                 { localStorage.getItem('role') === "professor" ?
                   <Col>
                     <div>
