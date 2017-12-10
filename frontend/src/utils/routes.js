@@ -11,6 +11,7 @@ var routes = {
   "Edit Class": "/classes/:class_id/edit",
   "Create Project": "/classes/:class_id/projects/create",
   "Edit Project": "/classes/:class_id/projects/:project_id/edit",
+  "FAQ": "/faq",
 }
 
 export default routes

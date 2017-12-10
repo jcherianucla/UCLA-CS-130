@@ -15,6 +15,10 @@ class Header extends Component {
     localStorage.setItem('token', "");
   }
 
+  FAQ() {
+    this.props.history.push('/faq');
+  }
+
   render() {
     return (
     	<div>
@@ -34,9 +38,11 @@ class Header extends Component {
               
             </li>
             <li>
-              <div className="faq">
-                <h1>FAQ</h1>
-              </div>
+              <a href="/faq" onClick={() => this.FAQ()}>
+                <div className="faq">
+                  <h1>FAQ</h1>
+                </div>
+              </a>
             </li>
           </ul>
 	      </div>
