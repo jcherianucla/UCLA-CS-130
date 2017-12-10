@@ -98,10 +98,10 @@ class ProfessorUpsertClass extends Component {
             <div className="create-form">
               <form onSubmit={(e) => this.createClass(e)} encType="multipart/form-data" method="post">
                 <label className="upsert-label"><b>Class Name</b></label>
-                <input ref="name" id="name" name="name" type="text" placeholder="Enter class name"/>
+                <input ref="name" id="name" name="name" type="text" placeholder="Enter class name" required/>
                 
                 <label className="upsert-label"><b>Class Description</b></label>
-                <textarea ref="description" id="description" name="description" placeholder="Enter short description of your class" rows="3" cols="40"/>
+                <textarea ref="description" id="description" name="description" placeholder="Enter short description of your class" rows="3" cols="40" required/>
 
                 <label className="upsert-label"><b>Upload Student Roster</b></label>
                 <div className="upload-btn-wrapper">
