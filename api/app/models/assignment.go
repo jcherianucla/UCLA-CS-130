@@ -22,61 +22,26 @@ type AssignmentTable struct {
 	connection *db.Db
 }
 
-// Represents an enum for languages
-type Language int
-
-const (
-	Cpp Language = iota
-	C
-	Java
-)
-
-func GetLanguage(lang Language) string {
-	switch lang {
-	case Cpp:
-		return "C++"
-	case C:
-		return "C"
-	case Java:
-		return "Java"
-	default:
-		return "Unknown"
-	}
-}
-
-func SetLanguage(lang string) Language {
-	switch lang {
-	case "C++":
-		return Cpp
-	case "C":
-		return C
-	case "Java":
-		return Java
-	default:
-		return -1
-	}
-}
-
 // Represents an Assignment row in the Assignment table within the DB.
 // Validator and json tags are used for convenient serialization and
 // deserialization.
 type Assignment struct {
-	Id            int64     `valid:"-" json:"-"`
-	Name          string    `valid:"required" json:"name"`
-	Description   string    `valid:"-" json:"description"`
-	Deadline      time.Time `valid:"required" json:"deadline"`
-	Lang          Language  `valid:"required" json:"language"`
-	Grade_script  []byte    `valid:"-" json:"-"`
-	Sanity_script []byte    `valid:"-" json:"-"`
-	Class_id      int64     `valid:"-" json:"class_id"`
-	Time_created  time.Time `valid:"-" json:"-"`
+	Id            int64              `valid:"-" json:"-"`
+	Name          string             `valid:"required" json:"name"`
+	Description   string             `valid:"-" json:"description"`
+	Deadline      time.Time          `valid:"required" json:"deadline"`
+	Lang          utilities.Language `valid:"required" json:"language"`
+	Grade_script  []byte             `valid:"-" json:"-"`
+	Sanity_script []byte             `valid:"-" json:"-"`
+	Class_id      int64              `valid:"-" json:"class_id"`
+	Time_created  time.Time          `valid:"-" json:"-"`
 }
 
 // Represents all fields an assignment can be queried over.
 type AssignmentQuery struct {
 	Id       int64
 	Name     string
-	Lang     Language
+	Lang     utilities.Language
 	Class_id int64
 }
 
@@ -109,20 +74,18 @@ func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	// Fill up basic information
 	for k, v := range r.PostForm {
 		k = strings.Title(k)
-		utilities.Sugar.Infof("Key: %s | Value: %s", k, v)
+		//utilities.Sugar.Infof("Key: %s | Value: %s", k, v)
 		if k == "Deadline" {
 			m[k], err = time.Parse("01-02-06 15:04", v[0])
 		} else if k == "Language" {
-			m[k] = SetLanguage(v[0])
+			m["Lang"] = utilities.SetLanguage(v[0])
 		} else {
 			m[k] = v[0]
 		}
 	}
 	storeFile(r, &m, "grade_script")
 	storeFile(r, &m, "sanity_script")
-	utilities.Sugar.Infof("Map: %v", m)
 	err = utilities.FillStruct(m, &assignment)
-	utilities.Sugar.Infof("Assignment: %v", assignment)
 	return
 }
 
