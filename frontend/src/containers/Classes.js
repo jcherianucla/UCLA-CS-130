@@ -13,8 +13,12 @@ import '../styles/shared/Page.css';
 */
 class Classes extends Component {
 
+  professorUpdateProjectLink(class_id) {
+    return '/classes/' + class_id + '/edit';
+  }
+
   professorUpdateClass(class_id) {
-    this.props.history.push('/classes/' + class_id + '/edit');
+    this.props.history.push(this.professorUpdateProjectLink(class_id));
   }
 
   render() {
@@ -29,6 +33,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
+                      editLink={this.professorUpdateProjectLink(1)}
                       link='/classes/1'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
@@ -39,6 +44,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
+                      editLink={this.professorUpdateProjectLink(2)}
                       link='/classes/2'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
@@ -49,6 +55,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
+                      editLink={this.professorUpdateProjectLink(3)}
                       link='/classes/3'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
@@ -59,6 +66,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
+                      editLink={this.professorUpdateProjectLink(4)}
                       link='/classes/4'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
@@ -69,6 +77,7 @@ class Classes extends Component {
                   <div>
                     <ItemCard
                       title='CS 31'
+                      editLink={this.professorUpdateProjectLink(5)}
                       link='/classes/5'
                       history={this.props.history}
                       cardText='Introductory computer science class at UCLA, aimed at teaching the fundamentals of C++'
