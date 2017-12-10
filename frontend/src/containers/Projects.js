@@ -53,7 +53,7 @@ class Projects extends Component {
       if (responseJSON.message !== 'Success') {
         self.refs.error.innerHTML = responseJSON.message;
       } else {
-        if (responseJSON.projects !== null) {
+        if (responseJSON.assignments !== null) {
           self.setState({'projects': responseJSON.assignments});
         }
       }
