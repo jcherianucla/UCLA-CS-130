@@ -13,8 +13,12 @@ import '../styles/Projects.css';
 */
 class Projects extends Component {
 
+  professorUpdateProjectLink(class_id, project_id) {
+    return '/classes/' + class_id + '/projects/' + project_id + '/edit';
+  }
+
   professorUpdateProject(class_id, project_id) {
-    this.props.history.push('/classes/' + class_id + '/projects' + project_id + '/edit');
+    this.props.history.push(this.professorUpdateProjectLink(class_id, project_id));
   }
 
   projectLink(project_id) {
@@ -34,6 +38,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 1'
+                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 1)}
                       link={this.projectLink(1)}
                       history={this.props.history}
                       cardText='Project 1 description'
@@ -44,6 +49,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 2'
+                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 2)}
                       link={this.projectLink(2)}
                       history={this.props.history}
                       cardText='Project 2 description'
@@ -54,6 +60,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 3'
+                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 3)}
                       link={this.projectLink(3)}
                       history={this.props.history}
                       cardText='Project 3 description'
@@ -64,6 +71,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 4'
+                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 4)}
                       link={this.projectLink(4)}
                       history={this.props.history}
                       cardText='Project 4 description'
@@ -74,6 +82,7 @@ class Projects extends Component {
                   <div>
                     <ItemCard
                       title='Project 5'
+                      editLink={this.professorUpdateProjectLink(this.props.match.params.class_id, 5)}
                       link={this.projectLink(5)}
                       history={this.props.history}
                       cardText='Project 5 description'
