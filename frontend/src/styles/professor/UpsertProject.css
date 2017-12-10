@@ -1,4 +1,4 @@
-.deadline-wrapper input[type=text]{
+.deadline-wrapper input[type=number]{
   display: inline;
   width: 40px;
   min-width: 0px;
@@ -8,6 +8,14 @@
 
 .deadline-wrapper {
   color: #A0A0A0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
 }
 
 
