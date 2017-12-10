@@ -21,6 +21,9 @@ class Projects extends Component {
   }
 
   componentWillMount() {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
     this.loadCards(this.props.match.params.class_id);
   }
 
