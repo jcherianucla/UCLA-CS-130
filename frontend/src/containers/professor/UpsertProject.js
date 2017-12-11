@@ -13,7 +13,7 @@ class ProfessorUpsertProject extends Component {
     super(props);
     this.state = {
       class_name: '',
-      project_name: this.props.match.params.project_id
+      project_name: ''
     }
     this.loadCurrentProject();
     this.loadCurrentClass();
@@ -162,7 +162,6 @@ class ProfessorUpsertProject extends Component {
     return (
       <div>
         <SidePanel />
-        { (this.state.class_name !== '') ?
         <div className="page">
           { window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create" ?
             <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], "Create Project"]} props={this.state}/>
@@ -180,14 +179,14 @@ class ProfessorUpsertProject extends Component {
 
                 <label className="upsert-label"><b>Upload Grading Script</b></label>
                 <div className="upload-btn-wrapper">
-                  <input ref="grading" id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload', 'filename')} accept=".sh"/>
+                  <input ref="grading" id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload', 'filename')} accept=".sh" required/>
                   <button className="btn">Upload .sh</button>
                   <label className="filename" id="filename"></label>
                 </div>
 
                 <label className="upsert-label"><b>Upload Sanity Testing Script</b></label>
                 <div className="upload-btn-wrapper">
-                  <input ref="sanity" id="upload2" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload2', 'filename2')} accept=".sh"/>
+                  <input ref="sanity" id="upload2" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload2', 'filename2')} accept=".sh" required/>
                   <button className="btn">Upload .sh</button>
                   <label className="filename" id="filename2"></label>
                 </div>
@@ -206,10 +205,7 @@ class ProfessorUpsertProject extends Component {
                 </div>
               </form>
             </div>
-          </div>
-          :
-          <div />
-        }
+        </div>
       </div>
     );
 

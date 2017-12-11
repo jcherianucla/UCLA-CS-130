@@ -102,9 +102,7 @@ class Classes extends Component {
               }
             </Row>
           </Grid>
-          
-        </div>
- 
+        </div> 
       </div>
     );
   }

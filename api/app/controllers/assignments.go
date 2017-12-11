@@ -43,21 +43,29 @@ var AssignmentsShow = http.HandlerFunc(
 		if r.Method != "OPTIONS" {
 			params := mux.Vars(r)
 			var status int
-			var msg, resultKey string
+			msg := "Success"
+			var resultKey string
 			var result interface{}
 			userId := getClaims(r)
+			assign_id, _ := strconv.ParseInt(params["aid"], 10, 64)
 			user, err := models.LayerInstance().User.GetByID(userId)
-			if !user.Is_professor {
-				result, err = models.LayerInstance().Assignment.GetByID(params["aid"])
+			assignment, err := models.LayerInstance().Assignment.GetByID(params["aid"])
+			if err == nil && !user.Is_professor {
 				resultKey = "assignment"
+				result = assignment
 				if !utilities.BeforeDeadline(result.(models.Assignment).Deadline) {
-					resultKey = "submission"
-
+					uid, _ := strconv.ParseInt(userId, 10, 64)
+					results, err := models.LayerInstance().Submission.Get(models.SubmissionQuery{User_id: uid, Assignment_id: assign_id}, "AND")
+					if err != nil {
+						resultKey = "submission"
+						result = results[0]
+					} else {
+						msg = "You have no submission"
+					}
 				}
 			} else {
 				resultKey = "analytics"
 				students, err := models.LayerInstance().Enrolled.GetStudents(params["cid"])
-				assign_id, _ := strconv.ParseInt(params["aid"], 10, 64)
 				submissions, err := models.LayerInstance().Submission.Get(models.SubmissionQuery{Assignment_id: assign_id}, "")
 				if err == nil {
 					r := make(map[string]interface{})
@@ -68,16 +76,16 @@ var AssignmentsShow = http.HandlerFunc(
 							s = append(s, submission.Post_results)
 						}
 						r["score"] = s
+						r["assignment"] = assignment
 						result = r
 					}
 				}
 			}
-			if err != nil {
+			if err != nil || result == nil {
 				status = 500
 				msg = err.Error()
 			} else {
 				status = 200
-				msg = "Success"
 			}
 			JSON, _ := json.Marshal(map[string]interface{}{
 				"status":  status,

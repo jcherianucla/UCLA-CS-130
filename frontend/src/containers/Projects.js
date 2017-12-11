@@ -90,7 +90,6 @@ class Projects extends Component {
     return (
       <div>
         <SidePanel />
-        { (this.state.class_name !== '') ?
         <div className="page">
           <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]} props={this.state}/>
           <p ref="error" className="red"></p>
@@ -129,10 +128,7 @@ class Projects extends Component {
                 }
               </Row>
             </Grid>
-          </div>
-          :
-          <div />
-        }
+        </div>
       </div>
     );
   }
