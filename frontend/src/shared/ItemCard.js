@@ -49,17 +49,19 @@ class ItemCard extends Component {
           <Card className="item-card">
             { !this.props.image ?
               <div>
-                <a href={this.props.link} onClick={(e) => this.go(e)} >
-                  <CardHeader className="card-header"
-                    title={this.props.title}
-                    titleStyle={{'fontSize':'35px', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}
-                  />
-                </a>
-                <CardText className="card-text"
-                  style={{'paddingTop': '0px', 'fontSize':'15px', 'color': '#868687', 'fontFamily': 'Circular-Book'}}
-                >
-                  {this.props.cardText}
-                </CardText>
+                <div className="card-content">
+                  <a href={this.props.link} onClick={(e) => this.go(e)} >
+                    <CardHeader
+                      title={this.props.title}
+                      titleStyle={{'fontSize':'22px', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}
+                    />
+                  </a>
+                  <CardText
+                    style={{'paddingTop': '0px', 'fontSize':'15px', 'color': '#868687', 'fontFamily': 'Circular-Book'}}
+                  >
+                    {this.props.cardText}
+                  </CardText>
+                </div>
                 { localStorage.getItem('role') === "professor" ?
                     <CardActions>
                       <FlatButton label="Delete" onClick={() => this.deleteProjectOrClass(this.props.deleteLink)} style={{'float': 'right', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}/>

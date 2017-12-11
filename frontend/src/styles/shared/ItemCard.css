@@ -37,3 +37,9 @@
   height: 65px;
   overflow:hidden;
 }
+
+.card-content {
+  height: 150px;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
