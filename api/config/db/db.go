@@ -24,6 +24,10 @@ var (
 		"id":           true,
 		"time_created": true,
 	}
+	SKIP_PARAM = map[string]bool{
+		"post_results": true,
+		"pre_results":  true,
+	}
 )
 
 // Represents the database pool with the DB specific
@@ -133,7 +137,7 @@ func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[strin
 		k := strings.ToLower(fields.Type().Field(i).Name)
 		v := fields.Field(i).Interface()
 		// Skip auto params
-		if AUTO_PARAM[k] {
+		if AUTO_PARAM[k] || SKIP_PARAM[k] {
 			continue
 		}
 		if first {
@@ -299,7 +303,7 @@ func (db *Db) Update(strId, table string, updates interface{}) (data map[string]
 		k := strings.ToLower(fields.Type().Field(i).Name)
 		v := fields.Field(i).Interface()
 		// Skip auto params or unset fields on the incoming User
-		if AUTO_PARAM[k] || utilities.IsUndeclared(fields.Field(i).Interface()) {
+		if AUTO_PARAM[k] || SKIP_PARAM[k] || utilities.IsUndeclared(fields.Field(i).Interface()) {
 			continue
 		}
 		if first {
