@@ -33,7 +33,8 @@ class Project extends Component {
       delta: due.getTime() - Date.now(),
       class_name: '',
       project_name: '',
-      key: Math.random()
+      key: Math.random(),
+      loaded: ''
     }
   }
 
@@ -82,6 +83,11 @@ class Project extends Component {
         });
         self.refs.chart.data = data;
         self.setState({key: Math.random()});
+        self.setState({loaded: true});
+      } else if (!responseJSON.submission) {
+        self.setState({due: new Date(responseJSON.assignment.deadline)});
+        self.tick();
+        self.setState({loaded: true});
       }
     });
   }
@@ -127,8 +133,9 @@ class Project extends Component {
 
   tick() {
     this.setState({
-      delta: this.state.due.getTime() - Date.now()
+      delta: new Date(this.state.due.getTime() + 8 * 3600 * 1000) - Date.now()
     });
+    console.log(this.state.due.toUTCString());
   }
 
   back() {
@@ -160,74 +167,80 @@ class Project extends Component {
           <div>
             <p className="dark-gray"><b>Project Description:</b> Project 2 Description goes here. It will be whatever the professor types in on the create for the project creation. We will update it to be something dynamic when we hook up the frontend and backend soon </p>
           </div>
-          { this.state.role === "student" ?
+            { this.state.loaded === true ?
             <div>
-              { this.state.delta > 0 ?
-                <div className="text-center">
-                  <h1 className="blue text-center">Time to Deadline:</h1>
-                  <h1 className="dark-gray text-center">
-                    <span>{Math.floor((this.state.delta / (1000 * 60 * 60 * 24)) + (1 / 1440))}</span> days <span>{Math.floor((this.state.delta / (1000 * 60 * 60)) + (1 / 60)) % 24}</span> hours <span>{Math.ceil(this.state.delta / (1000 * 60)) % 60}</span> minutes
-                  </h1>
-                  <br />
-                  <h1 className="blue text-center">Add/Edit Submission</h1>
-                  <input id="upload" type="file" />
-                </div>
-                :
-                <div>
-                  <h1 className="dark-gray text-center">Submission Feedback:</h1>
-                  <div id="left-feedback">
-                    <button id="submission" ref="submission-button active" className="submission-button active" onClick={() => this.activateTab("submission")}>Submission</button>
-                    <button id="script" ref="submission-button" className="submission-button" onClick={() => this.activateTab("script")}>Test Script</button>
-                    <div id="submission" ref="code-feedback active" className="code-feedback active">
-                      <Highlight className="cpp">{`
+            { this.state.role === "student" ?
+              <div>
+                { this.state.delta > 0 ?
+                  <div className="text-center">
+                    <h1 className="blue text-center">Time to Deadline:</h1>
+                    <h1 className="dark-gray text-center">
+                      <span>{Math.floor((this.state.delta / (1000 * 60 * 60 * 24)) + (1 / 1440))}</span> days <span>{Math.floor((this.state.delta / (1000 * 60 * 60)) + (1 / 60)) % 24}</span> hours <span>{Math.ceil(this.state.delta / (1000 * 60)) % 60}</span> minutes
+                    </h1>
+                    <br />
+                    <h1 className="blue text-center">Add/Edit Submission</h1>
+                    <input id="upload" type="file" />
+                  </div>
+                  :
+                  <div>
+                    <h1 className="dark-gray text-center">Submission Feedback:</h1>
+                    <div id="left-feedback">
+                      <button id="submission" ref="submission-button active" className="submission-button active" onClick={() => this.activateTab("submission")}>Submission</button>
+                      <button id="script" ref="submission-button" className="submission-button" onClick={() => this.activateTab("script")}>Test Script</button>
+                      <div id="submission" ref="code-feedback active" className="code-feedback active">
+                        <Highlight className="cpp">{`
   #include <iostream>
   int main(int argc, char *argv[]) {
     for (auto i = 0; i <= 0xFFFF; i++)
       cout << "Hello, World!" << endl;
     return 1;
   }
-                      `}</Highlight>
-                    </div>
-                    <div id="script" ref="code-feedback" className="code-feedback">
-                      <Highlight className="cpp">{`
+                        `}</Highlight>
+                      </div>
+                      <div id="script" ref="code-feedback" className="code-feedback">
+                        <Highlight className="cpp">{`
   #include <iostream>
   int main(int argc, char *argv[]) {
     cout << "test_case_3: Off-by-one error" << endl;
     return 1;
   }
-                      `}</Highlight>
+                        `}</Highlight>
+                      </div>
+                    </div>
+                    <div id="right-feedback">
+                      <h2 id="feedback-score" className="gray">Score: 67%</h2>
+                      <br />
+                      <p className="red">test_case_3: Off-by-one error</p>
                     </div>
                   </div>
-                  <div id="right-feedback">
-                    <h2 id="feedback-score" className="gray">Score: 67%</h2>
-                    <br />
-                    <p className="red">test_case_3: Off-by-one error</p>
+                }
+              </div>
+            :
+            <div>
+              <h1 className="blue text-center">Total Submissions</h1>
+              <div className="center-object">
+                <div ref="circle" className="c100 big blue-circle">
+                  <span ref="percent"></span>
+                  <div className="slice">
+                    <div className="bar"></div>
+                    <div className="fill"></div>
                   </div>
                 </div>
-              }
-            </div>
-          :
-          <div>
-            <h1 className="blue text-center">Total Submissions</h1>
-            <div className="center-object">
-              <div ref="circle" className="c100 big blue-circle">
-                <span ref="percent"></span>
-                <div className="slice">
-                  <div className="bar"></div>
-                  <div className="fill"></div>
-                </div>
               </div>
+              <h1 className="blue text-center">Score Breakdown</h1>
+              <div className="center-object">
+                <BarChart ref="chart" width={800} height={300} data={data} key={this.state.key}>
+                  <XAxis dataKey="name" />
+                  <YAxis name="students" />
+                  <Bar type="monotone" dataKey="students" barSize={30} fill="#8884d8"/>
+                </BarChart>
+              </div>
+              <br /><br />
             </div>
-            <h1 className="blue text-center">Score Breakdown</h1>
-            <div className="center-object">
-              <BarChart ref="chart" width={800} height={300} data={data} key={this.state.key}>
-                <XAxis dataKey="name" />
-                <YAxis name="students" />
-                <Bar type="monotone" dataKey="students" barSize={30} fill="#8884d8"/>
-              </BarChart>
+            }
             </div>
-            <br /><br />
-          </div>
+            :
+            <div></div>
           }
         </div>
       </div>
