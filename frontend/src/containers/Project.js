@@ -281,8 +281,8 @@ class Project extends Component {
               <h1 className="blue text-center">Score Breakdown</h1>
               <div className="center-object">
                 <BarChart ref="chart" width={800} height={300} data={data} key={this.state.key}>
-                  <XAxis dataKey="name" />
-                  <YAxis name="students" />
+                  <XAxis dataKey="name"/>
+                  <YAxis name="students" allowDecimals={false}/>
                   <Bar type="monotone" dataKey="students" barSize={30} fill="#8884d8"/>
                 </BarChart>
               </div>
