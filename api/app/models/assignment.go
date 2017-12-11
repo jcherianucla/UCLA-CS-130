@@ -92,7 +92,8 @@ func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	for k, v := range r.PostForm {
 		k = strings.Title(k)
 		if k == "Deadline" {
-			m[k], err = time.Parse(utilities.TIME_FORMAT, v[0])
+			t, _ := time.Parse(utilities.TIME_FORMAT, v[0])
+			m[k] = t
 		} else if k == "Language" {
 			m["Lang"] = utilities.SetLanguage(v[0])
 		} else {
@@ -101,7 +102,9 @@ func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	}
 	storeFile(r, &m, "grade_script")
 	storeFile(r, &m, "sanity_script")
+	utilities.Sugar.Infof("Data object: %v", m)
 	err = utilities.FillStruct(m, &assignment)
+	utilities.Sugar.Infof("Assignment object: %v", assignment)
 	return
 }
 
