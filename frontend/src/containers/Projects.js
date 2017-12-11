@@ -73,7 +73,7 @@ class Projects extends Component {
                 {
                   this.state.projects.map(function(item, key){
                     return(
-                      <Col>
+                      <Col key={item.id}>
                         <div>
                           <ItemCard
                             title={item.name}

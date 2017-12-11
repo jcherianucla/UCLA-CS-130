@@ -19,18 +19,21 @@ class ProfessorUpsertClass extends Component {
     }
   }
 
-  createClass(e) {
+  upsertClass(e, isCreate) {
     let token = localStorage.getItem('token');
     let self = this
     e.preventDefault();
     var data = new FormData();
+    console.log(self.refs);
     data.append('name', self.refs.name.value);
     data.append('description', self.refs.description.value);
     data.append('myfile', self.refs.myfile.files[0]);
 
+    let method = isCreate ? 'POST' : 'PUT';
+    let id_for_path = isCreate ? '' : '/' + + self.props.match.params.class_id;
     console.log(data);
-    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes', {
-      method: 'POST',
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes' + id_for_path, {
+      method: method,
       headers: {
         'Authorization': 'Bearer ' + token
       },
@@ -47,7 +50,37 @@ class ProfessorUpsertClass extends Component {
     });
   }
 
+  componentWillMount() {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        if (responseJSON.classes !== null) {
+          for (var i = 0; i < responseJSON.classes.length; i++) {
+            if (responseJSON.classes[i].id === parseInt(self.props.match.params.class_id, 10)) {
+              self.refs.name.value = responseJSON.classes[i].name;
+              self.refs.description.value = responseJSON.classes[i].description;
+            }
+          }
+        }
+      }
+    });
+  }
+
   render() {
+    let isCreate = window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create";
     return (
       <div>
         <SidePanel />
@@ -59,16 +92,16 @@ class ProfessorUpsertClass extends Component {
           }
             <p ref="error" className="red"></p>
             <div className="create-form">
-              <form onSubmit={(e) => this.createClass(e)} encType="multipart/form-data" method="post">
+              <form onSubmit={(e) => this.upsertClass(e, isCreate)} encType="multipart/form-data" method={isCreate ? "post" : "put"}>
                 <label className="upsert-label"><b>Class Name</b></label>
-                <input ref="name" id="name" name="name" type="text" placeholder="Enter class name"/>
+                <input ref="name" name="name" type="text" placeholder="Enter class name"/>
                 
                 <label className="upsert-label"><b>Class Description</b></label>
-                <textarea ref="description" id="description" name="description" placeholder="Enter short description of your class" rows="3" cols="40"/>
+                <textarea ref="description" name="description" placeholder="Enter short description of your class" rows="3" cols="40"/>
 
                 <label className="upsert-label"><b>Upload Student Roster</b></label>
                 <div className="upload-btn-wrapper">
-                  <input ref="myfile" id="myfile" name="myfile" id="upload" className="btn" type="file" onChange={() => this.getFile()} accept=".csv"/>
+                  <input ref="myfile" name="myfile" id="upload" className="btn" type="file" onChange={() => this.getFile()} accept=".csv"/>
                   <button className="btn">Upload .csv</button>
                   <label className="filename" id="filename"></label>
                 </div>
