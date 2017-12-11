@@ -141,7 +141,8 @@ var ClassesUpdate = http.HandlerFunc(
 				updated, err = models.LayerInstance().Class.Update(params["id"], updates)
 				// Enroll new students
 				f, _, err := r.FormFile("myfile")
-				if err == nil {
+				utilities.Sugar.Infof("File: %v", f)
+				if f != nil && err == nil {
 					err = models.LayerInstance().Enrolled.Insert(params["id"], f)
 				}
 				if !strings.Contains(err.Error(), "no such file") && err != nil {
