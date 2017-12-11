@@ -21,10 +21,10 @@ class FAQ extends Component {
           <h3 className="gray">GradePortal is a project submission portal where students and professors can easily access all the information they need regarding their classes and assignment. We even have project analytics, automatic grading, and submission feedback!</h3>
 
           <h1 className="dark-gray">How do you contact us?</h1>
-          <h3 className="gray">Email us at gradeportal@gmail.com</h3>
+          <h3 className="gray">Email us at <a style={{'color':'#a0a0a0'}} href="mailto:gradeportal@gmail.com">gradeportal@gmail.com</a></h3>
 
           <h1 className="dark-gray">How do I start?</h1>
-          <h3 className="gray">If you're a student, just log in with your Bruin Online Login. If you're a professor, email us at gradeportal@gmail.com and we will add your account for you!</h3>
+          <h3 className="gray">If you're a student, just log in with your Bruin Online Login. If you're a professor, email us at <a style={{'color':'#a0a0a0'}} href="mailto:gradeportal@gmail.com">gradeportal@gmail.com</a> and we will add your account for you!</h3>
         </div>
       </div>
     );
