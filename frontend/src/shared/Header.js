@@ -20,6 +20,7 @@ class Header extends Component {
   }
 
   render() {
+    let self = this;
     return (
     	<div>
 	      <div className="header">
@@ -56,7 +57,13 @@ class Header extends Component {
             var path;
             let name;
             if (item.constructor === Array) {
-              name = item[item.length - 1];
+              if (key == 1) {
+                name = self.props.props.class_name;
+              } else if (key == 2) {
+                name = self.props.props.project_name;
+              } else {
+                name = item[item.length - 1];
+              }
               path = routes[item[0]]
               for (var i = 1; i < item.length; i++) {
                 path = path.replace(/:[\w]*/, item[i]);

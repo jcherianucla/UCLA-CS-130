@@ -158,7 +158,6 @@ func (table *UserTable) Login(user User) (found User, err error) {
 // It takes in the user object to insert.
 // It returns the new user as in the table and an error if one exists.
 func (table *UserTable) Insert(user User) (new User, err error) {
-	utilities.Sugar.Infof("Password: %v", user.Password)
 	data, err := table.connection.Insert(USER_TABLE, "", user, UserQuery{Email: user.Email})
 	if err != nil {
 		return

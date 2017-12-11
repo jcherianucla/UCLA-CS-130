@@ -16,12 +16,37 @@ class Projects extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      'projects': []
+      'projects': [],
+      'class_name': ''
     }
   }
 
   componentWillMount() {
+    if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
+      this.props.history.push('/login');
+    }
+    this.loadCurrentClass();
     this.loadCards(this.props.match.params.class_id);
+  }
+
+  loadCurrentClass() {
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.class !== null && responseJSON.class.name !== null) {
+        self.setState({'class_name': responseJSON.class.name});
+      }
+    });
   }
 
   professorUpdateProjectLink(class_id, project_id) {
@@ -65,10 +90,11 @@ class Projects extends Component {
     return (
       <div>
         <SidePanel />
+        { (this.state.class_name !== '') ?
         <div className="page">
-          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]}/>
+          <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id]]} props={this.state}/>
           <p ref="error" className="red"></p>
-          <Grid fluid>
+            <Grid fluid>
               <Row>
                 {
                   this.state.projects.map(function(item, key){
@@ -77,6 +103,7 @@ class Projects extends Component {
                         <div>
                           <ItemCard
                             title={item.name}
+                            deleteLink={'http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments/'+ item.id}
                             editLink={self.professorUpdateProjectLink(self.props.match.params.class_id, item.id)}
                             link={'/classes/' + self.props.match.params.class_id + '/projects/' + item.id}
                             history={self.props.history}
@@ -102,9 +129,10 @@ class Projects extends Component {
                 }
               </Row>
             </Grid>
-          
-        </div>
- 
+          </div>
+          :
+          <div />
+        }
       </div>
     );
   }

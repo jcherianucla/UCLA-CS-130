@@ -163,8 +163,15 @@ func (table *ClassTable) Update(strId string, updates Class) (updated Class, err
 func (table *ClassTable) Delete(strId string) (err error) {
 	// Un-enroll everyone in the class
 	err = LayerInstance().Enrolled.DeleteClass(strId)
-	// Delete all assignments
-	err = LayerInstance().Assignment.DeleteAll()
+	class_id, _ := strconv.ParseInt(strId, 10, 64)
+	assignments, err := LayerInstance().Assignment.Get(AssignmentQuery{Class_id: class_id}, "")
+	for _, assign := range assignments {
+		// Delete all assignments for class
+		err = LayerInstance().Assignment.Delete(strconv.FormatInt(assign.Id, 10))
+		if err != nil {
+			return
+		}
+	}
 	// Delete the class
 	err = table.connection.Delete(strId, CLASS_TABLE)
 	return

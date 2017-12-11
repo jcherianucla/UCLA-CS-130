@@ -116,7 +116,7 @@ func (routes *Routes) createClassRoutes() {
 // createAssignmentRoutes will instantiate all routes for
 // assignments.
 func (routes *Routes) createAssignmentRoutes() {
-	classStr := "/classes/{id}"
+	classStr := "/classes/{cid}"
 	routes.assignmentRoutes = []Route{
 		Route{
 			"Create",
@@ -133,19 +133,19 @@ func (routes *Routes) createAssignmentRoutes() {
 		Route{
 			"Show",
 			"GET",
-			utilities.GetAPIInstance().Gen(classStr + "/assignments/{id}"),
+			utilities.GetAPIInstance().Gen(classStr + "/assignments/{aid}"),
 			middleware.Authenticate(controllers.AssignmentsShow),
 		},
 		Route{
 			"Update",
 			"PUT",
-			utilities.GetAPIInstance().Gen(classStr + "/assignments/{id}"),
+			utilities.GetAPIInstance().Gen(classStr + "/assignments/{aid}"),
 			middleware.Authenticate(controllers.AssignmentsUpdate),
 		},
 		Route{
 			"Delete",
 			"DELETE",
-			utilities.GetAPIInstance().Gen(classStr + "/assignments/{id}"),
+			utilities.GetAPIInstance().Gen(classStr + "/assignments/{aid}"),
 			middleware.Authenticate(controllers.AssignmentsDelete),
 		},
 	}
