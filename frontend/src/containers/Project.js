@@ -34,7 +34,8 @@ class Project extends Component {
       class_name: '',
       project_name: '',
       key: Math.random(),
-      loaded: ''
+      loaded: '',
+      has_submission: false
     }
   }
 
@@ -74,6 +75,10 @@ class Project extends Component {
       console.log(responseJSON);
       if (responseJSON.assignment && responseJSON.assignment.name) {
         self.setState({'project_name': responseJSON.assignment.name});
+        self.refs.description.innerHTML = responseJSON.assignment.name + ": " + responseJSON.assignment.description;
+      }
+      if (responseJSON.submission) {
+        self.setState({'has_submission': true});
       }
       if (localStorage.getItem('role') === 'professor') {
         self.refs.circle.className += " p" + responseJSON.analytics.num_submissions;
@@ -160,6 +165,37 @@ class Project extends Component {
     }
   }
 
+  submit(upload, filename) {
+    let token = localStorage.getItem('token');
+    var x = document.getElementById(upload).value;
+    if (x === "") {
+      document.getElementById(filename).innerHTML = "";
+    } else {
+      document.getElementById(filename).innerHTML = "Last Submitted: " + x.replace(/^.*\\/, "") + " at " + new Date().toLocaleTimeString();
+    }
+
+    var data = new FormData();
+    data.append('submission', this.refs.submission.files[0]);
+
+    let self = this
+    let method = self.state.has_submission ? 'PUT' : 'POST';
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + this.props.match.params.class_id + '/assignments/' + this.props.match.params.project_id + '/submissions' , {
+      method: method,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      body: data
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      }
+    });
+
+  }
+
   render() {
     return (
       <div>
@@ -167,7 +203,7 @@ class Project extends Component {
         <div className="page">
           <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]} props={this.state}/>
           <div>
-            <p className="dark-gray"><b>Project Description:</b> Project 2 Description goes here. It will be whatever the professor types in on the create for the project creation. We will update it to be something dynamic when we hook up the frontend and backend soon </p>
+            <p ref="description" className="dark-gray"></p>
           </div>
             { this.state.loaded === true ?
             <div>
@@ -181,7 +217,11 @@ class Project extends Component {
                     </h1>
                     <br />
                     <h1 className="blue text-center">Add/Edit Submission</h1>
-                    <input id="upload" type="file" />
+                    <div className="upload-btn-wrapper">
+                      <input ref="submission" id="upload" className="btn" type="file" onChange={() => this.submit('upload', 'filename')} accept=".cpp" required/>
+                      <button className="btn">Upload</button>
+                      <label className="filename" id="filename"></label>
+                    </div>
                   </div>
                   :
                   <div>
