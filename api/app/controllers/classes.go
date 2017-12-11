@@ -102,7 +102,7 @@ var ClassesCreate = http.HandlerFunc(
 					if err == nil {
 						err = models.LayerInstance().Enrolled.Insert(strconv.FormatInt(class.Id, 10), f)
 					}
-					if err != nil {
+					if f != nil && err != nil {
 						_ = models.LayerInstance().Class.Delete(strconv.FormatInt(class.Id, 10))
 						status = 500
 						msg = err.Error()
@@ -138,6 +138,11 @@ var ClassesUpdate = http.HandlerFunc(
 			} else {
 				updates, err := models.NewClass(r)
 				updated, err = models.LayerInstance().Class.Update(params["id"], updates)
+				// Enroll new students
+				f, _, err := r.FormFile("myfile")
+				if err == nil {
+					err = models.LayerInstance().Enrolled.Insert(params["id"], f)
+				}
 				if err != nil {
 					status = 500
 					msg = err.Error()

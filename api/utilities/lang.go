@@ -1,5 +1,9 @@
 package utilities
 
+import (
+	"strings"
+)
+
 // Represents an enum for languages
 type Language int64
 
@@ -23,6 +27,7 @@ func GetLanguage(lang Language) string {
 }
 
 func SetLanguage(lang string) Language {
+	lang = strings.Title(lang)
 	switch lang {
 	case "C++":
 		return Cpp

@@ -16,6 +16,5 @@ func ExtractClaims(tokenString string) map[string]interface{} {
 	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return GP_TOKEN_SECRET, nil
 	})
-	Sugar.Infof("Token: %v", token)
 	return token.Claims.(jwt.MapClaims)
 }

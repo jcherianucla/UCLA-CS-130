@@ -5,6 +5,7 @@ import (
 	"github.com/pkg/errors"
 	"os"
 	"reflect"
+	"time"
 )
 
 // IsUndeclared uses reflection to see if the
@@ -15,6 +16,11 @@ func IsUndeclared(v interface{}) bool {
 	return reflect.DeepEqual(v, reflect.Zero(reflect.TypeOf(v)).Interface())
 }
 
+// GetVar tries to get an environment variable if it exists, else
+// returns some default value.
+// It takes in the name of the environment variable to search for, and the
+// default value to return instead.
+// It returns the string variable.
 func GetVar(name string, _default string) string {
 	env := os.Getenv(name)
 	if env == "" {
@@ -23,6 +29,11 @@ func GetVar(name string, _default string) string {
 	return env
 }
 
+// SetField sets the value of the generic of the name key. That means
+// for a given struct, the field will be set to the incoming value.
+// It takes in the object to modify, the name of the field and the value the
+// field should be set to.
+// It returns an error if one exists.
 func SetField(obj interface{}, key string, value interface{}) error {
 	structFieldValue := reflect.ValueOf(obj).Elem().FieldByName(key)
 
@@ -52,6 +63,9 @@ func SetField(obj interface{}, key string, value interface{}) error {
 	return nil
 }
 
+// FillStruct creates a generic object through mapped data.
+// It takes in data as a map of strings to generics and reference to the object to construct.
+// It returns an error if one exists.
 func FillStruct(data map[string]interface{}, result interface{}) error {
 	for k, v := range data {
 		err := SetField(result, k, v)
@@ -60,4 +74,13 @@ func FillStruct(data map[string]interface{}, result interface{}) error {
 		}
 	}
 	return nil
+}
+
+// Determines whether the current time is before the intended deadline.
+// It takes in the deadline to compare against.
+// It returns the boolean value indicating the result.
+func BeforeDeadline(deadline time.Time) bool {
+	t := time.Now()
+	t.Format(TIME_FORMAT)
+	return t.Before(deadline)
 }

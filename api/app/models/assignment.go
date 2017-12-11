@@ -46,6 +46,10 @@ type AssignmentQuery struct {
 	Class_id int64
 }
 
+// convertToBytes converts a file object received from the client
+// into a byte slice as needed by the database.
+// It takes in the stream of the file object.
+// It returns the file as a byte slice and an error if one exists.
 func convertToBytes(r io.Reader) (f []byte, err error) {
 	buf := bytes.NewBuffer(nil)
 	if _, err = io.Copy(buf, r); err != nil {
@@ -56,6 +60,11 @@ func convertToBytes(r io.Reader) (f []byte, err error) {
 	return
 }
 
+// storeFile will get the file from the request, and store it into the data
+// object used to construct the assignment struct.
+// It takes in a request object to grab the file from, and a reference to the
+// map of data, and the key to store into the map.
+// It returns an error if one exists.
 func storeFile(r *http.Request, m *map[string]interface{}, key string) error {
 	f, _, err := r.FormFile(key)
 	if err != nil {
@@ -66,8 +75,13 @@ func storeFile(r *http.Request, m *map[string]interface{}, key string) error {
 	return err
 }
 
+// NewAssignment creates a new assignment object based on a request, assuming
+// the request holding multipart form-data.
+// It takes in the request to analyze.
+// It returns the constructed assignment and an error if one exists.
 func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	err = r.ParseMultipartForm(utilities.MAX_STORAGE)
+	utilities.Sugar.Infof("Form: %v", r.PostForm)
 	if err != nil {
 		return
 	}
@@ -76,7 +90,7 @@ func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	for k, v := range r.PostForm {
 		k = strings.Title(k)
 		if k == "Deadline" {
-			m[k], err = time.Parse("01-02-06 15:04", v[0])
+			m[k], err = time.Parse(utilities.TIME_FORMAT, v[0])
 		} else if k == "Language" {
 			m["Lang"] = utilities.SetLanguage(v[0])
 		} else {
