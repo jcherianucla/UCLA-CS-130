@@ -95,8 +95,13 @@ class Project extends Component {
         self.setState({loaded: true});
       } else {
         self.setState({loaded: true});
-        self.refs.score.innerHTML = "Score: " + responseJSON.submission.score;
         self.updateSubmission();
+        /*console.log(self.state.due);
+        console.log(responseJSON.assignment.deadline);
+        self.refs.score.innerHTML = "Score: " + responseJSON.submission.score;
+        self.refs.post.innerHTML = responseJSON.submission.post_results;
+        self.refs.grading.innerHTML = atob(responseJSON.assignment.grade_script);
+        self.setState({key: Math.random()});*/
       }
     });
   }
@@ -157,7 +162,7 @@ class Project extends Component {
         if (this.refs[ref].id === id) {
           this.refs[ref].className = "submission-button active";
         }
-      } else {
+      } else if (ref === "code-feedback" || ref === "code-feedback active") {
         this.refs[ref].className = "code-feedback";
         if (this.refs[ref].id === id) {
           this.refs[ref].className = "code-feedback active";
@@ -254,7 +259,7 @@ class Project extends Component {
                       </div>
                     </div>
                     <div id="right-feedback">
-                      <h2 id="feedback-score" ref="score" className="gray"></h2>
+                      <h2 id="feedback-score" className="gray">Score: 92%</h2>
                       <br />
                       <p className="red">test_case_3: Off-by-one error</p>
                     </div>
