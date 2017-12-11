@@ -77,9 +77,6 @@ class Project extends Component {
         self.setState({'project_name': responseJSON.assignment.name});
         self.refs.description.innerHTML = responseJSON.assignment.name + ": " + responseJSON.assignment.description;
       }
-      if (responseJSON.submission) {
-        self.updateSubmission(responseJSON.submission.updated_at);
-      }
       if (localStorage.getItem('role') === 'professor') {
         self.setState({loaded: true});
         self.refs.circle.className += " p" + Math.floor(responseJSON.analytics.num_submissions * 100);
@@ -95,7 +92,6 @@ class Project extends Component {
         self.setState({loaded: true});
       } else {
         self.setState({loaded: true});
-        self.updateSubmission();
         console.log(self.state.due);
         console.log(responseJSON.assignment.deadline);
         self.refs.score.innerHTML = "Score: " + responseJSON.submission.submission.score;
@@ -176,25 +172,16 @@ class Project extends Component {
     }
   }
 
-  updateSubmission(time='') {
-    if (time === '') {
-      this.setState({submission_message: "Last Submitted at " + new Date().toLocaleTimeString()});
-    } else {
-      this.setState({'submission_message': "Last Submitted at " + time});
-    }
-  }
-
 
   submit() {
     let token = localStorage.getItem('token');
-    this.updateSubmission();
+    this.setState({submission_message: "Last Submitted at " + new Date().toLocaleTimeString()});
     var data = new FormData();
-    data.append('upload', this.refs.submission.files[0]);
+    data.append('upload', this.refs.upload.files[0]);
 
     let self = this
-    let method = self.state.has_submission ? 'PUT' : 'POST';
-    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + this.props.match.params.class_id + '/assignments/' + this.props.match.params.project_id + '/submissions' , {
-      method: method,
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments/' + self.props.match.params.project_id + '/submissions' , {
+      method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token
       },
@@ -204,7 +191,20 @@ class Project extends Component {
     .then(function (responseJSON) {
       console.log(responseJSON);
       if (responseJSON.message !== 'Success') {
-        self.refs.error.innerHTML = responseJSON.message;
+        fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments/' + self.props.match.params.project_id + '/submissions' , {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + token
+          },
+          body: data
+        })
+        .then((response) => response.json())
+        .then(function (responseJSON) {
+          console.log(responseJSON);
+          if (responseJSON.message !== 'Success') {
+            self.refs.error.innerHTML = responseJSON.message;
+          }
+        });
       }
     });
 
@@ -216,6 +216,7 @@ class Project extends Component {
         <SidePanel />
         <div className="page">
           <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], ["Submission", this.props.match.params.class_id, this.props.match.params.project_id]]} props={this.state}/>
+          <p ref="error" className="red"></p>
           <div>
             <p ref="description" className="dark-gray"></p>
           </div>
@@ -232,7 +233,7 @@ class Project extends Component {
                     <br />
                     <h1 className="blue text-center">Add/Edit Submission</h1>
                     <div className="upload-btn-wrapper">
-                      <input ref="submission" id="upload" className="btn" type="file" onChange={() => this.submit()} accept=".cpp" required/>
+                      <input ref="upload" id="upload" className="btn" type="file" onChange={() => this.submit()} accept=".cpp" required/>
                       <button className="btn">Upload</button>
                       <label className="filename" id="filename">{this.state.submission_message}</label>
                     </div>
