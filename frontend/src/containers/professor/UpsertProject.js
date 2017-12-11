@@ -23,6 +23,40 @@ class ProfessorUpsertProject extends Component {
     if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
       this.props.history.push('/login');
     }
+    let token = localStorage.getItem('token');
+    let self = this
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json'
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.message !== 'Success') {
+        self.refs.error.innerHTML = responseJSON.message;
+      } else {
+        if (responseJSON.assignments !== null) {
+          for (var i = 0; i < responseJSON.assignments.length; i++) {
+            if (responseJSON.assignments[i].id === parseInt(self.props.match.params.project_id, 10)) {
+              console.log(responseJSON.assignments[i].name);
+              self.refs.name.value = responseJSON.assignments[i].name;
+              self.refs.description.value = responseJSON.assignments[i].description;
+              let deadline = responseJSON.assignments[i].deadline;
+              self.refs.month.value = deadline.substring(5,7);
+              self.refs.day.value = deadline.substring(8,10);
+              self.refs.year.value = deadline.substring(2,4);
+              self.refs.hour.value = deadline.substring(11,13);
+              self.refs.minute.value = deadline.substring(14,16);
+
+            }
+          }
+        }
+      }
+    });
   }
 
   loadCurrentClass() {
@@ -60,7 +94,7 @@ class ProfessorUpsertProject extends Component {
       .then((response) => response.json())
       .then(function (responseJSON) {
         console.log(responseJSON);
-        if (responseJSON.assignment !== null && responseJSON.assignment.name !== null) {
+        if (responseJSON.assignment && responseJSON.assignment.name !== null) {
           self.setState({'project_name': responseJSON.assignment.name});
         }
       });
@@ -80,7 +114,7 @@ class ProfessorUpsertProject extends Component {
     }
   }
 
-  createProject(e) {
+  upsertProject(e, isCreate) {
     let token = localStorage.getItem('token');
     let self = this
     e.preventDefault();
@@ -96,9 +130,11 @@ class ProfessorUpsertProject extends Component {
     data.append('language', 'C++');
     data.append('deadline', deadline);
 
+    let method = isCreate ? 'POST' : 'PUT';
+    let id_for_path = isCreate ? '' : '/' + + self.props.match.params.project_id;
     console.log(data);
-    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments', {
-      method: 'POST',
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments' + id_for_path, {
+      method: method,
       headers: {
         'Authorization': 'Bearer ' + token
       },
@@ -122,6 +158,7 @@ class ProfessorUpsertProject extends Component {
   }
 
   render() {
+    let isCreate = window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create";
     return (
       <div>
         <SidePanel />
@@ -134,7 +171,7 @@ class ProfessorUpsertProject extends Component {
           }
           <p ref="error" className="red"></p>
             <div className="create-form">
-              <form onSubmit={(e) => this.createProject(e)} encType="multipart/form-data" method="post">
+              <form onSubmit={(e) => this.upsertProject(e, isCreate)} encType="multipart/form-data" method={isCreate ? "post" : "put"}>
                 <label className="upsert-label"><b>Project Name</b></label>
                 <input ref="name" type="text" placeholder="Enter project name" required/>
                 

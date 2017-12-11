@@ -70,8 +70,10 @@ func storeFile(r *http.Request, m *map[string]interface{}, key string) error {
 	if err != nil {
 		return err
 	}
-	defer f.Close()
-	(*m)[strings.Title(key)], err = convertToBytes(f)
+	if f != nil {
+		defer f.Close()
+		(*m)[strings.Title(key)], err = convertToBytes(f)
+	}
 	return err
 }
 
@@ -117,16 +119,16 @@ func NewAssignmentTable(db *db.Db) (assignTable AssignmentTable, err error) {
 	assignTable.connection = db
 	query := fmt.Sprintf(`
 	CREATE TABLE IF NOT EXISTS %s(
-			id SERIAL,
-			name TEXT,
-			description TEXT,
-			deadline TIMESTAMP,
-			lang INT,
-			grade_script BYTEA,
-			sanity_script BYTEA,
-			class_id INT,
-			time_created TIMESTAMP DEFAULT now()
-		);`, ASSIGNMENT_TABLE)
+		id SERIAL,
+		name TEXT,
+		description TEXT,
+		deadline TIMESTAMP,
+		lang INT,
+		grade_script BYTEA,
+		sanity_script BYTEA,
+		class_id INT,
+		time_created TIMESTAMP DEFAULT now()
+	);`, ASSIGNMENT_TABLE)
 	// Create the actual table
 	if err = assignTable.connection.CreateTable(query); err != nil {
 		err = errors.Wrapf(err, "Could not create table on initialization")
