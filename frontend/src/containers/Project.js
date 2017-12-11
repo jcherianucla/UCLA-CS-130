@@ -142,7 +142,6 @@ class Project extends Component {
   }
 
   render() {
-    let self = this;
     return (
       <div>
         <SidePanel />

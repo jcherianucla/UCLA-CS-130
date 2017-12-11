@@ -87,9 +87,9 @@ class Header extends Component {
             var path;
             let name;
             if (item.constructor === Array) {
-              if (key == 1) {
+              if (key === 1) {
                 name = self.props.props.class_name;
-              } else if (key == 2) {
+              } else if (key === 2) {
                 name = self.props.props.project_name;
               } else {
                 name = item[item.length - 1];
