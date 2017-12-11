@@ -27,7 +27,7 @@ class Project extends Component {
 
   constructor(props) {
     super(props);
-    let due = new Date("2016-11-07T19:06:00");
+    let due = new Date();
     this.state = {
       due: due,
       delta: due.getTime() - Date.now(),
@@ -76,6 +76,7 @@ class Project extends Component {
         self.setState({'project_name': responseJSON.assignment.name});
       }
       if (localStorage.getItem('role') === 'professor') {
+        self.setState({loaded: true});
         self.refs.circle.className += " p" + responseJSON.analytics.num_submissions;
         self.refs.percent.innerHTML = responseJSON.analytics.num_submissions + " %";
         responseJSON.analytics.score.forEach(function(element) {
@@ -83,7 +84,6 @@ class Project extends Component {
         });
         self.refs.chart.data = data;
         self.setState({key: Math.random()});
-        self.setState({loaded: true});
       } else if (!responseJSON.submission) {
         self.setState({due: new Date(responseJSON.assignment.deadline)});
         self.tick();
