@@ -14,7 +14,7 @@ class ProfessorUpsertClass extends Component {
     super(props);
     this.state = {
       'projects': [],
-      'class_name': this.props.match.params.class_id
+      'class_name': ''
     }
     this.loadCurrentClass();
   }
