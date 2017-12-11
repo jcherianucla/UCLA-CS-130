@@ -13,6 +13,20 @@ const (
 	Java
 )
 
+func GetLanguageFromInt(v int64) Language {
+	Sugar.Infof("Inside get lang int: %v", v)
+	switch v {
+	case 1:
+		return Cpp
+	case 2:
+		return C
+	case 3:
+		return Java
+	default:
+		return Cpp
+	}
+}
+
 func GetLanguage(lang Language) string {
 	switch lang {
 	case Cpp:
@@ -36,6 +50,6 @@ func SetLanguage(lang string) Language {
 	case "Java":
 		return Java
 	default:
-		return -1
+		return Cpp
 	}
 }
