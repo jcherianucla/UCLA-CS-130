@@ -93,7 +93,7 @@ class ProfessorUpsertProject extends Component {
     let self = this
     e.preventDefault();
 
-    let deadline = self.refs.month.value + '-' + self.refs.day.value + '-' + self.refs.year.value + ' ' + self.refs.hour.value + ':' + self.refs.minute.value;
+    let deadline = self.refs.month.value + '-' + self.refs.day.value + '-' + self.refs.year.value + ' ' + self.refs.hour.value + ':' + self.refs.minute.value + " (PST)";
     console.log(deadline);
 
     var data = new FormData();
