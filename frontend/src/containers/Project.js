@@ -77,8 +77,7 @@ class Project extends Component {
       if (localStorage.getItem('role') === 'professor') {
         self.refs.circle.className += " p" + responseJSON.analytics.num_submissions;
         self.refs.percent.innerHTML = responseJSON.analytics.num_submissions + " %";
-        var scores = [0, 21, 4, 22, 9];
-        scores.forEach(function(element) {
+        responseJSON.analytics.score.forEach(function(element) {
           data[Math.floor(element / 10)]['students'] += 1;
         });
         self.refs.chart.data = data;
