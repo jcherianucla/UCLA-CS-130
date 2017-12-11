@@ -138,7 +138,7 @@ class ProfessorUpsertClass extends Component {
 
                 <label className="upsert-label"><b>Upload Student Roster</b></label>
                 <div className="upload-btn-wrapper">
-                  <input ref="myfile" name="myfile" id="upload" className="btn" type="file" onChange={() => this.getFile()} accept=".csv"/>
+                  <input ref="myfile" name="myfile" id="upload" className="btn" type="file" onChange={() => this.getFile()} accept=".csv" required/>
                   <button className="btn">Upload .csv</button>
                   <label className="filename" id="filename"></label>
                 </div>

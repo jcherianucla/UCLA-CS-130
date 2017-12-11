@@ -180,14 +180,14 @@ class ProfessorUpsertProject extends Component {
 
                 <label className="upsert-label"><b>Upload Grading Script</b></label>
                 <div className="upload-btn-wrapper">
-                  <input ref="grading" id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload', 'filename')} accept=".sh"/>
+                  <input ref="grading" id="upload" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload', 'filename')} accept=".sh" required/>
                   <button className="btn">Upload .sh</button>
                   <label className="filename" id="filename"></label>
                 </div>
 
                 <label className="upsert-label"><b>Upload Sanity Testing Script</b></label>
                 <div className="upload-btn-wrapper">
-                  <input ref="sanity" id="upload2" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload2', 'filename2')} accept=".sh"/>
+                  <input ref="sanity" id="upload2" className="btn" type="file" name="myfile" onChange={() => this.getFile('upload2', 'filename2')} accept=".sh" required/>
                   <button className="btn">Upload .sh</button>
                   <label className="filename" id="filename2"></label>
                 </div>
