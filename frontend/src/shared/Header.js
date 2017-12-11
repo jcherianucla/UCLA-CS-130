@@ -7,6 +7,14 @@ import routes from '../utils/routes.js';
  */
 class Header extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      'name': ''
+    }
+    this.getUsername();
+  }
+
   Home() {
     this.props.history.push('/classes');
   }
@@ -17,6 +25,28 @@ class Header extends Component {
 
   FAQ() {
     this.props.history.push('/faq');
+  }
+
+  getUsername() {
+    let token = localStorage.getItem('token');
+    let self = this;
+    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      },
+    })
+    .then((response) => response.json())
+    .then(function (responseJSON) {
+      console.log(responseJSON);
+      if (responseJSON.user !== null) {
+        if (responseJSON.user.Is_professor === true) {
+          self.setState({'name': "Professor " + responseJSON.user.Last_name});
+        } else {
+          self.setState({'name': responseJSON.user.First_name});
+        }
+      }
+    });
   }
 
   render() {
@@ -49,7 +79,7 @@ class Header extends Component {
 	      </div>
 
 	      <div className="welcome bold">
-	      	{this.props.title}
+	      	Welcome {this.state.name}
 	      </div>
 
 	      <div>

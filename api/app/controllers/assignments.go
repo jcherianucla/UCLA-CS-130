@@ -43,14 +43,33 @@ var AssignmentsShow = http.HandlerFunc(
 		if r.Method != "OPTIONS" {
 			params := mux.Vars(r)
 			var status int
-			var msg string
+			var msg, resultKey string
 			var result interface{}
 			userId := getClaims(r)
 			user, err := models.LayerInstance().User.GetByID(userId)
 			if !user.Is_professor {
 				result, err = models.LayerInstance().Assignment.GetByID(params["aid"])
+				resultKey = "assignment"
 				if !utilities.BeforeDeadline(result.(models.Assignment).Deadline) {
+					resultKey = "submission"
 
+				}
+			} else {
+				resultKey = "analytics"
+				students, err := models.LayerInstance().Enrolled.GetStudents(params["cid"])
+				assign_id, _ := strconv.ParseInt(params["aid"], 10, 64)
+				submissions, err := models.LayerInstance().Submission.Get(models.SubmissionQuery{Assignment_id: assign_id}, "")
+				if err == nil {
+					r := make(map[string]interface{})
+					if len(students) > 0 {
+						r["num_submissions"] = len(submissions) / len(students)
+						s := make([][]string, len(submissions))
+						for _, submission := range submissions {
+							s = append(s, submission.Post_results)
+						}
+						r["score"] = s
+						result = r
+					}
 				}
 			}
 			if err != nil {
@@ -63,7 +82,7 @@ var AssignmentsShow = http.HandlerFunc(
 			JSON, _ := json.Marshal(map[string]interface{}{
 				"status":  status,
 				"message": msg,
-				"result":  result,
+				resultKey: result,
 			})
 			w.Write(JSON)
 		}

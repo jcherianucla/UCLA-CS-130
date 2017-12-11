@@ -28,8 +28,8 @@ func getClaims(r *http.Request) string {
 var UsersIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
+		utilities.SetupResponse(&w)
 		if r.Method != "OPTIONS" {
-			utilities.SetupResponse(&w)
 			user_id := getClaims(r)
 			var status int
 			var msg string
