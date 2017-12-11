@@ -12,11 +12,11 @@ class ProfessorUpsertProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      class_name: this.props.match.params.class_id,
+      class_name: '',
       project_name: this.props.match.params.project_id
     }
-    this.loadCurrentClass();
     this.loadCurrentProject();
+    this.loadCurrentClass();
   }
 
   componentWillMount() {
@@ -125,6 +125,7 @@ class ProfessorUpsertProject extends Component {
     return (
       <div>
         <SidePanel />
+        { (this.state.class_name !== '') ?
         <div className="page">
           { window.location.href.substr(window.location.href.lastIndexOf('/') + 1) === "create" ?
             <Header title="Welcome!" path={["Classes", ["Projects", this.props.match.params.class_id], "Create Project"]} props={this.state}/>
@@ -168,9 +169,13 @@ class ProfessorUpsertProject extends Component {
                 </div>
               </form>
             </div>
-        </div>
+          </div>
+          :
+          <div />
+        }
       </div>
     );
+
   }
 }
 
