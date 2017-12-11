@@ -82,8 +82,8 @@ class Project extends Component {
       }
       if (localStorage.getItem('role') === 'professor') {
         self.setState({loaded: true});
-        self.refs.circle.className += " p" + responseJSON.analytics.num_submissions;
-        self.refs.percent.innerHTML = responseJSON.analytics.num_submissions + " %";
+        self.refs.circle.className += " p" + Math.floor(responseJSON.analytics.num_submissions * 100);
+        self.refs.percent.innerHTML = Math.floor(responseJSON.analytics.num_submissions * 100) + " %";
         responseJSON.analytics.score.forEach(function(element) {
           data[Math.floor(element / 10)]['students'] += 1;
         });
