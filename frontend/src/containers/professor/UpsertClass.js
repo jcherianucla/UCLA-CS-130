@@ -23,32 +23,6 @@ class ProfessorUpsertClass extends Component {
     if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
       this.props.history.push('/login');
     }
-    let token = localStorage.getItem('token');
-    let self = this
-    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json'
-      },
-    })
-    .then((response) => response.json())
-    .then(function (responseJSON) {
-      console.log(responseJSON);
-      if (responseJSON.message !== 'Success') {
-        self.refs.error.innerHTML = responseJSON.message;
-      } else {
-        if (responseJSON.classes !== null) {
-          for (var i = 0; i < responseJSON.classes.length; i++) {
-            if (responseJSON.classes[i].id === parseInt(self.props.match.params.class_id, 10)) {
-              self.refs.name.value = responseJSON.classes[i].name;
-              self.refs.description.value = responseJSON.classes[i].description;
-            }
-          }
-        }
-      }
-    });
   }
 
   loadCurrentClass() {
@@ -68,6 +42,8 @@ class ProfessorUpsertClass extends Component {
         console.log(responseJSON);
         if (responseJSON.class !== null && responseJSON.class.name !== null) {
           self.setState({'class_name': responseJSON.class.name});
+          self.refs.name.value = responseJSON.class.name;
+          self.refs.description.value = responseJSON.class.description;
         }
       });
     }
@@ -87,7 +63,6 @@ class ProfessorUpsertClass extends Component {
     let self = this
     e.preventDefault();
     var data = new FormData();
-    console.log(self.refs);
     data.append('name', self.refs.name.value);
     data.append('description', self.refs.description.value);
     data.append('myfile', self.refs.myfile.files[0]);

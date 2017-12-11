@@ -23,40 +23,6 @@ class ProfessorUpsertProject extends Component {
     if (localStorage.getItem('role') === "" || localStorage.getItem('token') === "") {
       this.props.history.push('/login');
     }
-    let token = localStorage.getItem('token');
-    let self = this
-    fetch('http://grade-portal-api.herokuapp.com/api/v1.0/classes/' + self.props.match.params.class_id + '/assignments', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json'
-      },
-    })
-    .then((response) => response.json())
-    .then(function (responseJSON) {
-      console.log(responseJSON);
-      if (responseJSON.message !== 'Success') {
-        self.refs.error.innerHTML = responseJSON.message;
-      } else {
-        if (responseJSON.assignments !== null) {
-          for (var i = 0; i < responseJSON.assignments.length; i++) {
-            if (responseJSON.assignments[i].id === parseInt(self.props.match.params.project_id, 10)) {
-              console.log(responseJSON.assignments[i].name);
-              self.refs.name.value = responseJSON.assignments[i].name;
-              self.refs.description.value = responseJSON.assignments[i].description;
-              let deadline = responseJSON.assignments[i].deadline;
-              self.refs.month.value = deadline.substring(5,7);
-              self.refs.day.value = deadline.substring(8,10);
-              self.refs.year.value = deadline.substring(2,4);
-              self.refs.hour.value = deadline.substring(11,13);
-              self.refs.minute.value = deadline.substring(14,16);
-
-            }
-          }
-        }
-      }
-    });
   }
 
   loadCurrentClass() {
@@ -96,6 +62,14 @@ class ProfessorUpsertProject extends Component {
         console.log(responseJSON);
         if (responseJSON.assignment && responseJSON.assignment.name !== null) {
           self.setState({'project_name': responseJSON.assignment.name});
+          self.refs.name.value = responseJSON.assignment.name;
+          self.refs.description.value = responseJSON.assignment.description;
+          let deadline = responseJSON.assignment.deadline;
+          self.refs.month.value = deadline.substring(5,7);
+          self.refs.day.value = deadline.substring(8,10);
+          self.refs.year.value = deadline.substring(2,4);
+          self.refs.hour.value = deadline.substring(11,13);
+          self.refs.minute.value = deadline.substring(14,16);
         }
       });
     }
@@ -196,8 +170,8 @@ class ProfessorUpsertProject extends Component {
                   <input type="number" id="month" onInput={() => this.constrainLength("month")} ref="month" placeholder="MM" maxLength="2" min="0" max="12" required/> &nbsp; / &nbsp;
                   <input type="number" id="day" onInput={() => this.constrainLength("day")} ref="day" placeholder="DD" maxLength="2" min="1" max="31" required/> &nbsp; / &nbsp;
                   <input type="number" id="year" onInput={() => this.constrainLength("year")} ref="year" placeholder="YY" maxLength="2" required/> &nbsp; &nbsp; &nbsp;
-                  <input type="number" id="hour" onInput={() => this.constrainLength("hour")} ref="hour" placeholder="00" maxLength="2" min="0" max ="23" required/> &nbsp; : &nbsp;
-                  <input type="number" id="minute" onInput={() => this.constrainLength("minute")} ref="minute" placeholder="00" maxLength="2" min="0" max="59" required/>
+                  <input type="number" id="hour" onInput={() => this.constrainLength("hour")} ref="hour" placeholder="hh" maxLength="2" min="0" max ="23" required/> &nbsp; : &nbsp;
+                  <input type="number" id="minute" onInput={() => this.constrainLength("minute")} ref="minute" placeholder="mm" maxLength="2" min="0" max="59" required/>
                 </div>
 
                 <div>
