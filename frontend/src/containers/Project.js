@@ -85,7 +85,7 @@ class Project extends Component {
         self.refs.chart.data = data;
         self.setState({key: Math.random()});
       } else if (!responseJSON.submission) {
-        self.setState({due: new Date(responseJSON.assignment.deadline)});
+        self.setState({due: new Date(new Date(responseJSON.assignment.deadline).getTime() + 8 * 3600 * 1000)});
         self.tick();
         self.setState({loaded: true});
       } else {
@@ -136,7 +136,7 @@ class Project extends Component {
 
   tick() {
     this.setState({
-      delta: new Date(this.state.due.getTime() + 8 * 3600 * 1000) - Date.now()
+      delta: this.state.due.getTime() - Date.now()
     });
   }
 
