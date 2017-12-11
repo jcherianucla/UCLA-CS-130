@@ -96,12 +96,17 @@ class Project extends Component {
       } else {
         self.setState({loaded: true});
         self.updateSubmission();
-        /*console.log(self.state.due);
+        console.log(self.state.due);
         console.log(responseJSON.assignment.deadline);
-        self.refs.score.innerHTML = "Score: " + responseJSON.submission.score;
-        self.refs.post.innerHTML = responseJSON.submission.post_results;
-        self.refs.grading.innerHTML = atob(responseJSON.assignment.grade_script);
-        self.setState({key: Math.random()});*/
+        self.refs.score.innerHTML = "Score: " + responseJSON.submission.submission.score;
+        var feedback = "";
+        responseJSON.submission.submission.post_results.map(function(item, key) {
+          feedback += item + "\n";
+        });
+        self.refs.feedback.innerHTML = feedback;
+        self.refs.grading.innerHTML = responseJSON.submission.grade_script;
+        self.refs.submission.innerHTML = atob(responseJSON.submission.submission.file);
+        self.setState({key: Math.random()});
       }
     });
   }
@@ -184,7 +189,7 @@ class Project extends Component {
     let token = localStorage.getItem('token');
     this.updateSubmission();
     var data = new FormData();
-    data.append('submission', this.refs.submission.files[0]);
+    data.append('upload', this.refs.submission.files[0]);
 
     let self = this
     let method = self.state.has_submission ? 'PUT' : 'POST';
@@ -239,32 +244,24 @@ class Project extends Component {
                       <button id="submission" ref="submission-button active" className="submission-button active" onClick={() => this.activateTab("submission")}>Submission</button>
                       <button id="script" ref="submission-button" className="submission-button" onClick={() => this.activateTab("script")}>Test Script</button>
                       <div id="submission" ref="code-feedback active" className="code-feedback active">
-                        <Highlight className="cpp">{`
-  #include <iostream>
-  int main(int argc, char *argv[]) {
-    for (auto i = 0; i <= 0xFFFF; i++)
-      cout << "Hello, World!" << endl;
-    return 1;
-  }
-                        `}</Highlight>
+                        <pre>
+                          <code ref="submission" className="cpp hljs"></code>
+                        </pre>
                       </div>
                       <div id="script" ref="code-feedback" className="code-feedback">
-                        <Highlight className="cpp">{`
-  #include <iostream>
-  int main(int argc, char *argv[]) {
-    cout << "test_case_3: Off-by-one error" << endl;
-    return 1;
-  }
-                        `}</Highlight>
+                        <pre>
+                          <code ref="grading" className="cpp hljs"></code>
+                        </pre>
                       </div>
                     </div>
                     <div id="right-feedback">
-                      <h2 id="feedback-score" className="gray">Score: 92%</h2>
+                      <h2 ref="score" id="feedback-score" className="gray"></h2>
                       <br />
-                      <p className="red">test_case_3: Off-by-one error</p>
+                      <p ref="feedback" className="red error"></p>
                     </div>
                   </div>
                 }
+              <br /><br />
               </div>
             :
             <div>
@@ -281,8 +278,8 @@ class Project extends Component {
               <h1 className="blue text-center">Score Breakdown</h1>
               <div className="center-object">
                 <BarChart ref="chart" width={800} height={300} data={data} key={this.state.key}>
-                  <XAxis dataKey="name" />
-                  <YAxis name="students" />
+                  <XAxis dataKey="name"/>
+                  <YAxis name="students" allowDecimals={false}/>
                   <Bar type="monotone" dataKey="students" barSize={30} fill="#8884d8"/>
                 </BarChart>
               </div>
