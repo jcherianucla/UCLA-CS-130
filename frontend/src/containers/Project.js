@@ -88,6 +88,9 @@ class Project extends Component {
         self.setState({due: new Date(responseJSON.assignment.deadline)});
         self.tick();
         self.setState({loaded: true});
+      } else {
+        self.setState({loaded: true});
+        self.refs.score.innerHTML = "Score: " + responseJSON.submission.score;
       }
     });
   }
@@ -135,7 +138,6 @@ class Project extends Component {
     this.setState({
       delta: new Date(this.state.due.getTime() + 8 * 3600 * 1000) - Date.now()
     });
-    console.log(this.state.due.toUTCString());
   }
 
   back() {
@@ -208,7 +210,7 @@ class Project extends Component {
                       </div>
                     </div>
                     <div id="right-feedback">
-                      <h2 id="feedback-score" className="gray">Score: 67%</h2>
+                      <h2 id="feedback-score" ref="score" className="gray"></h2>
                       <br />
                       <p className="red">test_case_3: Off-by-one error</p>
                     </div>
