@@ -31,6 +31,10 @@
   margin: 0px;
 }
 
+.error {
+  padding-right: 20px;
+}
+
 .active {
   visibility: visible !important;
   height: auto !important;
