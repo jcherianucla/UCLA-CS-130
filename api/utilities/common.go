@@ -8,6 +8,13 @@ import (
 	"time"
 )
 
+var (
+	SKIP_PARAM = map[string]bool{
+		"Post_results": true,
+		"Pre_results":  true,
+	}
+)
+
 // IsUndeclared uses reflection to see if the
 // value of the field is set or not.
 // It takes in an interface to reflect on.
@@ -35,6 +42,7 @@ func GetVar(name string, _default string) string {
 // field should be set to.
 // It returns an error if one exists.
 func SetField(obj interface{}, key string, value interface{}) error {
+	//Sugar.Infof("Key: %s, Value: %v", key, value)
 	structFieldValue := reflect.ValueOf(obj).Elem().FieldByName(key)
 
 	if !structFieldValue.IsValid() {
@@ -51,11 +59,12 @@ func SetField(obj interface{}, key string, value interface{}) error {
 		t, _ := value.([]byte)
 		val = reflect.ValueOf(string(t))
 	} else if key == "Lang" {
-		t, _ := value.(Language)
+		v, _ := value.(int64)
+		t := GetLanguageFromInt(v)
 		val = reflect.ValueOf(t)
 	} else {
 		val = reflect.ValueOf(value)
-		if structFieldType != val.Type() && key != "Lang" {
+		if structFieldType != val.Type() && !SKIP_PARAM[key] {
 			return errors.New("Provided value type didn't match obj field type")
 		}
 	}
@@ -80,7 +89,7 @@ func FillStruct(data map[string]interface{}, result interface{}) error {
 // It takes in the deadline to compare against.
 // It returns the boolean value indicating the result.
 func BeforeDeadline(deadline time.Time) bool {
-	t := time.Now()
-	t.Format(TIME_FORMAT)
-	return t.Before(deadline)
+	t := (time.Now().UnixNano() / int64(time.Millisecond))
+	d := deadline.UnixNano()/int64(time.Millisecond) + (8 * 3600 * 1000)
+	return (t < d)
 }
