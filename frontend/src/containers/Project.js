@@ -70,7 +70,7 @@ class Project extends Component {
     .then((response) => response.json())
     .then(function (responseJSON) {
       console.log(responseJSON);
-      if (responseJSON.assignment !== null && responseJSON.assignment.name !== null) {
+      if (responseJSON.assignment && responseJSON.assignment.name) {
         self.setState({'project_name': responseJSON.assignment.name});
       }
     });
