@@ -8,6 +8,7 @@ import (
 	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func hasPermissions(creator_id, class_id string) bool {
@@ -143,7 +144,7 @@ var ClassesUpdate = http.HandlerFunc(
 				if err == nil {
 					err = models.LayerInstance().Enrolled.Insert(params["id"], f)
 				}
-				if err != nil {
+				if !strings.Contains(err.Error(), "no such file") && err != nil {
 					status = 500
 					msg = err.Error()
 				} else {
