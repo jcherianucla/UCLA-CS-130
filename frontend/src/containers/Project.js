@@ -35,7 +35,7 @@ class Project extends Component {
       project_name: '',
       key: Math.random(),
       loaded: '',
-      has_submission: false
+      submission_message: ''
     }
   }
 
@@ -78,7 +78,7 @@ class Project extends Component {
         self.refs.description.innerHTML = responseJSON.assignment.name + ": " + responseJSON.assignment.description;
       }
       if (responseJSON.submission) {
-        self.setState({'has_submission': true});
+        self.updateSubmission(responseJSON.submission.updated_at);
       }
       if (localStorage.getItem('role') === 'professor') {
         self.setState({loaded: true});
@@ -96,6 +96,7 @@ class Project extends Component {
       } else {
         self.setState({loaded: true});
         self.refs.score.innerHTML = "Score: " + responseJSON.submission.score;
+        self.updateSubmission();
       }
     });
   }
@@ -165,15 +166,18 @@ class Project extends Component {
     }
   }
 
-  submit(upload, filename) {
-    let token = localStorage.getItem('token');
-    var x = document.getElementById(upload).value;
-    if (x === "") {
-      document.getElementById(filename).innerHTML = "";
+  updateSubmission(time='') {
+    if (time === '') {
+      this.setState({submission_message: "Last Submitted at " + new Date().toLocaleTimeString()});
     } else {
-      document.getElementById(filename).innerHTML = "Last Submitted: " + x.replace(/^.*\\/, "") + " at " + new Date().toLocaleTimeString();
+      this.setState({'submission_message': "Last Submitted at " + time});
     }
+  }
 
+
+  submit() {
+    let token = localStorage.getItem('token');
+    this.updateSubmission();
     var data = new FormData();
     data.append('submission', this.refs.submission.files[0]);
 
@@ -218,9 +222,9 @@ class Project extends Component {
                     <br />
                     <h1 className="blue text-center">Add/Edit Submission</h1>
                     <div className="upload-btn-wrapper">
-                      <input ref="submission" id="upload" className="btn" type="file" onChange={() => this.submit('upload', 'filename')} accept=".cpp" required/>
+                      <input ref="submission" id="upload" className="btn" type="file" onChange={() => this.submit()} accept=".cpp" required/>
                       <button className="btn">Upload</button>
-                      <label className="filename" id="filename"></label>
+                      <label className="filename" id="filename">{this.state.submission_message}</label>
                     </div>
                   </div>
                   :
