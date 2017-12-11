@@ -50,7 +50,7 @@ class ItemCard extends Component {
             { !this.props.image ?
               <div>
                 <a href={this.props.link} onClick={(e) => this.go(e)} >
-                  <CardHeader
+                  <CardHeader className="card-header"
                     title={this.props.title}
                     titleStyle={{'fontSize':'35px', 'color': '#43A5FD', 'fontFamily': 'Circular-Book'}}
                   />
