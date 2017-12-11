@@ -52,11 +52,19 @@ var AssignmentsShow = http.HandlerFunc(
 			assignment, err := models.LayerInstance().Assignment.GetByID(params["aid"])
 			if err == nil && !user.Is_professor {
 				if !utilities.BeforeDeadline(assignment.Deadline) {
-					uid, _ := strconv.ParseInt(userId, 10, 64)
-					results, err := models.LayerInstance().Submission.Get(models.SubmissionQuery{User_id: uid, Assignment_id: assign_id}, "AND")
-					if err != nil {
-						resultKey = "submission"
-						result = results[0]
+					r, err := models.LayerInstance().Submission.GetByID(userId, params["aid"])
+					if err == nil && len(assignment.Grade_script) > 0 {
+						utilities.Sugar.Infof("LOL")
+						s, res, err := models.Exec(assignment.Grade_script, r.File, assignment.Lang)
+						if err == nil {
+							r.Score = s
+							r.Post_results = res
+							resultKey = "submission"
+							temp := make(map[string]interface{})
+							temp["submission"] = r
+							temp["grade_script"] = string(assignment.Grade_script)
+							result = temp
+						}
 					} else {
 						msg = "You have no submission"
 					}
@@ -66,12 +74,14 @@ var AssignmentsShow = http.HandlerFunc(
 				r := make(map[string]interface{})
 				students, err := models.LayerInstance().Enrolled.GetStudents(params["cid"])
 				submissions, err := models.LayerInstance().Submission.Get(models.SubmissionQuery{Assignment_id: assign_id}, "")
+				utilities.Sugar.Infof("Number of submissions: %v", len(submissions))
+				utilities.Sugar.Infof("Number of students: %v", len(students))
 				if err == nil {
 					if len(students) > 0 {
-						r["num_submissions"] = len(submissions) / len(students)
-						s := make([][]string, len(submissions))
+						r["num_submissions"] = float64(len(submissions)) / float64(len(students))
+						var s []int64
 						for _, submission := range submissions {
-							s = append(s, submission.Post_results)
+							s = append(s, submission.Score)
 						}
 						r["score"] = s
 						result = r
