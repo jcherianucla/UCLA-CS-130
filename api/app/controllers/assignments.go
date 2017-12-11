@@ -44,16 +44,14 @@ var AssignmentsShow = http.HandlerFunc(
 			params := mux.Vars(r)
 			var status int
 			msg := "Success"
-			var resultKey string
+			resultKey := "result"
 			var result interface{}
 			userId := getClaims(r)
 			assign_id, _ := strconv.ParseInt(params["aid"], 10, 64)
 			user, err := models.LayerInstance().User.GetByID(userId)
 			assignment, err := models.LayerInstance().Assignment.GetByID(params["aid"])
 			if err == nil && !user.Is_professor {
-				resultKey = "assignment"
-				result = assignment
-				if !utilities.BeforeDeadline(result.(models.Assignment).Deadline) {
+				if !utilities.BeforeDeadline(assignment.Deadline) {
 					uid, _ := strconv.ParseInt(userId, 10, 64)
 					results, err := models.LayerInstance().Submission.Get(models.SubmissionQuery{User_id: uid, Assignment_id: assign_id}, "AND")
 					if err != nil {
@@ -65,10 +63,10 @@ var AssignmentsShow = http.HandlerFunc(
 				}
 			} else {
 				resultKey = "analytics"
+				r := make(map[string]interface{})
 				students, err := models.LayerInstance().Enrolled.GetStudents(params["cid"])
 				submissions, err := models.LayerInstance().Submission.Get(models.SubmissionQuery{Assignment_id: assign_id}, "")
 				if err == nil {
-					r := make(map[string]interface{})
 					if len(students) > 0 {
 						r["num_submissions"] = len(submissions) / len(students)
 						s := make([][]string, len(submissions))
@@ -76,21 +74,24 @@ var AssignmentsShow = http.HandlerFunc(
 							s = append(s, submission.Post_results)
 						}
 						r["score"] = s
-						r["assignment"] = assignment
 						result = r
 					}
 				}
 			}
-			if err != nil || result == nil {
+			if err != nil {
 				status = 500
 				msg = err.Error()
 			} else {
 				status = 200
 			}
+			if result == nil {
+				result = ""
+			}
 			JSON, _ := json.Marshal(map[string]interface{}{
-				"status":  status,
-				"message": msg,
-				resultKey: result,
+				"status":     status,
+				"message":    msg,
+				"assignment": assignment,
+				resultKey:    result,
 			})
 			w.Write(JSON)
 		}
