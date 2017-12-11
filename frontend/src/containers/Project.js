@@ -31,8 +31,8 @@ class Project extends Component {
     this.state = {
       due: due,
       delta: due.getTime() - Date.now(),
-      class_name: this.props.match.params.class_id,
-      project_name: this.props.match.params.project_id
+      class_name: '',
+      project_name: ''
     }
   }
 
