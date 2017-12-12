@@ -136,7 +136,7 @@ func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[strin
 	for i := 0; i < fields.NumField(); i++ {
 		k := strings.ToLower(fields.Type().Field(i).Name)
 		v := fields.Field(i).Interface()
-		// Skip auto params
+		// Skip auto params and skippable params
 		if AUTO_PARAM[k] || SKIP_PARAM[k] {
 			continue
 		}
@@ -374,8 +374,12 @@ func (db *Db) Delete(strId, table string) (err error) {
 	return
 }
 
+// DeleteByCol permanently removes the object from the table given specific columns.
+// It takes in the id, column name and table name to act on.
+// It returns an error if one exists.
 func (db *Db) DeleteByCol(column, strId, table string) (err error) {
 	query := fmt.Sprintf("DELETE FROM %s WHERE %s=$1", table, column)
+
 	utilities.Sugar.Infof("SQL Query: %s", query)
 	utilities.Sugar.Infof("Value: %s", strId)
 

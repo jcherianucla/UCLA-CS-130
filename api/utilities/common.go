@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	// Skip these fields from an old version of the database table
 	SKIP_PARAM = map[string]bool{
 		"Post_results": true,
 		"Pre_results":  true,
@@ -42,7 +43,6 @@ func GetVar(name string, _default string) string {
 // field should be set to.
 // It returns an error if one exists.
 func SetField(obj interface{}, key string, value interface{}) error {
-	//Sugar.Infof("Key: %s, Value: %v", key, value)
 	structFieldValue := reflect.ValueOf(obj).Elem().FieldByName(key)
 
 	if !structFieldValue.IsValid() {
@@ -55,11 +55,13 @@ func SetField(obj interface{}, key string, value interface{}) error {
 
 	structFieldType := structFieldValue.Type()
 	var val reflect.Value
+	// Type assertion required for a few types
 	if key == "Password" {
 		t, _ := value.([]byte)
 		val = reflect.ValueOf(string(t))
 	} else if key == "Lang" {
 		v, _ := value.(int64)
+		// Comply with Language type alias
 		t := GetLanguageFromInt(v)
 		val = reflect.ValueOf(t)
 	} else {
@@ -85,7 +87,8 @@ func FillStruct(data map[string]interface{}, result interface{}) error {
 	return nil
 }
 
-// Determines whether the current time is before the intended deadline.
+// Determines whether the current time is before the intended deadline, converting
+// down to Milliseconds to ensure timezone issues don't come into effect.
 // It takes in the deadline to compare against.
 // It returns the boolean value indicating the result.
 func BeforeDeadline(deadline time.Time) bool {

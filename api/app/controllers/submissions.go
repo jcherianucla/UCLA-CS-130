@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// SubmissionsCreate provides the logic for creating a new submission for a student, running the sanity script if it exists.
 var SubmissionsCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -29,6 +30,7 @@ var SubmissionsCreate = http.HandlerFunc(
 				assignment, err := models.LayerInstance().Assignment.GetByID(params["aid"])
 				submission.Time_updated = time.Now()
 				submission, err = models.LayerInstance().Submission.Insert(submission)
+				// Run script only if before deadline
 				if err == nil && utilities.BeforeDeadline(assignment.Deadline) {
 					if len(assignment.Sanity_script) > 0 {
 						_, res, err := models.Exec(assignment.Sanity_script, submission.File, assignment.Lang)
@@ -63,6 +65,7 @@ var SubmissionsCreate = http.HandlerFunc(
 	},
 )
 
+// SubmissionsUpdate allows a user to update their submission and re-run the sanity script if all before the deadline for the assignment.
 var SubmissionsUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers

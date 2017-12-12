@@ -194,6 +194,7 @@ func NewRouter() *mux.Router {
 	routes.createAssignmentRoutes()
 	// Create the submission routes
 	routes.createSubmissionRoutes()
+	// Bind all routes
 	BindRoutes(router, routes.userRoutes)
 	BindRoutes(router, routes.classRoutes)
 	BindRoutes(router, routes.assignmentRoutes)
