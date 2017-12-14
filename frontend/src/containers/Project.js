@@ -147,9 +147,14 @@ class Project extends Component {
   }
 
   tick() {
-    this.setState({
-      delta: this.state.due.getTime() - Date.now()
-    });
+    let delta = this.state.due.getTime() - Date.now();
+    if (delta <= 0 && this.state.delta > 0) {
+      this.props.history.push('/classes/' + this.props.match.params.class_id + '/assignments/' + this.props.match.params.project_id);
+    } else {
+      this.setState({
+        delta: delta
+      });
+    }
   }
 
   back() {

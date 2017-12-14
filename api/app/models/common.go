@@ -7,7 +7,7 @@ import (
 )
 
 // Represents the layer for the model by exposing the
-// different models' tables
+// different models' tables.
 type layer struct {
 	User       *UserTable
 	Class      *ClassTable
@@ -16,15 +16,15 @@ type layer struct {
 	Enrolled   *EnrolledTable
 }
 
-// Singleton reference to the model layer
+// Singleton reference to the model layer.
 var instance *layer
 
-// Lock for running only once
+// Lock for running only once.
 var once sync.Once
 
 // LayerInstance gets the static singelton reference
-// using double check synchronization
-// It returns the reference to the layer
+// using double check synchronization.
+// It returns the reference to the layer.
 func LayerInstance() *layer {
 	once.Do(func() {
 		// Create DB only once
@@ -36,7 +36,7 @@ func LayerInstance() *layer {
 			utilities.DB_NAME,
 		})
 		utilities.CheckError(err)
-		// Create user table only once
+		// Create all the tables
 		ut, err := NewUserTable(&db)
 		utilities.CheckError(err)
 		ct, err := NewClassTable(&db)
@@ -47,6 +47,7 @@ func LayerInstance() *layer {
 		utilities.CheckError(err)
 		et, err := NewEnrolledTable(&db)
 		utilities.CheckError(err)
+		// Create the layer only once
 		instance = &layer{User: &ut, Class: &ct, Assignment: &at, Submission: &st, Enrolled: &et}
 	})
 	return instance

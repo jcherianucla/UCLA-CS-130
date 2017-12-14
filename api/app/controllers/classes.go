@@ -11,6 +11,9 @@ import (
 	"strings"
 )
 
+// hasPermissions ensures that for the given class, the user has permissions to invoke certain actions.
+// It takes in the user id and class id to run the analysis on.
+// It returns whether the user is the creator and a professor.
 func hasPermissions(creator_id, class_id string) bool {
 	user, err := models.LayerInstance().User.GetByID(creator_id)
 	class, err := models.LayerInstance().Class.GetByID(class_id)
@@ -19,6 +22,7 @@ func hasPermissions(creator_id, class_id string) bool {
 		user.Is_professor
 }
 
+// ClassesIndex is used to return all the classes for the specified user as found from the authorization token.
 var ClassesIndex = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -29,6 +33,7 @@ var ClassesIndex = http.HandlerFunc(
 			var classes []models.Class
 			strId := getClaims(r)
 			user, err := models.LayerInstance().User.GetByID(strId)
+			// Differentiate between student and professor
 			if user.Is_professor {
 				creator_id, _ := strconv.ParseInt(strId, 10, 64)
 				classes, err = models.LayerInstance().Class.Get(models.ClassQuery{Creator_id: creator_id}, "")
@@ -52,6 +57,7 @@ var ClassesIndex = http.HandlerFunc(
 	},
 )
 
+// ClassesShow shows details about the speicfic class given the class id in the url parameters.
 var ClassesShow = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -78,6 +84,7 @@ var ClassesShow = http.HandlerFunc(
 	},
 )
 
+// ClassesCreate creates a class if the user is a professor and the class doesn't already exist for that same professor. Auto-enrolls students into the class from a given csv.
 var ClassesCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -123,6 +130,7 @@ var ClassesCreate = http.HandlerFunc(
 	},
 )
 
+// ClassesUpdate updates the specific class if the user is a professor and the creator of the class, and allows to enroll more students based on a newly submitted csv if one exists.
 var ClassesUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -144,7 +152,7 @@ var ClassesUpdate = http.HandlerFunc(
 				if err == nil {
 					err = models.LayerInstance().Enrolled.Insert(params["id"], f)
 				}
-				if !strings.Contains(err.Error(), "no such file") && err != nil {
+				if err != nil && !strings.Contains(err.Error(), "no such file") {
 					status = 500
 					msg = err.Error()
 				} else {
@@ -162,6 +170,7 @@ var ClassesUpdate = http.HandlerFunc(
 	},
 )
 
+// ClassesDelete will provide the route to delete the specified class if the user has permissions.
 var ClassesDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers

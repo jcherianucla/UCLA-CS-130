@@ -77,8 +77,7 @@ func storeFile(r *http.Request, m *map[string]interface{}, key string) error {
 	return err
 }
 
-// NewAssignment creates a new assignment object based on a request, assuming
-// the request holding multipart form-data.
+// NewAssignment creates a new assignment object based on a request, assuming the request holding multipart form-data.
 // It takes in the request to analyze.
 // It returns the constructed assignment and an error if one exists.
 func NewAssignment(r *http.Request) (assignment Assignment, err error) {
@@ -92,7 +91,8 @@ func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	for k, v := range r.PostForm {
 		k = strings.Title(k)
 		if k == "Deadline" {
-			m[k], err = time.Parse(utilities.TIME_FORMAT, v[0])
+			t, _ := time.Parse(utilities.TIME_FORMAT, v[0])
+			m[k] = t
 		} else if k == "Language" {
 			m["Lang"] = utilities.SetLanguage(v[0])
 		} else {
@@ -101,22 +101,32 @@ func NewAssignment(r *http.Request) (assignment Assignment, err error) {
 	}
 	storeFile(r, &m, "grade_script")
 	storeFile(r, &m, "sanity_script")
+	// Create assignment object
 	err = utilities.FillStruct(m, &assignment)
+	utilities.Sugar.Infof("Assignment object: %v", assignment)
 	return
 }
 
+// Equals is a custom comparator for two assignment objects on non-auto parameter fields.
+// It takes in an assignment object representing the other value.
+// It returns a boolean indicating the equality
 func (assign *Assignment) Equals(other Assignment) bool {
 	return assign.Name == other.Name &&
 		assign.Lang == other.Lang &&
 		assign.Class_id == other.Class_id
 }
 
+// NewAssignmentTable creates a new table within the database for housing all assignment objects.
+// It takes in a reference to an open database connection.
+// It returns the constructed table, and an error if one exists.
 func NewAssignmentTable(db *db.Db) (assignTable AssignmentTable, err error) {
+	// Ensure connection is alive
 	if db == nil {
 		err = errors.New("Invalid database connection")
 		return
 	}
 	assignTable.connection = db
+	// Construct query
 	query := fmt.Sprintf(`
 	CREATE TABLE IF NOT EXISTS %s(
 		id SERIAL,
@@ -136,7 +146,11 @@ func NewAssignmentTable(db *db.Db) (assignTable AssignmentTable, err error) {
 	return
 }
 
+// Insert will put a new assignment row within the table in the DB, verifying all fields are valid.
+// It takes in the assignment object to insert.
+// It returns the new assignment as in the table and an error if one exists.
 func (table *AssignmentTable) Insert(assign Assignment) (new Assignment, err error) {
+	// Query to ensure the same object doesn't already exist
 	assignQuery := AssignmentQuery{Name: assign.Name, Lang: assign.Lang, Class_id: assign.Class_id}
 	data, err := table.connection.Insert(ASSIGNMENT_TABLE, "AND", assign, assignQuery)
 	if err != nil {
@@ -146,6 +160,9 @@ func (table *AssignmentTable) Insert(assign Assignment) (new Assignment, err err
 	return
 }
 
+// Get attempts to provide a generalized search through the assignment table based on the provided queries.
+// It takes a assignment query for the queryable fields, and an operator such as "AND" or "OR" to define the context of the search.
+// It returns all the found assignments and an error if one exists.
 func (table *AssignmentTable) Get(assignQuery AssignmentQuery, op string) (assigns []Assignment, err error) {
 	allData, err := table.connection.Get(assignQuery, op, ASSIGNMENT_TABLE)
 	if err != nil {
@@ -162,6 +179,10 @@ func (table *AssignmentTable) Get(assignQuery AssignmentQuery, op string) (assig
 	return
 
 }
+
+// GetByID finds the assignment with the specified assignment id.
+// It takes an ID as a string to convert to an integer to then search on.
+// It returns the found assignment and an error if one exists.
 func (table *AssignmentTable) GetByID(strId string) (assign Assignment, err error) {
 	data, err := table.connection.GetByID(strId, ASSIGNMENT_TABLE)
 	if err != nil {
@@ -171,6 +192,9 @@ func (table *AssignmentTable) GetByID(strId string) (assign Assignment, err erro
 	return
 }
 
+// Update will update the assignment row in the table based on the incoming assignment object.
+// It takes in an id to identify the assignment in the DB, and updates as a assignment object.
+// It returns the updated assignment as in the DB, and an error if one exists.
 func (table *AssignmentTable) Update(strId string, updates Assignment) (updated Assignment, err error) {
 	data, err := table.connection.Update(strId, ASSIGNMENT_TABLE, updates)
 	if err != nil {
@@ -180,10 +204,15 @@ func (table *AssignmentTable) Update(strId string, updates Assignment) (updated 
 	return
 }
 
+// Delete permanently removes the assignment object from the table.
+// It takes in an id for the assignment we wish to delete.
+// It returns an error if one exists.
 func (table *AssignmentTable) Delete(strId string) error {
 	return table.connection.Delete(strId, ASSIGNMENT_TABLE)
 }
 
+// DeleteAll will perform a relational delete on all assignments within the database by calling delete on the individual assignment.
+// It returns an error if one exists.
 func (table *AssignmentTable) DeleteAll() (err error) {
 	query := fmt.Sprintf("SELECT id FROM %s", ASSIGNMENT_TABLE)
 

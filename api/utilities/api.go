@@ -46,6 +46,9 @@ func GetAPIInstance() *api {
 	return instance
 }
 
+// SetupResponse provides a convenient way for allowing handlers
+// to work with CORS.
+// It takes in a ResponseWriter reference to modify the headers with CORS compliant information.
 func SetupResponse(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")

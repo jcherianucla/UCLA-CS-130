@@ -1,6 +1,3 @@
-// The models package houses the Model layer within the MVC architecture design.
-// This is the lowest layer in the architecture, which directly communicates with
-// the database layer. The models represent an abstraction to the DB object relations.
 package models
 
 import (
@@ -80,6 +77,7 @@ func NewClassTable(db *db.Db) (classTable ClassTable, err error) {
 		return
 	}
 	classTable.connection = db
+	// Construct query
 	query := fmt.Sprintf(`
 	CREATE TABLE IF NOT EXISTS %s(
 			id SERIAL,
@@ -102,6 +100,7 @@ func NewClassTable(db *db.Db) (classTable ClassTable, err error) {
 // It takes in the class object to insert and the user id to associate to the creator.
 // It returns the new class as in the table and an error if one exists.
 func (table *ClassTable) Insert(class Class) (new Class, err error) {
+	// Query over these fields to ensure an existing class doesn't already exist
 	classQuery := ClassQuery{Name: class.Name, Quarter: class.Quarter, Year: class.Year, Creator_id: class.Creator_id}
 	data, err := table.connection.Insert(CLASS_TABLE, "AND", class, classQuery)
 	if err != nil {
@@ -112,8 +111,7 @@ func (table *ClassTable) Insert(class Class) (new Class, err error) {
 	return
 }
 
-// Get attempts to provide a generalized search through the class table based on the
-// provided queries.
+// Get attempts to provide a generalized search through the class table based on the  provided queries.
 // It takes a class query for the queryable fields, and an operator such as "AND" or "OR" to
 // define the context of the search.
 // It returns all the found classes and an error if one exists.
@@ -157,7 +155,7 @@ func (table *ClassTable) Update(strId string, updates Class) (updated Class, err
 	return
 }
 
-// Delete permanently removes the class object from the table.
+// Delete permanently removes the class object from the table. It is a relational delete, ensuring that the corresponding assignments for the class are deleted, and the class is no longer in the enrolled table.
 // It takes in an id for the class we wish to delete.
 // It returns an error if one exists.
 func (table *ClassTable) Delete(strId string) (err error) {

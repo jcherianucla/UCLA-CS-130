@@ -49,6 +49,9 @@ func NewStudent(record map[string]interface{}) (user User, err error) {
 	return
 }
 
+// NewEnrolledTable creates a new table within the database for housing all enrolled objects.
+// It takes in a reference to an open database connection.
+// It returns the constructed table, and an error if one exists.
 func NewEnrolledTable(db *db.Db) (enrolledTable EnrolledTable, err error) {
 	// Ensure connection is alive
 	if db == nil {
@@ -56,6 +59,7 @@ func NewEnrolledTable(db *db.Db) (enrolledTable EnrolledTable, err error) {
 		return
 	}
 	enrolledTable.connection = db
+	// Construct query
 	query := fmt.Sprintf(`
 	CREATE TABLE IF NOT EXISTS %s(
 			id SERIAL,
@@ -70,12 +74,16 @@ func NewEnrolledTable(db *db.Db) (enrolledTable EnrolledTable, err error) {
 	return
 }
 
+// Insert will put a new student row within the table in the DB, for the given class, given a csv reader object to enroll from.
+// It takes in the class id to enroll students into from the csv represented by the Reader.
+// It returns an error if one exists.
 func (table *EnrolledTable) Insert(classId string, r io.Reader) (err error) {
 	record := make(map[string]interface{})
 	rows := csv.NewReader(r)
 	student := Student{}
 	var cols []string
 	i := 0
+	// Loop through csv
 	for {
 		curr, err := rows.Read()
 		if err == io.EOF {
@@ -112,6 +120,9 @@ func (table *EnrolledTable) Insert(classId string, r io.Reader) (err error) {
 	return
 }
 
+// GetStudents gets all the students enrolled within the specific class.
+// It takes in a class id to search through.
+// It returns a list of user objects representing the students in the class, and an error if one exists.
 func (table *EnrolledTable) GetStudents(classId string) (students []User, err error) {
 	query := fmt.Sprintf("SELECT * FROM %s WHERE class_id=$1", ENROLLED_TABLE)
 
@@ -130,11 +141,13 @@ func (table *EnrolledTable) GetStudents(classId string) (students []User, err er
 	}
 	for rows.Next() {
 		var student Student
+		// Create student
 		err = rows.Scan(&student.Id, &student.User_id, &student.Class_id, &student.Time_created)
 		if err != nil {
 			err = errors.Wrapf(err, "Get query failed to execute")
 			return
 		}
+		// Get the user
 		user, err := LayerInstance().User.GetByID(strconv.FormatInt(student.User_id, 10))
 		if err == nil {
 			students = append(students, user)
@@ -143,6 +156,9 @@ func (table *EnrolledTable) GetStudents(classId string) (students []User, err er
 	return
 }
 
+// GetClasses finds all the classes the specific user is enrolled in.
+// It takes in a user id to find the classes they are enrolled in.
+// It returns a list of the found classes and an error if one exists.
 func (table *EnrolledTable) GetClasses(userId string) (classes []Class, err error) {
 	query := fmt.Sprintf("SELECT * FROM %s WHERE user_id=$1", ENROLLED_TABLE)
 
@@ -161,11 +177,13 @@ func (table *EnrolledTable) GetClasses(userId string) (classes []Class, err erro
 	}
 	for rows.Next() {
 		var student Student
+		// Create a student object
 		err = rows.Scan(&student.Id, &student.User_id, &student.Class_id, &student.Time_created)
 		if err != nil {
 			err = errors.Wrapf(err, "Get query failed to execute")
 			return
 		}
+		// Find the class
 		class, err := LayerInstance().Class.GetByID(strconv.FormatInt(student.Class_id, 10))
 		if err == nil {
 			classes = append(classes, class)
@@ -174,10 +192,16 @@ func (table *EnrolledTable) GetClasses(userId string) (classes []Class, err erro
 	return
 }
 
+// Unenroll removes a specified user from the class.
+// It takes in the user id speicfying the user to unenroll.
+// It returns an error if one exists.
 func (table *EnrolledTable) Unenroll(userId string) error {
 	return table.connection.DeleteByCol("user_id", userId, ENROLLED_TABLE)
 }
 
+// DeleteClass removes a class from the enrolled table.
+// It takes in the class id specifying the class to remove.
+// It returns an error if one exists.
 func (table *EnrolledTable) DeleteClass(classId string) error {
 	return table.connection.DeleteByCol("class_id", classId, ENROLLED_TABLE)
 }

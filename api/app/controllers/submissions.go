@@ -1,154 +1,113 @@
 package controllers
 
-/*
-
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jcherianucla/UCLA-CS-130/api/app/models"
+	"github.com/jcherianucla/UCLA-CS-130/api/utilities"
 	"net/http"
 	"strconv"
+	"time"
 )
 
-var ClassesIndex = http.HandlerFunc(
-	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		var status int
-		var msg string
-		strId := getClaims(r)
-		creator_id, _ := strconv.ParseInt(strId, 10, 64)
-		classes, err := models.LayerInstance().Class.Get(models.ClassQuery{Creator_id: creator_id}, "")
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
-		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"classes": classes,
-		})
-		w.Write(JSON)
-	},
-)
-
-var ClassesShow = http.HandlerFunc(
-	func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		class, err := models.LayerInstance().Class.GetByID(params["id"])
-		if err != nil {
-			status = 500
-			msg = err.Error()
-		} else {
-			status = 200
-			msg = "Success"
-		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   class,
-		})
-		w.Write(JSON)
-	},
-)
-
-var ClassesCreate = http.HandlerFunc(
+// SubmissionsCreate provides the logic for creating a new submission for a student, running the sanity script if it exists.
+var SubmissionsCreate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
-		var status int
-		var msg string
-		class, err := models.NewClass(r)
-		creator_id := getClaims(r)
-		user, err := models.LayerInstance().User.GetByID(creator_id)
-		if err != nil || !user.Is_professor {
-			status = 400
-			msg = "Invalid permissions to create a class."
-		} else {
-			class, err = models.LayerInstance().Class.Insert(class, creator_id)
+		utilities.SetupResponse(&w)
+		if r.Method != "OPTIONS" {
+			var status int
+			msg := "Success"
+			userId := getClaims(r)
+			params := mux.Vars(r)
+			submission, err := models.NewSubmission(r)
+			user, err := models.LayerInstance().User.GetByID(userId)
+			if !user.Is_professor {
+				uid, _ := strconv.ParseInt(userId, 10, 64)
+				submission.User_id = uid
+				assign_id, _ := strconv.ParseInt(params["aid"], 10, 64)
+				submission.Assignment_id = assign_id
+				assignment, err := models.LayerInstance().Assignment.GetByID(params["aid"])
+				submission.Time_updated = time.Now()
+				submission, err = models.LayerInstance().Submission.Insert(submission)
+				// Run script only if before deadline
+				if err == nil && utilities.BeforeDeadline(assignment.Deadline) {
+					if len(assignment.Sanity_script) > 0 {
+						_, res, err := models.Exec(assignment.Sanity_script, submission.File, assignment.Lang)
+						if err == nil {
+							submission.Pre_results = res
+						}
+					}
+				}
+				if err != nil {
+					status = 500
+					msg = err.Error()
+				}
+			} else {
+				status = 400
+				msg = "You cannot submit a project"
+			}
 			if err != nil {
 				status = 500
 				msg = err.Error()
 			} else {
-				status = 200
-				msg = "Success"
+				if status == 0 {
+					status = 200
+				}
 			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":     status,
+				"message":    msg,
+				"submission": submission,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   class,
-		})
-		w.Write(JSON)
 	},
 )
 
-var ClassesUpdate = http.HandlerFunc(
+// SubmissionsUpdate allows a user to update their submission and re-run the sanity script if all before the deadline for the assignment.
+var SubmissionsUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
-		w.Header().Set("Content-Type", "application/json")
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		var updated = models.Class{}
-		class, _ := models.LayerInstance().Class.GetByID(params["id"])
-		creator_id := getClaims(r)
-		user, err := models.LayerInstance().User.GetByID(creator_id)
-		if err != nil || fmt.Sprintf("%v", class.Creator_id) != creator_id || !user.Is_professor {
-			status = 400
-			msg = "Invalid permissions to update class"
-		} else {
-			updates, err := models.NewClass(r)
-			updated, err = models.LayerInstance().Class.Update(params["id"], updates)
-			if err != nil {
-				status = 500
-				msg = err.Error()
+		utilities.SetupResponse(&w)
+		if r.Method != "OPTIONS" {
+			params := mux.Vars(r)
+			var status int
+			msg := "Success"
+			userId := getClaims(r)
+			updated, err := models.LayerInstance().Submission.GetByID(userId, params["aid"])
+			assignment, err := models.LayerInstance().Assignment.GetByID(params["aid"])
+			updates, err := models.NewSubmission(r)
+			sid := strconv.FormatInt(updated.Id, 10)
+			updated.Time_updated = time.Now()
+			updated, _ = models.LayerInstance().Submission.Update(sid, updates)
+			if utilities.BeforeDeadline(assignment.Deadline) {
+				if len(assignment.Sanity_script) > 0 {
+					_, res, err := models.Exec(assignment.Sanity_script, updated.File, assignment.Lang)
+					if err == nil {
+						updated.Pre_results = res
+					}
+				}
 			} else {
-				status = 200
-				msg = "Success"
+				status = 400
+				msg = "Cannot update submission after deadline"
 			}
+			if err != nil {
+				if status == 0 {
+					status = 500
+					msg = err.Error()
+				}
+			} else {
+				if status == 0 {
+					status = 200
+				}
+			}
+			JSON, _ := json.Marshal(map[string]interface{}{
+				"status":     status,
+				"message":    msg,
+				"submission": updated,
+			})
+			w.Write(JSON)
 		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-			"class":   updated,
-		})
-		w.Write(JSON)
 	},
 )
-
-var ClassesDelete = http.HandlerFunc(
-	func(w http.ResponseWriter, r *http.Request) {
-		// Set headers
-		w.Header().Set("Content-Type", "application/json")
-		params := mux.Vars(r)
-		var status int
-		var msg string
-		class, err := models.LayerInstance().Class.GetByID(params["id"])
-		if fmt.Sprintf("%v", class.Creator_id) != getClaims(r) {
-			status = 500
-			msg = "Invalid permissions to delete class"
-		} else {
-			err = models.LayerInstance().Class.Delete(params["id"])
-			if err != nil {
-				status = 500
-				msg = err.Error()
-			} else {
-				status = 200
-				msg = "Success"
-			}
-		}
-		JSON, _ := json.Marshal(map[string]interface{}{
-			"status":  status,
-			"message": msg,
-		})
-		w.Write(JSON)
-	},
-)
-*/

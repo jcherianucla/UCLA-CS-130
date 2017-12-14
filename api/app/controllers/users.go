@@ -2,8 +2,7 @@
 // This is the middle layer in the architecture, which communicates from the view to the
 // model. It does this through a RESTful API, as the View layer is a separate service.
 // In effect the controller represents all the handlers exposed to the router upstream.
-// All handlers take in the incoming HTTP request and a writer to the HTTP response,
-// writing as JSON.
+// All handlers take in the incoming HTTP request and a writer to the HTTP response, writing as JSON. The HTTP requests can be of any content type, though json and form-data are primarily used. It is CORS compliant.
 package controllers
 
 import (
@@ -174,6 +173,7 @@ var UsersLogin = http.HandlerFunc(
 	},
 )
 
+// UsersUpdate allows a user to update their information if they are authenticated.
 var UsersUpdate = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers
@@ -207,6 +207,7 @@ var UsersUpdate = http.HandlerFunc(
 	},
 )
 
+// UsersDelete allow a user to delete their accounts, if authenticated.
 var UsersDelete = http.HandlerFunc(
 	func(w http.ResponseWriter, r *http.Request) {
 		// Set headers

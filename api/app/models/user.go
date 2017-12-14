@@ -100,6 +100,7 @@ func NewUserTable(db *db.Db) (userTable UserTable, err error) {
 		return
 	}
 	userTable.connection = db
+	// Construct query
 	query := fmt.Sprintf(`
 	CREATE TABLE IF NOT EXISTS %s(
 			id SERIAL,
@@ -153,11 +154,11 @@ func (table *UserTable) Login(user User) (found User, err error) {
 	return
 }
 
-// Insert will put a new user row within the table in the DB, verifying
-// all fields are valid.
+// Insert will put a new user row within the table in the DB, verifying all fields are valid.
 // It takes in the user object to insert.
 // It returns the new user as in the table and an error if one exists.
 func (table *UserTable) Insert(user User) (new User, err error) {
+	// Use email to ensure same user doesn't already exist
 	data, err := table.connection.Insert(USER_TABLE, "", user, UserQuery{Email: user.Email})
 	if err != nil {
 		return
@@ -166,10 +167,8 @@ func (table *UserTable) Insert(user User) (new User, err error) {
 	return
 }
 
-// Get attempts to provide a generalized search through the user table based on the
-// provided queries.
-// It takes a user query for the queryable fields, and an operator such as "AND" or "OR" to
-// define the context of the search.
+// Get attempts to provide a generalized search through the user table based on the provided queries.
+// It takes a user query for the queryable fields, and an operator such as "AND" or "OR" to define the context of the search.
 // It returns all the found users and an error if one exists.
 func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err error) {
 	allData, err := table.connection.Get(userQuery, op, USER_TABLE)
@@ -187,7 +186,7 @@ func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err e
 	return
 }
 
-// GetByID uses the internal get mechanism for the table to find a user given an id to search on.
+// GetByID finds the user with the specified user id.
 // It takes an ID as a string to convert to an integer to then search on.
 // It returns the found user and an error if one exists.
 func (table *UserTable) GetByID(strId string) (user User, err error) {
@@ -199,6 +198,9 @@ func (table *UserTable) GetByID(strId string) (user User, err error) {
 	return
 }
 
+// GetByEmail finds the user with the specified user email, which should be unique per user.
+// It takes in the email to search on.
+// It returns the found user and an error if one exists.
 func (table *UserTable) GetByEmail(email string) (user User, err error) {
 	objs, err := table.connection.Get(UserQuery{Email: email}, "", USER_TABLE)
 	if err != nil {
