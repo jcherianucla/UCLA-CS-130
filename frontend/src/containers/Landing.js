@@ -71,14 +71,6 @@ class Landing extends Component {
                   </div>
                 </Col>
                 <Col xs={12} sm={6} md={4}>
-                  <div id="landing-prit" className="landing-pic">
-                    <div className="landing-pic-caption text-center">
-                      <p>Prit Joshi</p>
-                      <p>Backend Developer</p>
-                    </div>
-                  </div>
-                </Col>
-                <Col xs={12} sm={6} md={4}>
                   <div id="landing-connor" className="landing-pic">
                     <div className="landing-pic-caption text-center">
                       <p>Connor Kenny</p>
@@ -98,7 +90,7 @@ class Landing extends Component {
                   <div id="landing-omar" className="landing-pic">
                     <div className="landing-pic-caption text-center">
                       <p>Omar Ozgur</p>
-                      <p>Backend Developer</p>
+                      <p>Fullstack Developer</p>
                     </div>
                   </div>
                 </Col>
