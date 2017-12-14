@@ -81,9 +81,11 @@ class Project extends Component {
         self.setState({loaded: true});
         self.refs.circle.className += " p" + Math.floor(responseJSON.analytics.num_submissions * 100);
         self.refs.percent.innerHTML = Math.floor(responseJSON.analytics.num_submissions * 100) + " %";
-        responseJSON.analytics.score.forEach(function(element) {
-          data[Math.floor(element / 10)]['students'] += 1;
-        });
+        if (responseJSON.analytics.score) {
+          responseJSON.analytics.score.forEach(function(element) {
+            data[Math.floor(element / 10)]['students'] += 1;
+          });
+        }
         self.refs.chart.data = data;
         self.setState({key: Math.random()});
       } else if (!responseJSON.submission) {
