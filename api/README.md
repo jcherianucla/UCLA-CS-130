@@ -102,4 +102,4 @@ Run tests by running `make test`.
 
 # Endpoints:
 
-Find full information on each endpoint in our Wiki.
+Find full API documentation in the [GradePortal Wiki](https://github.com/jcherianucla/UCLA-CS-130/wiki/)
