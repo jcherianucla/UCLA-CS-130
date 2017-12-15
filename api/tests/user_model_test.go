@@ -19,12 +19,12 @@ const (
 
 var (
 	noErr           = errors.New("")
-	fieldErr        = errors.New("User model has invalid fields")
-	emailErr        = errors.New("User model has invalid fields: email")
-	emailErr2       = errors.New("Please proved a valid email address")
-	existsErr       = errors.New("User already exists")
+	fieldErr        = errors.New("has invalid fields")
+	emailErr        = errors.New("has invalid fields: Email")
+	emailErr2       = errors.New("Please provide a valid email address")
+	existsErr       = errors.New("already exists")
 	passErr         = errors.New("Provided password does not match")
-	noUserErr       = errors.New("Failed to find user")
+	noModelErr      = errors.New("Failed to find")
 	invalidQueryErr = errors.New("Get query preparation failed")
 )
 
@@ -34,7 +34,7 @@ var tu models.User = models.User{
 	Email:        "jcherian@ucla.edu",
 	First_name:   "Jahan",
 	Last_name:    "Cherian",
-	Password:     []byte("password"),
+	Password:     "password",
 }
 
 // Test updated user model to be used in updates
@@ -43,7 +43,7 @@ var updated models.User = models.User{
 	Email:        "jcherian@ucla.edu",
 	First_name:   "Jahan",
 	Last_name:    "Kuruvilla Cherian",
-	Password:     []byte("newpassword"),
+	Password:     "newpassword",
 }
 
 // The user table reference to act on
@@ -85,7 +85,7 @@ type queryTest struct {
 // getId returns the corresponding ID for a user.
 // It takes in a user object.
 // It returns the corresponding int ID.
-func getId(user models.User) int {
+func getId(user models.User) int64 {
 	users, _ := ut.Get(models.UserQuery{Email: user.Email}, "")
 	return users[0].Id
 }
@@ -124,8 +124,8 @@ func TestUserInsert(t *testing.T) {
 func TestUserLogin(t *testing.T) {
 	cases := []userTest{
 		{test{"Invalid email", true, emailErr2}, models.User{Email: "jcherianucla.edu", Password: tu.Password}},
-		{test{"Password equality", true, passErr}, models.User{Email: tu.Email, Password: []byte("passwor")}},
-		{test{"No user", true, noUserErr}, models.User{Email: "oozgur217@gmail.com", Password: tu.Password}},
+		{test{"Password equality", true, passErr}, models.User{Email: tu.Email, Password: "passwor"}},
+		{test{"No user", true, noModelErr}, models.User{Email: "oozgur217@gmail.com", Password: tu.Password}},
 		{test{"Valid Login", false, noErr}, models.User{Email: tu.Email, Password: tu.Password}},
 	}
 	for _, tc := range cases {
@@ -169,10 +169,10 @@ func TestUserGet(t *testing.T) {
 func TestUserUpdate(t *testing.T) {
 	// Get the relevant ID for user
 	id := getId(tu)
-	validId := strconv.Itoa(id)
-	invalidId := strconv.Itoa(id - 1)
+	validId := strconv.FormatInt(id, 10)
+	invalidId := strconv.FormatInt(id-1, 10)
 	cases := []userTest{
-		{test{"No user", true, noUserErr}, tu},
+		{test{"No user", true, noModelErr}, tu},
 		{test{"Valid update", false, noErr}, updated},
 	}
 
@@ -199,10 +199,10 @@ func TestUserUpdate(t *testing.T) {
 func TestUserDelete(t *testing.T) {
 	// Get the relevant ID for user
 	id := getId(updated)
-	validId := strconv.Itoa(id)
-	invalidId := strconv.Itoa(id - 1)
+	validId := strconv.FormatInt(id, 10)
+	invalidId := strconv.FormatInt(id-1, 10)
 	cases := []userTest{
-		{test{"No user", true, noUserErr}, tu},
+		{test{"No user", true, noModelErr}, tu},
 		{test{"Valid delete", false, noErr}, updated},
 	}
 
