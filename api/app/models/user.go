@@ -14,6 +14,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -227,15 +228,52 @@ func (table *UserTable) Update(strId string, updates User) (updated User, err er
 	return
 }
 
-// Delete permanently removes the user object from the table.
+// Delete permanently removes the user object from the table, ensuring they are un-enrolled from any class.
 // It takes in an id for the user we wish to delete.
 // It returns an error if one exists.
-func (table *UserTable) Delete(strId string) error {
-	return table.connection.Delete(strId, USER_TABLE)
+func (table *UserTable) Delete(strId string) (err error) {
+	err = LayerInstance().Enrolled.Unenroll(strId)
+	if err != nil {
+		return
+	}
+	uid, _ := strconv.ParseInt(strId, 10, 64)
+	submissions, err := LayerInstance().Submission.Get(SubmissionQuery{User_id: uid}, "")
+	if err != nil {
+		return
+	}
+	for _, submission := range submissions {
+		sid := strconv.FormatInt(submission.Id, 10)
+		err = LayerInstance().Submission.Delete(sid)
+		if err != nil {
+			return
+		}
+	}
+	err = table.connection.Delete(strId, USER_TABLE)
+	return
 }
 
 // DeleteAll permanently removes all user objects from the table.
 // It returns an error if one exists.
-func (table *UserTable) DeleteAll() error {
-	return table.connection.DeleteAll(USER_TABLE)
+func (table *UserTable) DeleteAll() (err error) {
+	query := fmt.Sprintf("SELECT id FROM %s", USER_TABLE)
+
+	utilities.Sugar.Infof("SQL Query: %v", query)
+
+	rows, err := table.connection.Pool.Query(query)
+	if err != nil {
+		err = errors.Wrapf(err, "Delete all query failed")
+		return
+	}
+	// Delete all the users by calling the relational delete
+	for rows.Next() {
+		var id int64
+		if err = rows.Scan(&id); err != nil {
+			err = errors.Wrapf(err, "Failed to scan into id")
+			return
+		}
+		if err = table.Delete(strconv.FormatInt(id, 10)); err != nil {
+			return
+		}
+	}
+	return
 }

@@ -204,11 +204,27 @@ func (table *AssignmentTable) Update(strId string, updates Assignment) (updated 
 	return
 }
 
-// Delete permanently removes the assignment object from the table.
+// Delete permanently removes the assignment object from the table, along with any submissions made to the assignment.
 // It takes in an id for the assignment we wish to delete.
 // It returns an error if one exists.
-func (table *AssignmentTable) Delete(strId string) error {
-	return table.connection.Delete(strId, ASSIGNMENT_TABLE)
+func (table *AssignmentTable) Delete(strId string) (err error) {
+	aid, _ := strconv.ParseInt(strId, 10, 64)
+	// Find all submissions related to the assignment
+	submissions, err := LayerInstance().Submission.Get(SubmissionQuery{Assignment_id: aid}, "")
+	if err != nil {
+		return
+	}
+	// Delete all submissions related to the assignment
+	for _, submission := range submissions {
+		sid := strconv.FormatInt(submission.Id, 10)
+		err = LayerInstance().Submission.Delete(sid)
+		if err != nil {
+			return
+		}
+	}
+	// Delete assignment itself
+	err = table.connection.Delete(strId, ASSIGNMENT_TABLE)
+	return
 }
 
 // DeleteAll will perform a relational delete on all assignments within the database by calling delete on the individual assignment.
