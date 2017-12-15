@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>models - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="../../../../../../../lib/godoc/style.css">
+
+<link rel="stylesheet" href="../../../../../../../lib/godoc/jquery.treeview.css">
+<script type="text/javascript">window.initFuncs = [];</script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="http://localhost:5000/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="http://localhost:5000/">Go</a></div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:5000/search">
+<div id="menu">
+<a href="http://localhost:5000/doc/">Documents</a>
+<a href="http://localhost:5000/pkg/">Packages</a>
+<a href="http://localhost:5000/project/">The Project</a>
+<a href="http://localhost:5000/help/">Help</a>
+<a href="http://localhost:5000/blog/">Blog</a>
+
+<input type="text" id="search" name="q" class="inactive" value="Search" placeholder="Search">
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package models
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script type='text/javascript'>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/jcherianucla/gradeportal/api/app/models"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+The models package houses the Model layer within the MVC architecture design.
+This is the lowest layer in the architecture, which directly communicates with
+the database layer. It utilizes the ORM for basic model functionality such as CRUD. The models represent an abstraction to the DB object relations.
+</p>
+
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+				<dd><a href="index.html#pkg-constants">Constants</a></dd>
+			
+			
+			
+				
+				<dd><a href="index.html#Exec">func Exec(grade_script, s_file []byte, lang utilities.Language) (score int64, results []string, err error)</a></dd>
+			
+				
+				<dd><a href="index.html#LayerInstance">func LayerInstance() *layer</a></dd>
+			
+			
+				
+				<dd><a href="index.html#Assignment">type Assignment</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewAssignment">func NewAssignment(r *http.Request) (assignment Assignment, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Assignment.Equals">func (assign *Assignment) Equals(other Assignment) bool</a></dd>
+				
+			
+				
+				<dd><a href="index.html#AssignmentQuery">type AssignmentQuery</a></dd>
+				
+				
+			
+				
+				<dd><a href="index.html#AssignmentTable">type AssignmentTable</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewAssignmentTable">func NewAssignmentTable(db *db.Db) (assignTable AssignmentTable, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#AssignmentTable.Delete">func (table *AssignmentTable) Delete(strId string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#AssignmentTable.DeleteAll">func (table *AssignmentTable) DeleteAll() (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#AssignmentTable.Get">func (table *AssignmentTable) Get(assignQuery AssignmentQuery, op string) (assigns []Assignment, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#AssignmentTable.GetByID">func (table *AssignmentTable) GetByID(strId string) (assign Assignment, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#AssignmentTable.Insert">func (table *AssignmentTable) Insert(assign Assignment) (new Assignment, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#AssignmentTable.Update">func (table *AssignmentTable) Update(strId string, updates Assignment) (updated Assignment, err error)</a></dd>
+				
+			
+				
+				<dd><a href="index.html#Class">type Class</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewClass">func NewClass(r *http.Request) (class Class, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Class.Equals">func (class *Class) Equals(other Class) bool</a></dd>
+				
+			
+				
+				<dd><a href="index.html#ClassQuery">type ClassQuery</a></dd>
+				
+				
+			
+				
+				<dd><a href="index.html#ClassTable">type ClassTable</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewClassTable">func NewClassTable(db *db.Db) (classTable ClassTable, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ClassTable.Delete">func (table *ClassTable) Delete(strId string) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ClassTable.DeleteAll">func (table *ClassTable) DeleteAll() (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ClassTable.Get">func (table *ClassTable) Get(classQuery ClassQuery, op string) (classes []Class, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ClassTable.GetByID">func (table *ClassTable) GetByID(strId string) (class Class, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ClassTable.Insert">func (table *ClassTable) Insert(class Class) (new Class, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#ClassTable.Update">func (table *ClassTable) Update(strId string, updates Class) (updated Class, err error)</a></dd>
+				
+			
+				
+				<dd><a href="index.html#EnrolledTable">type EnrolledTable</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewEnrolledTable">func NewEnrolledTable(db *db.Db) (enrolledTable EnrolledTable, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#EnrolledTable.DeleteClass">func (table *EnrolledTable) DeleteClass(classId string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#EnrolledTable.GetClasses">func (table *EnrolledTable) GetClasses(userId string) (classes []Class, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#EnrolledTable.GetStudents">func (table *EnrolledTable) GetStudents(classId string) (students []User, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#EnrolledTable.Insert">func (table *EnrolledTable) Insert(classId string, r io.Reader) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#EnrolledTable.Unenroll">func (table *EnrolledTable) Unenroll(userId string) error</a></dd>
+				
+			
+				
+				<dd><a href="index.html#Student">type Student</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Student.Equals">func (student *Student) Equals(other Student) bool</a></dd>
+				
+			
+				
+				<dd><a href="index.html#Submission">type Submission</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewSubmission">func NewSubmission(r *http.Request) (submission Submission, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Submission.Equals">func (submission *Submission) Equals(other Submission) bool</a></dd>
+				
+			
+				
+				<dd><a href="index.html#SubmissionQuery">type SubmissionQuery</a></dd>
+				
+				
+			
+				
+				<dd><a href="index.html#SubmissionTable">type SubmissionTable</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewSubmissionTable">func NewSubmissionTable(db *db.Db) (submissionTable SubmissionTable, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#SubmissionTable.Delete">func (table *SubmissionTable) Delete(strId string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#SubmissionTable.DeleteAll">func (table *SubmissionTable) DeleteAll() error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#SubmissionTable.Get">func (table *SubmissionTable) Get(submissionQuery SubmissionQuery, op string) (submissions []Submission, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#SubmissionTable.GetByID">func (table *SubmissionTable) GetByID(uid, aid string) (submission Submission, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#SubmissionTable.Insert">func (table *SubmissionTable) Insert(submission Submission) (new Submission, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#SubmissionTable.Update">func (table *SubmissionTable) Update(strId string, updates Submission) (updated Submission, err error)</a></dd>
+				
+			
+				
+				<dd><a href="index.html#User">type User</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewStudent">func NewStudent(record map[string]interface{}) (user User, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewUser">func NewUser(r *http.Request) (user User, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#User.Equals">func (user *User) Equals(other User) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#User.GenerateJWT">func (user *User) GenerateJWT() string</a></dd>
+				
+			
+				
+				<dd><a href="index.html#UserQuery">type UserQuery</a></dd>
+				
+				
+			
+				
+				<dd><a href="index.html#UserTable">type UserTable</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewUserTable">func NewUserTable(db *db.Db) (userTable UserTable, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.Delete">func (table *UserTable) Delete(strId string) error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.DeleteAll">func (table *UserTable) DeleteAll() error</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.Get">func (table *UserTable) Get(userQuery UserQuery, op string) (users []User, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.GetByEmail">func (table *UserTable) GetByEmail(email string) (user User, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.GetByID">func (table *UserTable) GetByID(strId string) (user User, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.Insert">func (table *UserTable) Insert(user User) (new User, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.Login">func (table *UserTable) Login(user User) (found User, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#UserTable.Update">func (table *UserTable) Update(strId string, updates User) (updated User, err error)</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go">assignment.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go">class.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/common.go">common.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go">enrolled.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go">submission.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go">user.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+			<p>
+			  In the call graph viewer below, each node
+			  is a function belonging to this package
+			  and its children are the functions it
+			  calls&mdash;perhaps dynamically.
+			</p>
+			<p>
+			  The root nodes are the entry points of the
+			  package: functions that may be called from
+			  outside the package.
+			  There may be non-exported or anonymous
+			  functions among them if they are called
+			  dynamically from another package.
+			</p>
+			<p>
+			  Click a node to visit that function's source code.
+			  From there you can visit its callers by
+			  clicking its declaring <code>func</code>
+			  token.
+			</p>
+			<p>
+			  Functions may be omitted if they were
+			  determined to be unreachable in the
+			  particular programs or tests that were
+			  analyzed.
+			</p>
+			<!-- Zero means show all package entry points. -->
+			<ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+		</div>
+		</div> <!-- #pkg-callgraph -->
+
+		
+			<h2 id="pkg-constants">Constants</h2>
+			
+				<p>
+The table name as set in the Postgres DB creation.
+</p>
+
+				<pre>const (
+    <span id="ASSIGNMENT_TABLE">ASSIGNMENT_TABLE</span> = &#34;assignments&#34;
+)</pre>
+			
+				<p>
+The table name as set in the Postgres DB creation.
+</p>
+
+				<pre>const (
+    <span id="CLASS_TABLE">CLASS_TABLE</span> = &#34;classes&#34;
+)</pre>
+			
+				<p>
+The table name as set in the Postgres DB creation.
+</p>
+
+				<pre>const (
+    <span id="ENROLLED_TABLE">ENROLLED_TABLE</span> = &#34;enrolled&#34;
+)</pre>
+			
+				<p>
+The table name as set in the Postgres DB creation.
+</p>
+
+				<pre>const (
+    <span id="SUBMISSION_TABLE">SUBMISSION_TABLE</span> = &#34;submissions&#34;
+)</pre>
+			
+				<p>
+The table name as set in the Postgres DB creation.
+</p>
+
+				<pre>const (
+    <span id="USER_TABLE">USER_TABLE</span> = &#34;users&#34;
+)</pre>
+			
+		
+		
+		
+			
+			
+			<h2 id="Exec">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=1716:1822#L42">Exec</a>
+				<a class="permalink" href="index.html#Exec">&#xb6;</a>
+			</h2>
+			<pre>func Exec(grade_script, s_file []<a href="http://localhost:5000/pkg/builtin/#byte">byte</a>, lang <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#Language">Language</a>) (score <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>, results []<a href="http://localhost:5000/pkg/builtin/#string">string</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+			<p>
+Exec acts as the execution engine for running the submitted grading/sanity scripts on the submitted file. Automatically runs in a sandboxed environment as it is housed within a docker container, isolated from the system.
+It takes in the script to run and the file to run on as byte slices, and the language of the associated submitted file.
+It returns a score (if grading script) and a set of results, and an error if one exists.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="LayerInstance">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/common.go?s=629:656#L18">LayerInstance</a>
+				<a class="permalink" href="index.html#LayerInstance">&#xb6;</a>
+			</h2>
+			<pre>func LayerInstance() *layer</pre>
+			<p>
+LayerInstance gets the static singelton reference
+using double check synchronization.
+It returns the reference to the layer.
+</p>
+
+			
+			
+
+		
+		
+			
+			
+			<h2 id="Assignment">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=583:1160#L19">Assignment</a>
+				<a class="permalink" href="index.html#Assignment">&#xb6;</a>
+			</h2>
+			<p>
+Represents an Assignment row in the Assignment table within the DB.
+Validator and json tags are used for convenient serialization and
+deserialization.
+</p>
+
+			<pre>type Assignment struct {
+<span id="Assignment.Id"></span>    Id            <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>              `valid:&#34;-&#34; json:&#34;id&#34;`
+<span id="Assignment.Name"></span>    Name          <a href="http://localhost:5000/pkg/builtin/#string">string</a>             `valid:&#34;required&#34; json:&#34;name&#34;`
+<span id="Assignment.Description"></span>    Description   <a href="http://localhost:5000/pkg/builtin/#string">string</a>             `valid:&#34;-&#34; json:&#34;description&#34;`
+<span id="Assignment.Deadline"></span>    Deadline      <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a>          `valid:&#34;required&#34; json:&#34;deadline&#34;`
+<span id="Assignment.Lang"></span>    Lang          <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#Language">Language</a> `valid:&#34;required&#34; json:&#34;language&#34;`
+<span id="Assignment.Grade_script"></span>    Grade_script  []<a href="http://localhost:5000/pkg/builtin/#byte">byte</a>             `valid:&#34;-&#34; json:&#34;-&#34;`
+<span id="Assignment.Sanity_script"></span>    Sanity_script []<a href="http://localhost:5000/pkg/builtin/#byte">byte</a>             `valid:&#34;-&#34; json:&#34;-&#34;`
+<span id="Assignment.Class_id"></span>    Class_id      <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>              `valid:&#34;-&#34; json:&#34;class_id&#34;`
+<span id="Assignment.Time_created"></span>    Time_created  <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a>          `valid:&#34;-&#34; json:&#34;-&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewAssignment">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=2564:2634#L73">NewAssignment</a>
+					<a class="permalink" href="index.html#NewAssignment">&#xb6;</a>
+				</h3>
+				<pre>func NewAssignment(r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) (assignment <a href="index.html#Assignment">Assignment</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewAssignment creates a new assignment object based on a request, assuming the request holding multipart form-data.
+It takes in the request to analyze.
+It returns the constructed assignment and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="Assignment.Equals">func (*Assignment) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=3493:3548#L103">Equals</a>
+					<a class="permalink" href="index.html#Assignment.Equals">&#xb6;</a>
+				</h3>
+				<pre>func (assign *<a href="index.html#Assignment">Assignment</a>) Equals(other <a href="index.html#Assignment">Assignment</a>) <a href="http://localhost:5000/pkg/builtin/#bool">bool</a></pre>
+				<p>
+Equals is a custom comparator for two assignment objects on non-auto parameter fields.
+It takes in an assignment object representing the other value.
+It returns a boolean indicating the equality
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="AssignmentQuery">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=1222:1331#L32">AssignmentQuery</a>
+				<a class="permalink" href="index.html#AssignmentQuery">&#xb6;</a>
+			</h2>
+			<p>
+Represents all fields an assignment can be queried over.
+</p>
+
+			<pre>type AssignmentQuery struct {
+<span id="AssignmentQuery.Id"></span>    Id       <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+<span id="AssignmentQuery.Name"></span>    Name     <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="AssignmentQuery.Lang"></span>    Lang     <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#Language">Language</a>
+<span id="AssignmentQuery.Class_id"></span>    Class_id <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="AssignmentTable">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=371:421#L12">AssignmentTable</a>
+				<a class="permalink" href="index.html#AssignmentTable">&#xb6;</a>
+			</h2>
+			<p>
+Represents the connection to the DB instance.
+</p>
+
+			<pre>type AssignmentTable struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewAssignmentTable">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=3880:3955#L112">NewAssignmentTable</a>
+					<a class="permalink" href="index.html#NewAssignmentTable">&#xb6;</a>
+				</h3>
+				<pre>func NewAssignmentTable(db *<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/">db</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/#Db">Db</a>) (assignTable <a href="index.html#AssignmentTable">AssignmentTable</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewAssignmentTable creates a new table within the database for housing all assignment objects.
+It takes in a reference to an open database connection.
+It returns the constructed table, and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="AssignmentTable.Delete">func (*AssignmentTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=7018:7074#L200">Delete</a>
+					<a class="permalink" href="index.html#AssignmentTable.Delete">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#AssignmentTable">AssignmentTable</a>) Delete(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+				<p>
+Delete permanently removes the assignment object from the table.
+It takes in an id for the assignment we wish to delete.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="AssignmentTable.DeleteAll">func (*AssignmentTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=7308:7361#L206">DeleteAll</a>
+					<a class="permalink" href="index.html#AssignmentTable.DeleteAll">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#AssignmentTable">AssignmentTable</a>) DeleteAll() (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+DeleteAll will perform a relational delete on all assignments within the database by calling delete on the individual assignment.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="AssignmentTable.Get">func (*AssignmentTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=5492:5599#L156">Get</a>
+					<a class="permalink" href="index.html#AssignmentTable.Get">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#AssignmentTable">AssignmentTable</a>) Get(assignQuery <a href="index.html#AssignmentQuery">AssignmentQuery</a>, op <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (assigns []<a href="index.html#Assignment">Assignment</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Get attempts to provide a generalized search through the assignment table based on the provided queries.
+It takes a assignment query for the queryable fields, and an operator such as &#34;AND&#34; or &#34;OR&#34; to define the context of the search.
+It returns all the found assignments and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="AssignmentTable.GetByID">func (*AssignmentTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=6091:6173#L176">GetByID</a>
+					<a class="permalink" href="index.html#AssignmentTable.GetByID">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#AssignmentTable">AssignmentTable</a>) GetByID(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (assign <a href="index.html#Assignment">Assignment</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetByID finds the assignment with the specified assignment id.
+It takes an ID as a string to convert to an integer to then search on.
+It returns the found assignment and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="AssignmentTable.Insert">func (*AssignmentTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=4779:4862#L142">Insert</a>
+					<a class="permalink" href="index.html#AssignmentTable.Insert">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#AssignmentTable">AssignmentTable</a>) Insert(assign <a href="index.html#Assignment">Assignment</a>) (new <a href="index.html#Assignment">Assignment</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Insert will put a new assignment row within the table in the DB, verifying all fields are valid.
+It takes in the assignment object to insert.
+It returns the new assignment as in the table and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="AssignmentTable.Update">func (*AssignmentTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/assignment.go?s=6592:6694#L188">Update</a>
+					<a class="permalink" href="index.html#AssignmentTable.Update">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#AssignmentTable">AssignmentTable</a>) Update(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>, updates <a href="index.html#Assignment">Assignment</a>) (updated <a href="index.html#Assignment">Assignment</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Update will update the assignment row in the table based on the incoming assignment object.
+It takes in an id to identify the assignment in the DB, and updates as a assignment object.
+It returns the updated assignment as in the DB, and an error if one exists.
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Class">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=561:936#L17">Class</a>
+				<a class="permalink" href="index.html#Class">&#xb6;</a>
+			</h2>
+			<p>
+Represents a Class row in the Class table within the DB.
+Validator and json tags are used for convenient serialization and
+deserialization.
+</p>
+
+			<pre>type Class struct {
+<span id="Class.Id"></span>    Id           <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;-&#34; json:&#34;id&#34;`
+<span id="Class.Name"></span>    Name         <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;required&#34; json:&#34;name&#34;`
+<span id="Class.Description"></span>    Description  <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;-&#34; json:&#34;description&#34;`
+<span id="Class.Quarter"></span>    Quarter      <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;-&#34; json:&#34;quarter&#34;`
+<span id="Class.Year"></span>    Year         <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;-&#34; json:&#34;year&#34;`
+<span id="Class.Creator_id"></span>    Creator_id   <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;-&#34; json:&#34;creator_id&#34;`
+<span id="Class.Time_created"></span>    Time_created <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a> `valid:&#34;-&#34; json:&#34;-&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewClass">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=1310:1365#L39">NewClass</a>
+					<a class="permalink" href="index.html#NewClass">&#xb6;</a>
+				</h3>
+				<pre>func NewClass(r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) (class <a href="index.html#Class">Class</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewClass is used to create a new class object from an incoming HTTP request.
+It takes in the HTTP request as a multipart form.
+It returns the class constructed and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="Class.Equals">func (*Class) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=1726:1770#L52">Equals</a>
+					<a class="permalink" href="index.html#Class.Equals">&#xb6;</a>
+				</h3>
+				<pre>func (class *<a href="index.html#Class">Class</a>) Equals(other <a href="index.html#Class">Class</a>) <a href="http://localhost:5000/pkg/builtin/#bool">bool</a></pre>
+				<p>
+Equals is a custom comparator for two class objects on non-auto parameter fields.
+It takes in a class object representing the other value.
+It returns a boolean indicating the equality
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="ClassQuery">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=992:1111#L28">ClassQuery</a>
+				<a class="permalink" href="index.html#ClassQuery">&#xb6;</a>
+			</h2>
+			<p>
+Represents all fields a class can be queried over.
+</p>
+
+			<pre>type ClassQuery struct {
+<span id="ClassQuery.Id"></span>    Id         <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+<span id="ClassQuery.Name"></span>    Name       <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="ClassQuery.Quarter"></span>    Quarter    <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="ClassQuery.Year"></span>    Year       <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="ClassQuery.Creator_id"></span>    Creator_id <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="ClassTable">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=365:410#L10">ClassTable</a>
+				<a class="permalink" href="index.html#ClassTable">&#xb6;</a>
+			</h2>
+			<p>
+Represents the connection to the DB instance.
+</p>
+
+			<pre>type ClassTable struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewClassTable">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=2132:2196#L63">NewClassTable</a>
+					<a class="permalink" href="index.html#NewClassTable">&#xb6;</a>
+				</h3>
+				<pre>func NewClassTable(db *<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/">db</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/#Db">Db</a>) (classTable <a href="index.html#ClassTable">ClassTable</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewClassTable creates a new table within the database for housing
+all class objects.
+It takes in a reference to an open database connection.
+It returns the constructed table, and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="ClassTable.Delete">func (*ClassTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=5370:5427#L151">Delete</a>
+					<a class="permalink" href="index.html#ClassTable.Delete">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#ClassTable">ClassTable</a>) Delete(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Delete permanently removes the class object from the table. It is a relational delete, ensuring that the corresponding assignments for the class are deleted, and the class is no longer in the enrolled table.
+It takes in an id for the class we wish to delete.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ClassTable.DeleteAll">func (*ClassTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=6033:6081#L170">DeleteAll</a>
+					<a class="permalink" href="index.html#ClassTable.DeleteAll">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#ClassTable">ClassTable</a>) DeleteAll() (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+DeleteAll permanently removes all class objects from the table.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ClassTable.Get">func (*ClassTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=3771:3862#L108">Get</a>
+					<a class="permalink" href="index.html#ClassTable.Get">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#ClassTable">ClassTable</a>) Get(classQuery <a href="index.html#ClassQuery">ClassQuery</a>, op <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (classes []<a href="index.html#Class">Class</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Get attempts to provide a generalized search through the class table based on the  provided queries.
+It takes a class query for the queryable fields, and an operator such as &#34;AND&#34; or &#34;OR&#34; to
+define the context of the search.
+It returns all the found classes and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ClassTable.GetByID">func (*ClassTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=4367:4438#L127">GetByID</a>
+					<a class="permalink" href="index.html#ClassTable.GetByID">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#ClassTable">ClassTable</a>) GetByID(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (class <a href="index.html#Class">Class</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetByID uses the internal get mechanism for the table to find a class given an id to search on.
+It takes an ID as a string to convert to an integer to then search on.
+It returns the found class and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ClassTable.Insert">func (*ClassTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=3005:3072#L92">Insert</a>
+					<a class="permalink" href="index.html#ClassTable.Insert">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#ClassTable">ClassTable</a>) Insert(class <a href="index.html#Class">Class</a>) (new <a href="index.html#Class">Class</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Insert will put a new class row within the table in the DB, verifying
+all fields are valid.
+It takes in the class object to insert and the user id to associate to the creator.
+It returns the new class as in the table and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="ClassTable.Update">func (*ClassTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/class.go?s=4826:4913#L139">Update</a>
+					<a class="permalink" href="index.html#ClassTable.Update">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#ClassTable">ClassTable</a>) Update(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>, updates <a href="index.html#Class">Class</a>) (updated <a href="index.html#Class">Class</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Update will update the class row in the table based on the incoming class object.
+It takes in an id to identify the class in the DB, and updates as a class object.
+It returns the updated class as in the DB, and an error if one exists.
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="EnrolledTable">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=361:409#L11">EnrolledTable</a>
+				<a class="permalink" href="index.html#EnrolledTable">&#xb6;</a>
+			</h2>
+			<p>
+Represents the connection to the DB instance.
+</p>
+
+			<pre>type EnrolledTable struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewEnrolledTable">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=1562:1635#L45">NewEnrolledTable</a>
+					<a class="permalink" href="index.html#NewEnrolledTable">&#xb6;</a>
+				</h3>
+				<pre>func NewEnrolledTable(db *<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/">db</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/#Db">Db</a>) (enrolledTable <a href="index.html#EnrolledTable">EnrolledTable</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewEnrolledTable creates a new table within the database for housing all enrolled objects.
+It takes in a reference to an open database connection.
+It returns the constructed table, and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="EnrolledTable.DeleteClass">func (*EnrolledTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=6272:6333#L195">DeleteClass</a>
+					<a class="permalink" href="index.html#EnrolledTable.DeleteClass">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#EnrolledTable">EnrolledTable</a>) DeleteClass(classId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+				<p>
+DeleteClass removes a class from the enrolled table.
+It takes in the class id specifying the class to remove.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="EnrolledTable.GetClasses">func (*EnrolledTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=4892:4974#L152">GetClasses</a>
+					<a class="permalink" href="index.html#EnrolledTable.GetClasses">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#EnrolledTable">EnrolledTable</a>) GetClasses(userId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (classes []<a href="index.html#Class">Class</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetClasses finds all the classes the specific user is enrolled in.
+It takes in a user id to find the classes they are enrolled in.
+It returns a list of the found classes and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="EnrolledTable.GetStudents">func (*EnrolledTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=3753:3837#L116">GetStudents</a>
+					<a class="permalink" href="index.html#EnrolledTable.GetStudents">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#EnrolledTable">EnrolledTable</a>) GetStudents(classId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (students []<a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetStudents gets all the students enrolled within the specific class.
+It takes in a class id to search through.
+It returns a list of user objects representing the students in the class, and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="EnrolledTable.Insert">func (*EnrolledTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=2394:2469#L70">Insert</a>
+					<a class="permalink" href="index.html#EnrolledTable.Insert">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#EnrolledTable">EnrolledTable</a>) Insert(classId <a href="http://localhost:5000/pkg/builtin/#string">string</a>, r <a href="http://localhost:5000/pkg/io/">io</a>.<a href="http://localhost:5000/pkg/io/#Reader">Reader</a>) (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Insert will put a new student row within the table in the DB, for the given class, given a csv reader object to enroll from.
+It takes in the class id to enroll students into from the csv represented by the Reader.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="EnrolledTable.Unenroll">func (*EnrolledTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=5983:6040#L188">Unenroll</a>
+					<a class="permalink" href="index.html#EnrolledTable.Unenroll">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#EnrolledTable">EnrolledTable</a>) Unenroll(userId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+				<p>
+Unenroll removes a specified user from the class.
+It takes in the user id speicfying the user to unenroll.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Student">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=555:783#L18">Student</a>
+				<a class="permalink" href="index.html#Student">&#xb6;</a>
+			</h2>
+			<p>
+Represents a Student row in the Enrolled table within the DB
+Validator tags are used for convenient serialization and
+deserialization.
+</p>
+
+			<pre>type Student struct {
+<span id="Student.Id"></span>    Id <a href="http://localhost:5000/pkg/builtin/#int64">int64</a> `valid:&#34;-&#34;`
+    <span class="comment">// Distinguishes privileges between a student and professor</span>
+<span id="Student.User_id"></span>    User_id      <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;required&#34;`
+<span id="Student.Class_id"></span>    Class_id     <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;required&#34;`
+<span id="Student.Time_created"></span>    Time_created <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a> `valid:&#34;-&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="Student.Equals">func (*Student) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=785:835#L26">Equals</a>
+					<a class="permalink" href="index.html#Student.Equals">&#xb6;</a>
+				</h3>
+				<pre>func (student *<a href="index.html#Student">Student</a>) Equals(other <a href="index.html#Student">Student</a>) <a href="http://localhost:5000/pkg/builtin/#bool">bool</a></pre>
+				
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="Submission">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=601:1120#L20">Submission</a>
+				<a class="permalink" href="index.html#Submission">&#xb6;</a>
+			</h2>
+			<p>
+Represents an Submission row in the Submission table within the DB.
+Validator and json tags are used for convenient serialization and
+deserialization.
+</p>
+
+			<pre>type Submission struct {
+<span id="Submission.Id"></span>    Id            <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;-&#34; json:&#34;-&#34;`
+<span id="Submission.File"></span>    File          []<a href="http://localhost:5000/pkg/builtin/#byte">byte</a>    `valid:&#34;required&#34; json:&#34;file&#34;`
+<span id="Submission.Score"></span>    Score         <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;-&#34; json:&#34;score&#34;`
+<span id="Submission.Pre_results"></span>    Pre_results   []<a href="http://localhost:5000/pkg/builtin/#string">string</a>  `valid:&#34;-&#34; json:&#34;pre_results&#34;`
+<span id="Submission.Post_results"></span>    Post_results  []<a href="http://localhost:5000/pkg/builtin/#string">string</a>  `valid:&#34;-&#34; json:&#34;post_results&#34;`
+<span id="Submission.Assignment_id"></span>    Assignment_id <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;required&#34; json:&#34;assignment_id&#34;`
+<span id="Submission.User_id"></span>    User_id       <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>     `valid:&#34;required&#34; json:&#34;student_id&#34;`
+<span id="Submission.Time_created"></span>    Time_created  <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a> `valid:&#34;-&#34; json:&#34;-&#34;`
+<span id="Submission.Time_updated"></span>    Time_updated  <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a> `valid:&#34;-&#34; json:&#34;updated_at&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewSubmission">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=2936:3006#L75">NewSubmission</a>
+					<a class="permalink" href="index.html#NewSubmission">&#xb6;</a>
+				</h3>
+				<pre>func NewSubmission(r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) (submission <a href="index.html#Submission">Submission</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewSubmission creates a new submission object based on a request, assuming the request holding multipart form-data.
+It takes in the request to analyze.
+It returns the constructed submission and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="Submission.Equals">func (*Submission) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=3407:3466#L89">Equals</a>
+					<a class="permalink" href="index.html#Submission.Equals">&#xb6;</a>
+				</h3>
+				<pre>func (submission *<a href="index.html#Submission">Submission</a>) Equals(other <a href="index.html#Submission">Submission</a>) <a href="http://localhost:5000/pkg/builtin/#bool">bool</a></pre>
+				<p>
+Equals is a custom comparator for two submission objects on non-auto parameter fields.
+It takes in an submission object representing the other value.
+It returns a boolean indicating the equality
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="SubmissionQuery">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=1181:1275#L33">SubmissionQuery</a>
+				<a class="permalink" href="index.html#SubmissionQuery">&#xb6;</a>
+			</h2>
+			<p>
+Represents all fields a submission can be queried over.
+</p>
+
+			<pre>type SubmissionQuery struct {
+<span id="SubmissionQuery.Id"></span>    Id            <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+<span id="SubmissionQuery.Assignment_id"></span>    Assignment_id <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+<span id="SubmissionQuery.User_id"></span>    User_id       <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="SubmissionTable">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=389:439#L13">SubmissionTable</a>
+				<a class="permalink" href="index.html#SubmissionTable">&#xb6;</a>
+			</h2>
+			<p>
+Represents the connection to the DB instance.
+</p>
+
+			<pre>type SubmissionTable struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewSubmissionTable">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=3837:3916#L98">NewSubmissionTable</a>
+					<a class="permalink" href="index.html#NewSubmissionTable">&#xb6;</a>
+				</h3>
+				<pre>func NewSubmissionTable(db *<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/">db</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/#Db">Db</a>) (submissionTable <a href="index.html#SubmissionTable">SubmissionTable</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewSubmissionTable creates a new table within the database for housing all submission objects.
+It takes in a reference to an open database connection.
+It returns the constructed table, and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="SubmissionTable.Delete">func (*SubmissionTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=7223:7279#L190">Delete</a>
+					<a class="permalink" href="index.html#SubmissionTable.Delete">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#SubmissionTable">SubmissionTable</a>) Delete(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+				<p>
+Delete permanently removes the specified submission from the database.
+It takes in the submission id to delete.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="SubmissionTable.DeleteAll">func (*SubmissionTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=7448:7495#L196">DeleteAll</a>
+					<a class="permalink" href="index.html#SubmissionTable.DeleteAll">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#SubmissionTable">SubmissionTable</a>) DeleteAll() <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+				<p>
+DeleteAll permanently removes all submissions from the database.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="SubmissionTable.Get">func (*SubmissionTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=5504:5619#L141">Get</a>
+					<a class="permalink" href="index.html#SubmissionTable.Get">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#SubmissionTable">SubmissionTable</a>) Get(submissionQuery <a href="index.html#SubmissionQuery">SubmissionQuery</a>, op <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (submissions []<a href="index.html#Submission">Submission</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Get attempts to provide a generalized search through the submission table based on the provided queries.
+It takes a submission query for the queryable fields, and an operator such as &#34;AND&#34; or &#34;OR&#34; to define the context of the search.
+It returns all the found submissions and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="SubmissionTable.GetByID">func (*SubmissionTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=6137:6226#L160">GetByID</a>
+					<a class="permalink" href="index.html#SubmissionTable.GetByID">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#SubmissionTable">SubmissionTable</a>) GetByID(uid, aid <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (submission <a href="index.html#Submission">Submission</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetByID finds the submission given the user id and the assignment id.
+It takes in a user id and assignment id to identify the submission.
+It returns the found submission or an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="SubmissionTable.Insert">func (*SubmissionTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=4717:4804#L126">Insert</a>
+					<a class="permalink" href="index.html#SubmissionTable.Insert">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#SubmissionTable">SubmissionTable</a>) Insert(submission <a href="index.html#Submission">Submission</a>) (new <a href="index.html#Submission">Submission</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Insert will put a new submission row within the table in the DB, verifying all fields are valid.
+It takes in the submission object to insert.
+It returns the new submission as in the table and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="SubmissionTable.Update">func (*SubmissionTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/submission.go?s=6806:6908#L178">Update</a>
+					<a class="permalink" href="index.html#SubmissionTable.Update">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#SubmissionTable">SubmissionTable</a>) Update(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>, updates <a href="index.html#Submission">Submission</a>) (updated <a href="index.html#Submission">Submission</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Update will update the submission row in the table based on the incoming submission object.
+It takes in an id to identify the submission in the DB, and updates as a submission object.
+It returns the updated submission as in the DB, and an error if one exists.
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="User">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=956:1309#L23">User</a>
+				<a class="permalink" href="index.html#User">&#xb6;</a>
+			</h2>
+			<p>
+Represents a User row in the User table within the DB
+Validator and json tags are used for convenient serialization and
+deserialization.
+</p>
+
+			<pre>type User struct {
+<span id="User.Id"></span>    Id <a href="http://localhost:5000/pkg/builtin/#int64">int64</a> `valid:&#34;-&#34;`
+    <span class="comment">// Distinguishes privileges between a student and professor</span>
+<span id="User.Is_professor"></span>    Is_professor <a href="http://localhost:5000/pkg/builtin/#bool">bool</a>      `valid:&#34;-&#34;`
+<span id="User.Email"></span>    Email        <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;email,required&#34;`
+<span id="User.First_name"></span>    First_name   <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;required&#34;`
+<span id="User.Last_name"></span>    Last_name    <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;required&#34;`
+<span id="User.Password"></span>    Password     <a href="http://localhost:5000/pkg/builtin/#string">string</a>    `valid:&#34;required&#34;`
+<span id="User.Time_created"></span>    Time_created <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a> `valid:&#34;-&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewStudent">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/enrolled.go?s=1116:1185#L34">NewStudent</a>
+					<a class="permalink" href="index.html#NewStudent">&#xb6;</a>
+				</h3>
+				<pre>func NewStudent(record map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}) (user <a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewStudent is used to create a new user object from a CSV record.
+It takes in the record mapping the column names to values.
+It returns the constructed user, and an error if it exists.
+</p>
+
+				
+				
+			
+				
+				<h3 id="NewUser">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=1682:1734#L46">NewUser</a>
+					<a class="permalink" href="index.html#NewUser">&#xb6;</a>
+				</h3>
+				<pre>func NewUser(r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) (user <a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewUser is used to create a new user object from an incoming HTTP request.
+It takes in the HTTP request in JSON format.
+It returns the user constructed and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="User.Equals">func (*User) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=2563:2604#L73">Equals</a>
+					<a class="permalink" href="index.html#User.Equals">&#xb6;</a>
+				</h3>
+				<pre>func (user *<a href="index.html#User">User</a>) Equals(other <a href="index.html#User">User</a>) <a href="http://localhost:5000/pkg/builtin/#bool">bool</a></pre>
+				<p>
+Equals is a custom comparator for two user objects on non-auto parameter fields.
+It takes in a user object representing the other value.
+It returns a boolean indicating the equality
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="User.GenerateJWT">func (*User) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=2077:2115#L60">GenerateJWT</a>
+					<a class="permalink" href="index.html#User.GenerateJWT">&#xb6;</a>
+				</h3>
+				<pre>func (user *<a href="index.html#User">User</a>) GenerateJWT() <a href="http://localhost:5000/pkg/builtin/#string">string</a></pre>
+				<p>
+GenerateJWT creates a JSON Web Token for a user based on the id,
+with an expiration time of 1 day
+It returns the token string
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="UserQuery">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=1364:1491#L35">UserQuery</a>
+				<a class="permalink" href="index.html#UserQuery">&#xb6;</a>
+			</h2>
+			<p>
+Represents all fields a user can be queried over.
+</p>
+
+			<pre>type UserQuery struct {
+<span id="UserQuery.Id"></span>    Id           <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+<span id="UserQuery.Is_professor"></span>    Is_professor <a href="http://localhost:5000/pkg/builtin/#bool">bool</a>
+<span id="UserQuery.Email"></span>    Email        <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="UserQuery.First_name"></span>    First_name   <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="UserQuery.Last_name"></span>    Last_name    <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="UserTable">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=764:808#L16">UserTable</a>
+				<a class="permalink" href="index.html#UserTable">&#xb6;</a>
+			</h2>
+			<p>
+Represents the connection to the DB instance.
+</p>
+
+			<pre>type UserTable struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewUserTable">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=2982:3043#L84">NewUserTable</a>
+					<a class="permalink" href="index.html#NewUserTable">&#xb6;</a>
+				</h3>
+				<pre>func NewUserTable(db *<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/">db</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/config/db/#Db">Db</a>) (userTable <a href="index.html#UserTable">UserTable</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+NewUserTable creates a new table within the database for housing
+all user objects.
+It takes in a reference to an open database connection.
+It returns the constructed table, and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="UserTable.Delete">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=7745:7795#L223">Delete</a>
+					<a class="permalink" href="index.html#UserTable.Delete">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) Delete(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+				<p>
+Delete permanently removes the user object from the table.
+It takes in an id for the user we wish to delete.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="UserTable.DeleteAll">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=7956:7997#L229">DeleteAll</a>
+					<a class="permalink" href="index.html#UserTable.DeleteAll">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) DeleteAll() <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+				<p>
+DeleteAll permanently removes all user objects from the table.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="UserTable.Get">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=5681:5766#L161">Get</a>
+					<a class="permalink" href="index.html#UserTable.Get">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) Get(userQuery <a href="index.html#UserQuery">UserQuery</a>, op <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (users []<a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Get attempts to provide a generalized search through the user table based on the provided queries.
+It takes a user query for the queryable fields, and an operator such as &#34;AND&#34; or &#34;OR&#34; to define the context of the search.
+It returns all the found users and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="UserTable.GetByEmail">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=6614:6685#L192">GetByEmail</a>
+					<a class="permalink" href="index.html#UserTable.GetByEmail">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) GetByEmail(email <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (user <a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetByEmail finds the user with the specified user email, which should be unique per user.
+It takes in the email to search on.
+It returns the found user and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="UserTable.GetByID">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=6215:6283#L180">GetByID</a>
+					<a class="permalink" href="index.html#UserTable.GetByID">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) GetByID(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (user <a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetByID finds the user with the specified user id.
+It takes an ID as a string to convert to an integer to then search on.
+It returns the found user and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="UserTable.Insert">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=5099:5162#L148">Insert</a>
+					<a class="permalink" href="index.html#UserTable.Insert">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) Insert(user <a href="index.html#User">User</a>) (new <a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Insert will put a new user row within the table in the DB, verifying all fields are valid.
+It takes in the user object to insert.
+It returns the new user as in the table and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="UserTable.Login">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=3860:3924#L113">Login</a>
+					<a class="permalink" href="index.html#UserTable.Login">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) Login(user <a href="index.html#User">User</a>) (found <a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Login will try and retrieve the user based on provided email for the table
+if one exists, and compare the passwords to ensure the same user is logging in.
+It takes in a user object to try and login.
+It return the found user and an error if any exist.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="UserTable.Update">func (*UserTable) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/models/user.go?s=7355:7439#L211">Update</a>
+					<a class="permalink" href="index.html#UserTable.Update">&#xb6;</a>
+				</h3>
+				<pre>func (table *<a href="index.html#UserTable">UserTable</a>) Update(strId <a href="http://localhost:5000/pkg/builtin/#string">string</a>, updates <a href="index.html#User">User</a>) (updated <a href="index.html#User">User</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Update will update the user row in the table based on the incoming user object.
+It takes in an id to identify the user in the DB, and updates as a user object.
+It returns the updated user as in the DB, and an error if one exists.
+</p>
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.9.2.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:5000/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:5000/doc/tos.html">Terms of Service</a> | 
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+<!-- TODO(adonovan): load these from <head> using "defer" attribute? -->
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.js"></script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.treeview.js"></script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.treeview.edit.js"></script>
+
+
+<script>var goVersion = "go1.9.2";</script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/godocs.js"></script>
+
+</body>
+</html>
+

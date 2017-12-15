@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>db - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="../../../../../../../lib/godoc/style.css">
+
+<link rel="stylesheet" href="../../../../../../../lib/godoc/jquery.treeview.css">
+<script type="text/javascript">window.initFuncs = [];</script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="http://localhost:5000/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="http://localhost:5000/">Go</a></div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:5000/search">
+<div id="menu">
+<a href="http://localhost:5000/doc/">Documents</a>
+<a href="http://localhost:5000/pkg/">Packages</a>
+<a href="http://localhost:5000/project/">The Project</a>
+<a href="http://localhost:5000/help/">Help</a>
+<a href="http://localhost:5000/blog/">Blog</a>
+
+<input type="text" id="search" name="q" class="inactive" value="Search" placeholder="Search">
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package db
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script type='text/javascript'>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/jcherianucla/gradeportal/api/config/db"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+db package houses the very lowest layer in the overall application
+architecture that communicates with the PostgreSQL database pool.
+This connection is used upstream by the model layer. The package also provides a minimal ORM for basic CRUD operations on the database.
+</p>
+
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="index.html#pkg-variables">Variables</a></dd>
+			
+			
+			
+				
+				<dd><a href="index.html#Config">type Config</a></dd>
+				
+				
+			
+				
+				<dd><a href="index.html#Db">type Db</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#New">func New(cfg Config) (db Db, err error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.Close">func (db *Db) Close() (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.CreateTable">func (db *Db) CreateTable(query string) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.Delete">func (db *Db) Delete(strId, table string) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.DeleteAll">func (db *Db) DeleteAll(table string) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.DeleteByCol">func (db *Db) DeleteByCol(column, strId, table string) (err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.Get">func (db *Db) Get(mQuery interface{}, op, table string) (objects []map[string]interface{}, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.GetByID">func (db *Db) GetByID(strId, table string) (data map[string]interface{}, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.Insert">func (db *Db) Insert(table, op string, model, mQuery interface{}) (new map[string]interface{}, err error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Db.Update">func (db *Db) Update(strId, table string, updates interface{}) (data map[string]interface{}, err error)</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go">db.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+			<p>
+			  In the call graph viewer below, each node
+			  is a function belonging to this package
+			  and its children are the functions it
+			  calls&mdash;perhaps dynamically.
+			</p>
+			<p>
+			  The root nodes are the entry points of the
+			  package: functions that may be called from
+			  outside the package.
+			  There may be non-exported or anonymous
+			  functions among them if they are called
+			  dynamically from another package.
+			</p>
+			<p>
+			  Click a node to visit that function's source code.
+			  From there you can visit its callers by
+			  clicking its declaring <code>func</code>
+			  token.
+			</p>
+			<p>
+			  Functions may be omitted if they were
+			  determined to be unreachable in the
+			  particular programs or tests that were
+			  analyzed.
+			</p>
+			<!-- Zero means show all package entry points. -->
+			<ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+		</div>
+		</div> <!-- #pkg-callgraph -->
+
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<p>
+Params that should be automatically set by the Postgres DB,
+that is it should never be explicitly set in any code.
+</p>
+
+				<pre>var (
+    <span id="AUTO_PARAM">AUTO_PARAM</span> = map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]<a href="http://localhost:5000/pkg/builtin/#bool">bool</a>{
+        &#34;id&#34;:           <a href="http://localhost:5000/pkg/builtin/#true">true</a>,
+        &#34;time_created&#34;: <a href="http://localhost:5000/pkg/builtin/#true">true</a>,
+    }
+    <span id="SKIP_PARAM">SKIP_PARAM</span> = map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]<a href="http://localhost:5000/pkg/builtin/#bool">bool</a>{
+        &#34;post_results&#34;: <a href="http://localhost:5000/pkg/builtin/#true">true</a>,
+        &#34;pre_results&#34;:  <a href="http://localhost:5000/pkg/builtin/#true">true</a>,
+    }
+)</pre>
+			
+		
+		
+		
+			
+			
+			<h2 id="Config">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=1075:1182#L36">Config</a>
+				<a class="permalink" href="index.html#Config">&#xb6;</a>
+			</h2>
+			<p>
+Represents the configuration parameters needed to
+open up a connection to the database.
+</p>
+
+			<pre>type Config struct {
+<span id="Config.Host"></span>    Host     <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="Config.Port"></span>    Port     <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="Config.User"></span>    User     <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="Config.Password"></span>    Password <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+<span id="Config.Database"></span>    Database <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Db">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=901:946#L25">Db</a>
+				<a class="permalink" href="index.html#Db">&#xb6;</a>
+			</h2>
+			<p>
+Represents the database pool with the DB specific
+configurations.
+</p>
+
+			<pre>type Db struct {
+<span id="Db.Pool"></span>    Pool *<a href="http://localhost:5000/pkg/database/sql/">sql</a>.<a href="http://localhost:5000/pkg/database/sql/#DB">DB</a>
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=1660:1699#L60">New</a>
+					<a class="permalink" href="index.html#New">&#xb6;</a>
+				</h3>
+				<pre>func New(cfg <a href="index.html#Config">Config</a>) (db <a href="index.html#Db">Db</a>, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+New creates a new connection to the existing database on the
+host system.
+It takes in a configuration to open the specific database.
+It returns the open database and an error if one exists.
+</p>
+
+				
+				
+			
+
+			
+				
+				<h3 id="Db.Close">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=1278:1311#L46">Close</a>
+					<a class="permalink" href="index.html#Db.Close">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) Close() (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Close ends the connection to the specific database.
+It returns the error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.CreateTable">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=2520:2571#L87">CreateTable</a>
+					<a class="permalink" href="index.html#Db.CreateTable">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) CreateTable(query <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+CreateTable runs the actual PSQL query to create the table.
+It takes the specific creation PSQL query to run, as this varies with each object.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.Delete">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=10337:10390#L346">Delete</a>
+					<a class="permalink" href="index.html#Db.Delete">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) Delete(strId, table <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Delete permanently removes the object from the table.
+It takes in an id for the user we wish to delete, and a table name to act on.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.DeleteAll">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=11622:11671#L391">DeleteAll</a>
+					<a class="permalink" href="index.html#Db.DeleteAll">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) DeleteAll(table <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+DeleteAll permanently removes all objects from the table.
+It takes in a string representing the table name.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.DeleteByCol">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=10996:11062#L370">DeleteByCol</a>
+					<a class="permalink" href="index.html#Db.DeleteByCol">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) DeleteByCol(column, strId, table <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+DeleteByCol permanently removes the object from the table given specific columns.
+It takes in the id, column name and table name to act on.
+It returns an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.Get">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=5589:5690#L185">Get</a>
+					<a class="permalink" href="index.html#Db.Get">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) Get(mQuery interface{}, op, table <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (objects []map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Get attempts to provide a generalized search through the specified table based on the provided queries.
+It takes a query for the queryable fields, and an operator such as &#34;AND&#34; or &#34;OR&#34; to define the context of the search. It takes in a table name to act on.
+It returns all the data for all found objects and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.GetByID">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=7631:7714#L252">GetByID</a>
+					<a class="permalink" href="index.html#Db.GetByID">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) GetByID(strId, table <a href="http://localhost:5000/pkg/builtin/#string">string</a>) (data map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+GetByID uses the internal get mechanism for the table to find an object given an id to search on.
+It takes an ID as a string to convert to an integer to then search on, and a string representing the table name.
+It returns the data for the found object, or an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.Insert">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=3062:3167#L100">Insert</a>
+					<a class="permalink" href="index.html#Db.Insert">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) Insert(table, op <a href="http://localhost:5000/pkg/builtin/#string">string</a>, model, mQuery interface{}) (new map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Insert will put a new model row within the specified table in the DB, verifying all fields are valid.
+It takes in the object to insert, the operator to perform the query with, the table name and the query itself.
+It returns the new object as in the table and an error if one exists.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Db.Update">func (*Db) <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/config/db/db.go?s=8407:8510#L277">Update</a>
+					<a class="permalink" href="index.html#Db.Update">&#xb6;</a>
+				</h3>
+				<pre>func (db *<a href="index.html#Db">Db</a>) Update(strId, table <a href="http://localhost:5000/pkg/builtin/#string">string</a>, updates interface{}) (data map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}, err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Update will update the model row in the table based on the incoming object.
+It takes in an id to identify the object in the DB, a string representing the table name and the fileds to update the object on.
+It returns the data representing an updated model.
+</p>
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.9.2.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:5000/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:5000/doc/tos.html">Terms of Service</a> | 
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+<!-- TODO(adonovan): load these from <head> using "defer" attribute? -->
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.js"></script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.treeview.js"></script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.treeview.edit.js"></script>
+
+
+<script>var goVersion = "go1.9.2";</script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/godocs.js"></script>
+
+</body>
+</html>
+
