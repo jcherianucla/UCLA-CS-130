@@ -1,5 +1,5 @@
 # UCLA-CS-130
-This houses the entirety of the project for CS 130 - Software Engineering at UCLA, Fall 2017.
+This houses the entirety of the project for CS 130 - Software Engineering at UCLA, Fall 2017. The site can be found live [here](http://grade-portal.herokuapp.com)
 
 ## GradePortal
 
@@ -33,7 +33,6 @@ GradePortal will be a web application (to make it accessible to any individual) 
 
 * Katie Aspinwall
 * Shalini Dangi
-* Prit Joshi
 * Connor Kenny
 * Jahan Kuruvilla Cherian
 * Omar Ozgur
