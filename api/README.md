@@ -3,19 +3,39 @@
 This is the entire backend for GradePortal written in Golang. It is a pure RESTful API backend, serving data through JSON requests made by the frontend.
 
 # Setup
-- Install [Docker](https://docs.docker.com/engine/installation/)
+- Install [PostgreSQL](http://postgresguide.com/setup/install.html)
+- Create a database with DB_NAME in PostgreSQL
+- Create the following environment variables
+	- DB_USER: The user that is given access to the database
+	- DB_PORT: The port that PostgreSQL runs on
+	- DB_PASSWORD: The password needed to connect to the database
+	- DB_HOST: The host machine (usually localhost) the database runs on
+	- DB_NAME: The name of the created database to connect to
+- Run `./api` to run the pre-built server executable
 
-- Inside the /backend directory, run `./start.sh` to build and run the project
-  with Docker
+To build and run on your own:
+	- Install [Golang](https://golang.org/doc/install)
+	- Run `go get ./` to fetch all the go dependencies
+	- Run `go build` to build the executable
+	- Run `./api` to run the newly built executable
+
+Note that running `./start.sh` isn't enough on a local machine because of the necessary connection needed between the api server and the database.
 
 # Directory Structure
 ```
 .
 ├── app
 |   ├── controllers
+|   |   ├── assignments.go
+|   |   ├── classes.go
+|   |   ├── submissions.go
 |   |   └── users.go
 |   ├── models
+|   |   ├── assignment.go
+|   |   ├── class.go
 |   |   ├── common.go
+|   |   ├── enrolled.go
+|   |   ├── submission.go
 |   |   └── user.go
 ├── config
 |   ├── db
@@ -32,8 +52,15 @@ This is the entire backend for GradePortal written in Golang. It is a pure RESTf
 |   ├── db.go
 |   ├── err.go
 |   ├── jwt.go
+|   ├── lang.go
 |   └── log.go
 ├── tests 
+|   ├── files
+|   |   ├── grade.sh
+|   |   └── correct_submission.cpp
+|   ├── assignment_model_test.go
+|   ├── class_model_test.go
+|   ├── submission_model_test.go
 |   └── user_model_test.go
 ├── docs
 |   ├── doc
@@ -44,9 +71,11 @@ This is the entire backend for GradePortal written in Golang. It is a pure RESTf
 |   |   |   |   ├── gradeportal
 |   |   |   |   |   └── index.html
 ├── app.go
+├── deploy.sh
 ├── Makefile
 ├── Dockerfile
 ├── docs.sh
+├── Procfile
 ├── README.md
 └── start.sh
 ```
@@ -59,42 +88,18 @@ This is the entire backend for GradePortal written in Golang. It is a pure RESTf
 - tests: Contains all the tests for the application.
 - docs: Contains documentation for the backend code generated with godoc
 - app.go: Contains the main server code to spin up the backend service
+- deploy.sh: Builds the docker container and pushes to the Heroku Registry for the grade-portal-api application
 - Makefile: Contains build system for running and testing
-- Dockerfile: Specifies Docker configuration to support machine cross-compatibility and ease of setup
+- Dockerfile: Specifies Docker configuration to support machine cross-compatibility, used primarily for deployment to Heroku with capability to run cross-compilation for gcc within container
 - docs.sh: Recursively downloads webpages from a locally running godoc server
+- Procfile: Defines what process to run as a resource on the Heroku application
 - README.md: Describes the backend component of the GradePortal portal
-- start.sh: Starts the Golang project through Docker configuration
+- start.sh: Starts the Golang project through Docker configuration. Note that this is currently not useful locally as it has no method to connect to the PostgreSQL database
 
 # Tests:
-The tests that were created are located in the ./tests directory.
 
-## TestUserInsert:
+Run tests by running `make test`.
 
-Tests the Insert method which is used to add users to the database. The Insert function takes a User object which has an ID, first and last name, email, password, check if it is a professor. Once the Insert function receives a User object, it checks to see if all the fields are non-empty and valid (proper email etc.) and also checks if the User already exists in the database. If all is well, then the User is added to the database. Upon success, it returns a User and no error. If there is something wrong, it returns no User and an error describing what went wrong.
+# Endpoints:
 
-Our test function will have no output if it passes. If it fails, the command line output is shown by the Failure indicator.
-
-## TestUserLogin:
-
-Tests the Login method which allows Users to login provided they are already in the database. Login fails if the provided email or password are not in the database or do not match.
-
-Our test function will have no output if it passes. If it fails, the command line output is shown by the Failure indicator.
-
-## TestUserGet:
-
-Tests the Get function which provides a general search function to search the User table. It returns a list of users that match the query and also an error if something goes wrong.
-
-TestUsersGet tests for an empty query which when called with Get will return an error, “Get query preparation failed”. This error is checked for and if it is returned, we know the test is working and there is no output from this function. If the Get function isn’t able to catch that error, there will be command line output of FAIL: TestUsersGet “Errors don’t match up”.
-
-## TestUserUpdate:
-
-This tests the Update function which takes the ID of a user and the updated User object and performs the valid updates on the database. 
-
-In addition, Update also has error-checks for when a query fails to be executed or if a duplicate user (same ID) is added to the table and thus avoids redundant records.
-
-## TestUserDelete:
-
-Tests the Delete function which deletes a record based on user ID and returns an error if something went wrong. 
-
-We plan on expanding this testing from covering usage-based test scenarios to include internal error reporting checks. 
-
+Find full information on each endpoint in our Wiki.
