@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>utilities - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="../../../../../../lib/godoc/style.css">
+
+<link rel="stylesheet" href="../../../../../../lib/godoc/jquery.treeview.css">
+<script type="text/javascript">window.initFuncs = [];</script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="http://localhost:5000/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="http://localhost:5000/">Go</a></div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:5000/search">
+<div id="menu">
+<a href="http://localhost:5000/doc/">Documents</a>
+<a href="http://localhost:5000/pkg/">Packages</a>
+<a href="http://localhost:5000/project/">The Project</a>
+<a href="http://localhost:5000/help/">Help</a>
+<a href="http://localhost:5000/blog/">Blog</a>
+
+<input type="text" id="search" name="q" class="inactive" value="Search" placeholder="Search">
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package utilities
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script type='text/javascript'>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/jcherianucla/gradeportal/api/utilities"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+The utilities package provides additional functionality
+available to all packages within the application.
+</p>
+
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+				<dd><a href="index.html#pkg-constants">Constants</a></dd>
+			
+			
+				<dd><a href="index.html#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="index.html#BeforeDeadline">func BeforeDeadline(deadline time.Time) bool</a></dd>
+			
+				
+				<dd><a href="index.html#CheckError">func CheckError(err error)</a></dd>
+			
+				
+				<dd><a href="index.html#ExtractClaims">func ExtractClaims(tokenString string) map[string]interface{}</a></dd>
+			
+				
+				<dd><a href="index.html#FillStruct">func FillStruct(data map[string]interface{}, result interface{}) error</a></dd>
+			
+				
+				<dd><a href="index.html#GetAPIInstance">func GetAPIInstance() *api</a></dd>
+			
+				
+				<dd><a href="index.html#GetLanguage">func GetLanguage(lang Language) string</a></dd>
+			
+				
+				<dd><a href="index.html#GetVar">func GetVar(name string, _default string) string</a></dd>
+			
+				
+				<dd><a href="index.html#IsUndeclared">func IsUndeclared(v interface{}) bool</a></dd>
+			
+				
+				<dd><a href="index.html#SetField">func SetField(obj interface{}, key string, value interface{}) error</a></dd>
+			
+				
+				<dd><a href="index.html#SetupResponse">func SetupResponse(w *http.ResponseWriter)</a></dd>
+			
+			
+				
+				<dd><a href="index.html#Language">type Language</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#GetLanguageFromInt">func GetLanguageFromInt(v int64) Language</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#SetLanguage">func SetLanguage(lang string) Language</a></dd>
+				
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/api.go">api.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/common.go">common.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/constants.go">constants.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/db.go">db.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/err.go">err.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/jwt.go">jwt.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/lang.go">lang.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/log.go">log.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+			<p>
+			  In the call graph viewer below, each node
+			  is a function belonging to this package
+			  and its children are the functions it
+			  calls&mdash;perhaps dynamically.
+			</p>
+			<p>
+			  The root nodes are the entry points of the
+			  package: functions that may be called from
+			  outside the package.
+			  There may be non-exported or anonymous
+			  functions among them if they are called
+			  dynamically from another package.
+			</p>
+			<p>
+			  Click a node to visit that function's source code.
+			  From there you can visit its callers by
+			  clicking its declaring <code>func</code>
+			  token.
+			</p>
+			<p>
+			  Functions may be omitted if they were
+			  determined to be unreachable in the
+			  particular programs or tests that were
+			  analyzed.
+			</p>
+			<!-- Zero means show all package entry points. -->
+			<ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+		</div>
+		</div> <!-- #pkg-callgraph -->
+
+		
+			<h2 id="pkg-constants">Constants</h2>
+			
+				
+				<pre>const (
+    <span class="comment">// Default secret for JWT</span>
+    <span id="DEFAULT_TOKEN_SECRET">DEFAULT_TOKEN_SECRET</span> = &#34;47X86A1Fnr6TqkpEyK0X&#34;
+    <span class="comment">// Default storage size for Multipart forms</span>
+    <span id="MAX_STORAGE">MAX_STORAGE</span> = 32 &lt;&lt; 20
+    <span class="comment">// Time format for deadline</span>
+    <span id="TIME_FORMAT">TIME_FORMAT</span> = &#34;01-02-06 15:04 (MST)&#34;
+)</pre>
+			
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<p>
+Host for the production/development database
+</p>
+
+				<pre>var <span id="DB_HOST">DB_HOST</span> = <a href="index.html#GetVar">GetVar</a>(&#34;DB_HOST&#34;, &#34;localhost&#34;)</pre>
+			
+				<p>
+Name for the production/development database
+</p>
+
+				<pre>var <span id="DB_NAME">DB_NAME</span> = <a href="index.html#GetVar">GetVar</a>(&#34;DB_NAME&#34;, &#34;gp_development&#34;)</pre>
+			
+				<p>
+Passowrd for the production/development database
+</p>
+
+				<pre>var <span id="DB_PASSWORD">DB_PASSWORD</span> = <a href="index.html#GetVar">GetVar</a>(&#34;DB_PASSWORD&#34;, &#34;cs130gp&#34;)</pre>
+			
+				<p>
+Port for the production/development database
+</p>
+
+				<pre>var <span id="DB_PORT">DB_PORT</span> = <a href="index.html#GetVar">GetVar</a>(&#34;DB_PORT&#34;, &#34;5432&#34;)</pre>
+			
+				<p>
+User for the production/development database
+</p>
+
+				<pre>var <span id="DB_USER">DB_USER</span> = <a href="index.html#GetVar">GetVar</a>(&#34;DB_USER&#34;, &#34;gradeportal&#34;)</pre>
+			
+				<p>
+The default password for student accounts
+</p>
+
+				<pre>var <span id="DEFAULT_PASSWORD">DEFAULT_PASSWORD</span> = <a href="index.html#GetVar">GetVar</a>(&#34;STUDENT_PASSWORD&#34;, &#34;password&#34;)</pre>
+			
+				<p>
+Token secret for authorization through JWT
+</p>
+
+				<pre>var <span id="GP_TOKEN_SECRET">GP_TOKEN_SECRET</span> = []<a href="http://localhost:5000/pkg/builtin/#byte">byte</a>(<a href="index.html#GetVar">GetVar</a>(&#34;GP_TOKEN_SECRET&#34;, <a href="index.html#DEFAULT_TOKEN_SECRET">DEFAULT_TOKEN_SECRET</a>))</pre>
+			
+				<p>
+Lightweight logger.
+</p>
+
+				<pre>var <span id="Logger">Logger</span> = <a href="http://localhost:5000/pkg/go.uber.org/zap/">zap</a>.<a href="http://localhost:5000/pkg/go.uber.org/zap/#NewDevelopment">NewDevelopment</a>()</pre>
+			
+				<p>
+The port that the backend server runs on
+</p>
+
+				<pre>var <span id="PORT">PORT</span> = <a href="index.html#GetVar">GetVar</a>(&#34;PORT&#34;, &#34;8080&#34;)</pre>
+			
+				
+				<pre>var (
+    <span class="comment">// Skip these fields from an old version of the database table</span>
+    <span id="SKIP_PARAM">SKIP_PARAM</span> = map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]<a href="http://localhost:5000/pkg/builtin/#bool">bool</a>{
+        &#34;Post_results&#34;: <a href="http://localhost:5000/pkg/builtin/#true">true</a>,
+        &#34;Pre_results&#34;:  <a href="http://localhost:5000/pkg/builtin/#true">true</a>,
+    }
+)</pre>
+			
+				<p>
+Ergonomic API for logging from Logger.
+</p>
+
+				<pre>var <span id="Sugar">Sugar</span> = <a href="index.html#Logger">Logger</a>.<a href="index.html#Sugar">Sugar</a>()</pre>
+			
+		
+		
+			
+			
+			<h2 id="BeforeDeadline">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/common.go?s=2704:2748#L84">BeforeDeadline</a>
+				<a class="permalink" href="index.html#BeforeDeadline">&#xb6;</a>
+			</h2>
+			<pre>func BeforeDeadline(deadline <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Time">Time</a>) <a href="http://localhost:5000/pkg/builtin/#bool">bool</a></pre>
+			<p>
+Determines whether the current time is before the intended deadline, converting
+down to Milliseconds to ensure timezone issues don&#39;t come into effect.
+It takes in the deadline to compare against.
+It returns the boolean value indicating the result.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="CheckError">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/err.go?s=121:147#L1">CheckError</a>
+				<a class="permalink" href="index.html#CheckError">&#xb6;</a>
+			</h2>
+			<pre>func CheckError(err <a href="http://localhost:5000/pkg/builtin/#error">error</a>)</pre>
+			<p>
+CheckError panics on an error, ending the program.
+It takes in the error to panic on if at all.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="ExtractClaims">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/jwt.go?s=375:436#L3">ExtractClaims</a>
+				<a class="permalink" href="index.html#ExtractClaims">&#xb6;</a>
+			</h2>
+			<pre>func ExtractClaims(tokenString <a href="http://localhost:5000/pkg/builtin/#string">string</a>) map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}</pre>
+			<p>
+ExtractClaims will take the claim out of an authorization header.
+It takes in the JWT tokenString to read the claims from.
+It returns a map of string to interface for the claims.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="FillStruct">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/common.go?s=2259:2329#L70">FillStruct</a>
+				<a class="permalink" href="index.html#FillStruct">&#xb6;</a>
+			</h2>
+			<pre>func FillStruct(data map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}, result interface{}) <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+			<p>
+FillStruct creates a generic object through mapped data.
+It takes in data as a map of strings to generics and reference to the object to construct.
+It returns an error if one exists.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetAPIInstance">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/api.go?s=849:875#L32">GetAPIInstance</a>
+				<a class="permalink" href="index.html#GetAPIInstance">&#xb6;</a>
+			</h2>
+			<pre>func GetAPIInstance() *api</pre>
+			<p>
+GetAPIInstance returns a singleton reference
+to the api version.
+It returns the reference to the static api.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetLanguage">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/lang.go?s=723:761#L28">GetLanguage</a>
+				<a class="permalink" href="index.html#GetLanguage">&#xb6;</a>
+			</h2>
+			<pre>func GetLanguage(lang <a href="index.html#Language">Language</a>) <a href="http://localhost:5000/pkg/builtin/#string">string</a></pre>
+			<p>
+GetLanguage converts a Language to a corresponding
+string for return upstream.
+It takes in a language to convert.
+It returns the string version of the language.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="GetVar">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/common.go?s=783:831#L22">GetVar</a>
+				<a class="permalink" href="index.html#GetVar">&#xb6;</a>
+			</h2>
+			<pre>func GetVar(name <a href="http://localhost:5000/pkg/builtin/#string">string</a>, _default <a href="http://localhost:5000/pkg/builtin/#string">string</a>) <a href="http://localhost:5000/pkg/builtin/#string">string</a></pre>
+			<p>
+GetVar tries to get an environment variable if it exists, else
+returns some default value.
+It takes in the name of the environment variable to search for, and the
+default value to return instead.
+It returns the string variable.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="IsUndeclared">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/common.go?s=423:460#L13">IsUndeclared</a>
+				<a class="permalink" href="index.html#IsUndeclared">&#xb6;</a>
+			</h2>
+			<pre>func IsUndeclared(v interface{}) <a href="http://localhost:5000/pkg/builtin/#bool">bool</a></pre>
+			<p>
+IsUndeclared uses reflection to see if the
+value of the field is set or not.
+It takes in an interface to reflect on.
+It returns the boolean if the field is set or not.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="SetField">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/common.go?s=1190:1257#L35">SetField</a>
+				<a class="permalink" href="index.html#SetField">&#xb6;</a>
+			</h2>
+			<pre>func SetField(obj interface{}, key <a href="http://localhost:5000/pkg/builtin/#string">string</a>, value interface{}) <a href="http://localhost:5000/pkg/builtin/#error">error</a></pre>
+			<p>
+SetField sets the value of the generic of the name key. That means
+for a given struct, the field will be set to the incoming value.
+It takes in the object to modify, the name of the field and the value the
+field should be set to.
+It returns an error if one exists.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="SetupResponse">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/api.go?s=1139:1181#L42">SetupResponse</a>
+				<a class="permalink" href="index.html#SetupResponse">&#xb6;</a>
+			</h2>
+			<pre>func SetupResponse(w *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>)</pre>
+			<p>
+SetupResponse provides a convenient way for allowing handlers
+to work with CORS.
+It takes in a ResponseWriter reference to modify the headers with CORS compliant information.
+</p>
+
+			
+			
+
+		
+		
+			
+			
+			<h2 id="Language">type <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/lang.go?s=95:114#L1">Language</a>
+				<a class="permalink" href="index.html#Language">&#xb6;</a>
+			</h2>
+			<p>
+Represents an enum for languages - default to C++
+</p>
+
+			<pre>type Language <a href="http://localhost:5000/pkg/builtin/#int64">int64</a></pre>
+
+			
+				
+				<pre>const (
+    <span id="Cpp">Cpp</span> <a href="index.html#Language">Language</a> = 1 + <a href="http://localhost:5000/pkg/builtin/#iota">iota</a>
+    <span id="C">C</span>
+    <span id="Java">Java</span>
+)</pre>
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="GetLanguageFromInt">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/lang.go?s=357:398#L10">GetLanguageFromInt</a>
+					<a class="permalink" href="index.html#GetLanguageFromInt">&#xb6;</a>
+				</h3>
+				<pre>func GetLanguageFromInt(v <a href="http://localhost:5000/pkg/builtin/#int64">int64</a>) <a href="index.html#Language">Language</a></pre>
+				<p>
+GetLanguageFromInt converts an int64 to Language, used
+primarily for type assertion through reflection.
+It takes in an int64 to convert.
+It returns the Language mapping for the int64.
+</p>
+
+				
+				
+			
+				
+				<h3 id="SetLanguage">func <a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/utilities/lang.go?s=1021:1059#L45">SetLanguage</a>
+					<a class="permalink" href="index.html#SetLanguage">&#xb6;</a>
+				</h3>
+				<pre>func SetLanguage(lang <a href="http://localhost:5000/pkg/builtin/#string">string</a>) <a href="index.html#Language">Language</a></pre>
+				<p>
+SetLanguage converts a string to its corresponding
+language.
+It takes in a string to convert.
+It returns the language.
+</p>
+
+				
+				
+			
+
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.9.2.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:5000/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:5000/doc/tos.html">Terms of Service</a> | 
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+<!-- TODO(adonovan): load these from <head> using "defer" attribute? -->
+<script type="text/javascript" src="../../../../../../lib/godoc/jquery.js"></script>
+<script type="text/javascript" src="../../../../../../lib/godoc/jquery.treeview.js"></script>
+<script type="text/javascript" src="../../../../../../lib/godoc/jquery.treeview.edit.js"></script>
+
+
+<script>var goVersion = "go1.9.2";</script>
+<script type="text/javascript" src="../../../../../../lib/godoc/godocs.js"></script>
+
+</body>
+</html>
+

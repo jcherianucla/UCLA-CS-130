@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>controllers - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href="../../../../../../../lib/godoc/style.css">
+
+<link rel="stylesheet" href="../../../../../../../lib/godoc/jquery.treeview.css">
+<script type="text/javascript">window.initFuncs = [];</script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide"><a href="http://localhost:5000/">The Go Programming Language</a></div>
+<div class="top-heading" id="heading-narrow"><a href="http://localhost:5000/">Go</a></div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+<form method="GET" action="http://localhost:5000/search">
+<div id="menu">
+<a href="http://localhost:5000/doc/">Documents</a>
+<a href="http://localhost:5000/pkg/">Packages</a>
+<a href="http://localhost:5000/project/">The Project</a>
+<a href="http://localhost:5000/help/">Help</a>
+<a href="http://localhost:5000/blog/">Blog</a>
+
+<input type="text" id="search" name="q" class="inactive" value="Search" placeholder="Search">
+</div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package controllers
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script type='text/javascript'>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "github.com/jcherianucla/gradeportal/api/app/controllers"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+The controllers package house the Controller layer within the MVC architecture design.
+This is the middle layer in the architecture, which communicates from the view to the
+model. It does this through a RESTful API, as the View layer is a separate service.
+In effect the controller represents all the handlers exposed to the router upstream.
+All handlers take in the incoming HTTP request and a writer to the HTTP response, writing as JSON. The HTTP requests can be of any content type, though json and form-data are primarily used. It is CORS compliant.
+</p>
+
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="index.html#pkg-variables">Variables</a></dd>
+			
+			
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/controllers/assignments.go">assignments.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/controllers/classes.go">classes.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/controllers/submissions.go">submissions.go</a>
+			
+				<a href="http://localhost:5000/src/github.com/jcherianucla/gradeportal/api/app/controllers/users.go">users.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+			<p>
+			  In the call graph viewer below, each node
+			  is a function belonging to this package
+			  and its children are the functions it
+			  calls&mdash;perhaps dynamically.
+			</p>
+			<p>
+			  The root nodes are the entry points of the
+			  package: functions that may be called from
+			  outside the package.
+			  There may be non-exported or anonymous
+			  functions among them if they are called
+			  dynamically from another package.
+			</p>
+			<p>
+			  Click a node to visit that function's source code.
+			  From there you can visit its callers by
+			  clicking its declaring <code>func</code>
+			  token.
+			</p>
+			<p>
+			  Functions may be omitted if they were
+			  determined to be unreachable in the
+			  particular programs or tests that were
+			  analyzed.
+			</p>
+			<!-- Zero means show all package entry points. -->
+			<ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+		</div>
+		</div> <!-- #pkg-callgraph -->
+
+		
+		
+			<h2 id="pkg-variables">Variables</h2>
+			
+				<p>
+AssignmentsCreate allows a professor to create an assignments,
+providing a grading and sanity script.
+</p>
+
+				<pre>var <span id="AssignmentsCreate">AssignmentsCreate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            creator_id := getClaims(r)
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            assignment, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewAssignment">NewAssignment</a>(r)
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(creator_id)
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> || !user.<a href="index.html#Is_professor">Is_professor</a> {
+                status = 400
+                msg = &#34;Invalid permissions to create an assignment&#34;
+            } else {
+                class_id, _ := <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#ParseInt">ParseInt</a>(params[&#34;cid&#34;], 10, 64)
+                _, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Class">Class</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;cid&#34;])
+                if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    assignment.<a href="index.html#Class_id">Class_id</a> = class_id
+                    assignment, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#Insert">Insert</a>(assignment)
+                    if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                        status = 200
+                        msg = &#34;Success&#34;
+                    }
+                }
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:     status,
+                &#34;message&#34;:    msg,
+                &#34;assignment&#34;: assignment,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+AssignmentsDelete allows a professor to delete the assignment.
+</p>
+
+				<pre>var <span id="AssignmentsDelete">AssignmentsDelete</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            creator_id := getClaims(r)
+            assignment, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;aid&#34;])
+            if !hasPermissions(creator_id, <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#FormatInt">FormatInt</a>(assignment.<a href="index.html#Class_id">Class_id</a>, 10)) {
+                status = 500
+                msg = &#34;Invalid permissions to delete assignment&#34;
+            } else {
+                err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#Delete">Delete</a>(params[&#34;aid&#34;])
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+                    status = 200
+                    msg = &#34;Success&#34;
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+AssignmentsIndex provides the route for showcasing all the projects for the specified class.
+</p>
+
+				<pre>var <span id="AssignmentsIndex">AssignmentsIndex</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            class_id, _ := <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#ParseInt">ParseInt</a>(params[&#34;cid&#34;], 10, 64)
+            assignments, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#Get">Get</a>(<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#AssignmentQuery">AssignmentQuery</a>{<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#AssignmentQuery.Class_id">Class_id</a>: class_id}, &#34;&#34;)
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+                msg = &#34;Success&#34;
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:      status,
+                &#34;message&#34;:     msg,
+                &#34;assignments&#34;: assignments,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+AssignmentsShow forks in three potential avenues based on the user&#39;s role and the deadline.
+If the user is a professor, they are provided with analytics for the given assignment based
+on all student submissions. If the user is a student and hit the endpoint before the deadline,
+then they are given the assignment details, else they are shown the results of their submission.
+</p>
+
+				<pre>var <span id="AssignmentsShow">AssignmentsShow</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            msg := &#34;Success&#34;
+            resultKey := &#34;result&#34;
+            var <span id="result">result</span> interface{}
+            userId := getClaims(r)
+            assign_id, _ := <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#ParseInt">ParseInt</a>(params[&#34;aid&#34;], 10, 64)
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(userId)
+            assignment, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;aid&#34;])
+
+            if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> &amp;&amp; !user.<a href="index.html#Is_professor">Is_professor</a> {
+
+                if !<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#BeforeDeadline">BeforeDeadline</a>(assignment.<a href="index.html#Deadline">Deadline</a>) {
+                    r, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Submission">Submission</a>.<a href="index.html#GetByID">GetByID</a>(userId, params[&#34;aid&#34;])
+                    if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> &amp;&amp; <a href="http://localhost:5000/pkg/builtin/#len">len</a>(assignment.<a href="index.html#Grade_script">Grade_script</a>) &gt; 0 {
+
+                        s, res, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#Exec">Exec</a>(assignment.<a href="index.html#Grade_script">Grade_script</a>, r.<a href="index.html#File">File</a>, assignment.<a href="index.html#Lang">Lang</a>)
+                        if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                            r.<a href="index.html#Score">Score</a> = s
+                            r.<a href="index.html#Post_results">Post_results</a> = res
+                            resultKey = &#34;submission&#34;
+                            temp := <a href="http://localhost:5000/pkg/builtin/#make">make</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{})
+                            temp[&#34;submission&#34;] = r
+                            temp[&#34;grade_script&#34;] = <a href="http://localhost:5000/pkg/builtin/#string">string</a>(assignment.<a href="index.html#Grade_script">Grade_script</a>)
+                            result = temp
+                        }
+                    } else {
+                        msg = &#34;You have no submission&#34;
+                    }
+                }
+            } else {
+
+                resultKey = &#34;analytics&#34;
+                r := <a href="http://localhost:5000/pkg/builtin/#make">make</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{})
+                students, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Enrolled">Enrolled</a>.<a href="index.html#GetStudents">GetStudents</a>(params[&#34;cid&#34;])
+                submissions, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Submission">Submission</a>.<a href="index.html#Get">Get</a>(<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#SubmissionQuery">SubmissionQuery</a>{<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#SubmissionQuery.Assignment_id">Assignment_id</a>: assign_id}, &#34;&#34;)
+                <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#Sugar">Sugar</a>.<a href="index.html#Infof">Infof</a>(&#34;Number of submissions: %v&#34;, <a href="http://localhost:5000/pkg/builtin/#len">len</a>(submissions))
+                <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#Sugar">Sugar</a>.<a href="index.html#Infof">Infof</a>(&#34;Number of students: %v&#34;, <a href="http://localhost:5000/pkg/builtin/#len">len</a>(students))
+                if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+
+                    if <a href="http://localhost:5000/pkg/builtin/#len">len</a>(students) &gt; 0 {
+                        r[&#34;num_submissions&#34;] = <a href="http://localhost:5000/pkg/builtin/#float64">float64</a>(<a href="http://localhost:5000/pkg/builtin/#len">len</a>(submissions)) / <a href="http://localhost:5000/pkg/builtin/#float64">float64</a>(<a href="http://localhost:5000/pkg/builtin/#len">len</a>(students))
+                        var <span id="s">s</span> []<a href="http://localhost:5000/pkg/builtin/#int64">int64</a>
+                        for _, submission := range submissions {
+                            s = <a href="http://localhost:5000/pkg/builtin/#append">append</a>(s, submission.<a href="index.html#Score">Score</a>)
+                        }
+                        r[&#34;score&#34;] = s
+                        result = r
+                    }
+                }
+            }
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+            }
+            if result == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                result = &#34;&#34;
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:     status,
+                &#34;message&#34;:    msg,
+                &#34;assignment&#34;: assignment,
+                resultKey:    result,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+AssignmentsUpdate allows a professor to update the assignment.
+</p>
+
+				<pre>var <span id="AssignmentsUpdate">AssignmentsUpdate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            creator_id := getClaims(r)
+            updated, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;aid&#34;])
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> || !hasPermissions(creator_id, <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#FormatInt">FormatInt</a>(updated.<a href="index.html#Class_id">Class_id</a>, 10)) {
+                status = 400
+                msg = &#34;Invalid permissions to update assignment&#34;
+            } else {
+                updates, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewAssignment">NewAssignment</a>(r)
+                updated, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#Update">Update</a>(params[&#34;aid&#34;], updates)
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+                    status = 200
+                    msg = &#34;Success&#34;
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:     status,
+                &#34;message&#34;:    msg,
+                &#34;assignment&#34;: updated,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+ClassesCreate creates a class if the user is a professor and the class doesn&#39;t already exist for that same professor. Auto-enrolls students into the class from a given csv.
+</p>
+
+				<pre>var <span id="ClassesCreate">ClassesCreate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            class, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewClass">NewClass</a>(r)
+            creator_id := getClaims(r)
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(creator_id)
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> || !user.<a href="index.html#Is_professor">Is_professor</a> {
+                status = 400
+                msg = &#34;Invalid permissions to create a class.&#34;
+            } else {
+                class.<a href="index.html#Creator_id">Creator_id</a>, _ = <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#ParseInt">ParseInt</a>(creator_id, 10, 64)
+                class, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Class">Class</a>.<a href="index.html#Insert">Insert</a>(class)
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+
+                    f, _, err := r.<a href="index.html#FormFile">FormFile</a>(&#34;myfile&#34;)
+                    if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                        err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Enrolled">Enrolled</a>.<a href="index.html#Insert">Insert</a>(<a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#FormatInt">FormatInt</a>(class.<a href="index.html#Id">Id</a>, 10), f)
+                    }
+                    if f != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> &amp;&amp; err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                        _ = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Class">Class</a>.<a href="index.html#Delete">Delete</a>(<a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#FormatInt">FormatInt</a>(class.<a href="index.html#Id">Id</a>, 10))
+                        status = 500
+                        msg = err.<a href="index.html#Error">Error</a>()
+                    } else {
+                        status = 200
+                        msg = &#34;Success&#34;
+                    }
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;class&#34;:   class,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+ClassesDelete will provide the route to delete the specified class if the user has permissions.
+</p>
+
+				<pre>var <span id="ClassesDelete">ClassesDelete</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            creator_id := getClaims(r)
+            if !hasPermissions(creator_id, params[&#34;id&#34;]) {
+                status = 500
+                msg = &#34;Invalid permissions to delete class&#34;
+            } else {
+
+                err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Class">Class</a>.<a href="index.html#Delete">Delete</a>(params[&#34;id&#34;])
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+                    status = 200
+                    msg = &#34;Success&#34;
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+ClassesIndex is used to return all the classes for the specified user as found from the authorization token.
+</p>
+
+				<pre>var <span id="ClassesIndex">ClassesIndex</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            var <span id="classes">classes</span> []<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#Class">Class</a>
+            strId := getClaims(r)
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(strId)
+
+            if user.<a href="index.html#Is_professor">Is_professor</a> {
+                creator_id, _ := <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#ParseInt">ParseInt</a>(strId, 10, 64)
+                classes, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Class">Class</a>.<a href="index.html#Get">Get</a>(<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#ClassQuery">ClassQuery</a>{<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#ClassQuery.Creator_id">Creator_id</a>: creator_id}, &#34;&#34;)
+            } else {
+                classes, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Enrolled">Enrolled</a>.<a href="index.html#GetClasses">GetClasses</a>(strId)
+            }
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+                msg = &#34;Success&#34;
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;classes&#34;: classes,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+ClassesShow shows details about the speicfic class given the class id in the url parameters.
+</p>
+
+				<pre>var <span id="ClassesShow">ClassesShow</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            class, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Class">Class</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;id&#34;])
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+                msg = &#34;Success&#34;
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;class&#34;:   class,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+ClassesUpdate updates the specific class if the user is a professor and the creator of the class, and allows to enroll more students based on a newly submitted csv if one exists.
+</p>
+
+				<pre>var <span id="ClassesUpdate">ClassesUpdate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            var <span id="updated">updated</span> = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#Class">Class</a>{}
+            creator_id := getClaims(r)
+            if !hasPermissions(creator_id, params[&#34;id&#34;]) {
+                status = 400
+                msg = &#34;Invalid permissions to update class&#34;
+            } else {
+                updates, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewClass">NewClass</a>(r)
+                updated, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Class">Class</a>.<a href="index.html#Update">Update</a>(params[&#34;id&#34;], updates)
+
+                f, _, err := r.<a href="index.html#FormFile">FormFile</a>(&#34;myfile&#34;)
+                if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Enrolled">Enrolled</a>.<a href="index.html#Insert">Insert</a>(params[&#34;id&#34;], f)
+                }
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> &amp;&amp; !<a href="http://localhost:5000/pkg/strings/">strings</a>.<a href="http://localhost:5000/pkg/strings/#Contains">Contains</a>(err.<a href="index.html#Error">Error</a>(), &#34;no such file&#34;) {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+                    status = 200
+                    msg = &#34;Success&#34;
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;class&#34;:   updated,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+SubmissionsCreate provides the logic for creating a new submission for a student, running the sanity script if it exists.
+</p>
+
+				<pre>var <span id="SubmissionsCreate">SubmissionsCreate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            msg := &#34;Success&#34;
+            userId := getClaims(r)
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            submission, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewSubmission">NewSubmission</a>(r)
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(userId)
+            if !user.<a href="index.html#Is_professor">Is_professor</a> {
+                uid, _ := <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#ParseInt">ParseInt</a>(userId, 10, 64)
+                submission.<a href="index.html#User_id">User_id</a> = uid
+                assign_id, _ := <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#ParseInt">ParseInt</a>(params[&#34;aid&#34;], 10, 64)
+                submission.<a href="index.html#Assignment_id">Assignment_id</a> = assign_id
+                assignment, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;aid&#34;])
+                submission.<a href="index.html#Time_updated">Time_updated</a> = <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Now">Now</a>()
+                submission, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Submission">Submission</a>.<a href="index.html#Insert">Insert</a>(submission)
+
+                if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> &amp;&amp; <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#BeforeDeadline">BeforeDeadline</a>(assignment.<a href="index.html#Deadline">Deadline</a>) {
+                    if <a href="http://localhost:5000/pkg/builtin/#len">len</a>(assignment.<a href="index.html#Sanity_script">Sanity_script</a>) &gt; 0 {
+                        _, res, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#Exec">Exec</a>(assignment.<a href="index.html#Sanity_script">Sanity_script</a>, submission.<a href="index.html#File">File</a>, assignment.<a href="index.html#Lang">Lang</a>)
+                        if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                            submission.<a href="index.html#Pre_results">Pre_results</a> = res
+                        }
+                    }
+                }
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                }
+            } else {
+                status = 400
+                msg = &#34;You cannot submit a project&#34;
+            }
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                if status == 0 {
+                    status = 200
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:     status,
+                &#34;message&#34;:    msg,
+                &#34;submission&#34;: submission,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+SubmissionsUpdate allows a user to update their submission and re-run the sanity script if all before the deadline for the assignment.
+</p>
+
+				<pre>var <span id="SubmissionsUpdate">SubmissionsUpdate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            msg := &#34;Success&#34;
+            userId := getClaims(r)
+            updated, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Submission">Submission</a>.<a href="index.html#GetByID">GetByID</a>(userId, params[&#34;aid&#34;])
+            assignment, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Assignment">Assignment</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;aid&#34;])
+            updates, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewSubmission">NewSubmission</a>(r)
+            sid := <a href="http://localhost:5000/pkg/strconv/">strconv</a>.<a href="http://localhost:5000/pkg/strconv/#FormatInt">FormatInt</a>(updated.<a href="index.html#Id">Id</a>, 10)
+            updated.<a href="index.html#Time_updated">Time_updated</a> = <a href="http://localhost:5000/pkg/time/">time</a>.<a href="http://localhost:5000/pkg/time/#Now">Now</a>()
+            updated, _ = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Submission">Submission</a>.<a href="index.html#Update">Update</a>(sid, updates)
+            if <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#BeforeDeadline">BeforeDeadline</a>(assignment.<a href="index.html#Deadline">Deadline</a>) {
+                if <a href="http://localhost:5000/pkg/builtin/#len">len</a>(assignment.<a href="index.html#Sanity_script">Sanity_script</a>) &gt; 0 {
+                    _, res, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#Exec">Exec</a>(assignment.<a href="index.html#Sanity_script">Sanity_script</a>, updated.<a href="index.html#File">File</a>, assignment.<a href="index.html#Lang">Lang</a>)
+                    if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                        updated.<a href="index.html#Pre_results">Pre_results</a> = res
+                    }
+                }
+            } else {
+                status = 400
+                msg = &#34;Cannot update submission after deadline&#34;
+            }
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                if status == 0 {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                }
+            } else {
+                if status == 0 {
+                    status = 200
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:     status,
+                &#34;message&#34;:    msg,
+                &#34;submission&#34;: updated,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+UsersBOL will use Google Omniauth callback from the frontend
+to automatically insert a new student object.
+</p>
+
+				<pre>var <span id="UsersBOL">UsersBOL</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewUser">NewUser</a>(r)
+
+            user.<a href="index.html#Is_professor">Is_professor</a> = <a href="http://localhost:5000/pkg/builtin/#false">false</a>
+            user.<a href="index.html#Password">Password</a> = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#DEFAULT_PASSWORD">DEFAULT_PASSWORD</a>
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span>, <span id="token">token</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            _, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#Insert">Insert</a>(user)
+            if err == <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> || <a href="http://localhost:5000/pkg/strings/">strings</a>.<a href="http://localhost:5000/pkg/strings/#Contains">Contains</a>(err.<a href="index.html#Error">Error</a>(), &#34;User already exists&#34;) {
+                user, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#Login">Login</a>(user)
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+                    status = 200
+                    msg = &#34;Success&#34;
+                    token = user.<a href="index.html#GenerateJWT">GenerateJWT</a>()
+                }
+            } else {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;token&#34;:   token,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+UsersCreate will explicitly insert a user object.
+Used to create a professor.
+</p>
+
+				<pre>var <span id="UsersCreate">UsersCreate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewUser">NewUser</a>(r)
+            user, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#Insert">Insert</a>(user)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+                msg = &#34;Success&#34;
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;user&#34;:    user,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+UsersDelete allow a user to delete their accounts, if authenticated.
+</p>
+
+				<pre>var <span id="UsersDelete">UsersDelete</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            if params[&#34;id&#34;] != getClaims(r) {
+                status = 500
+                msg = &#34;Invalid permissions to delete user&#34;
+            } else {
+                user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;id&#34;])
+                if !user.<a href="index.html#Is_professor">Is_professor</a> {
+
+                    _ = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#Enrolled">Enrolled</a>.<a href="index.html#Unenroll">Unenroll</a>(params[&#34;id&#34;])
+                }
+                err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#Delete">Delete</a>(params[&#34;id&#34;])
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+                    status = 200
+                    msg = &#34;Success&#34;
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+UsersIndex will show the home page for the user based
+purely on the claims.
+</p>
+
+				<pre>var <span id="UsersIndex">UsersIndex</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            user_id := getClaims(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(user_id)
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+                msg = &#34;Success&#34;
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;user&#34;:    user,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+UsersLogin will explicitly login a user, handing back
+a JWT for continued access to restricted parts of the site.
+</p>
+
+				<pre>var <span id="UsersLogin">UsersLogin</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewUser">NewUser</a>(r)
+            user, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#Login">Login</a>(user)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span>, <span id="token">token</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+                msg = &#34;Success&#34;
+                token = user.<a href="index.html#GenerateJWT">GenerateJWT</a>()
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;token&#34;:   token,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+UsersShow will show the home page for a user based
+a provided id as a parameter.
+</p>
+
+				<pre>var <span id="UsersShow">UsersShow</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            user, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#GetByID">GetByID</a>(params[&#34;id&#34;])
+            if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                status = 500
+                msg = err.<a href="index.html#Error">Error</a>()
+            } else {
+                status = 200
+                msg = &#34;Success&#34;
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;user&#34;:    user,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+				<p>
+UsersUpdate allows a user to update their information if they are authenticated.
+</p>
+
+				<pre>var <span id="UsersUpdate">UsersUpdate</span> = <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#HandlerFunc">HandlerFunc</a>(
+    func(w <a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#ResponseWriter">ResponseWriter</a>, r *<a href="http://localhost:5000/pkg/net/http/">http</a>.<a href="http://localhost:5000/pkg/net/http/#Request">Request</a>) {
+
+        <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/">utilities</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/utilities/#SetupResponse">SetupResponse</a>(&amp;w)
+        if r.<a href="index.html#Method">Method</a> != &#34;OPTIONS&#34; {
+            params := <a href="http://localhost:5000/pkg/github.com/gorilla/mux/">mux</a>.<a href="http://localhost:5000/pkg/github.com/gorilla/mux/#Vars">Vars</a>(r)
+            var <span id="status">status</span> <a href="http://localhost:5000/pkg/builtin/#int">int</a>
+            var <span id="msg">msg</span> <a href="http://localhost:5000/pkg/builtin/#string">string</a>
+            var <span id="updated">updated</span> = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#User">User</a>{}
+            if params[&#34;id&#34;] != getClaims(r) {
+                status = 500
+                msg = &#34;Invalid permissions to update user&#34;
+            } else {
+                updates, err := <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#NewUser">NewUser</a>(r)
+                updated, err = <a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/">models</a>.<a href="http://localhost:5000/pkg/github.com/jcherianucla/UCLA-CS-130/api/app/models/#LayerInstance">LayerInstance</a>().<a href="index.html#User">User</a>.<a href="index.html#Update">Update</a>(params[&#34;id&#34;], updates)
+                if err != <a href="http://localhost:5000/pkg/builtin/#nil">nil</a> {
+                    status = 500
+                    msg = err.<a href="index.html#Error">Error</a>()
+                } else {
+                    status = 200
+                    msg = &#34;Success&#34;
+                }
+            }
+            JSON, _ := <a href="http://localhost:5000/pkg/encoding/json/">json</a>.<a href="http://localhost:5000/pkg/encoding/json/#Marshal">Marshal</a>(map[<a href="http://localhost:5000/pkg/builtin/#string">string</a>]interface{}{
+                &#34;status&#34;:  status,
+                &#34;message&#34;: msg,
+                &#34;user&#34;:    updated,
+            })
+            w.<a href="index.html#Write">Write</a>(<a href="index.html#JSON">JSON</a>)
+        }
+    },
+)</pre>
+			
+		
+		
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.9.2.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="http://localhost:5000/LICENSE">BSD license</a>.<br>
+<a href="http://localhost:5000/doc/tos.html">Terms of Service</a> | 
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+<!-- TODO(adonovan): load these from <head> using "defer" attribute? -->
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.js"></script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.treeview.js"></script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/jquery.treeview.edit.js"></script>
+
+
+<script>var goVersion = "go1.9.2";</script>
+<script type="text/javascript" src="../../../../../../../lib/godoc/godocs.js"></script>
+
+</body>
+</html>
+
