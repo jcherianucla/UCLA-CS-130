@@ -43,7 +43,7 @@ type User struct {
 
 // Represents all fields a user can be queried over.
 type UserQuery struct {
-	Id           int
+	Id           int64
 	Is_professor bool
 	Email        string
 	First_name   string
@@ -84,9 +84,7 @@ func (user *User) Equals(other User) bool {
 	return user.Is_professor == other.Is_professor &&
 		user.Email == other.Email &&
 		user.First_name == other.First_name &&
-		user.Last_name == other.Last_name &&
-		user.Password == other.Password
-	//bytes.Equal(user.Password, other.Password)
+		user.Last_name == other.Last_name
 }
 
 // NewUserTable creates a new table within the database for housing
