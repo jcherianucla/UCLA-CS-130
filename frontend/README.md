@@ -20,14 +20,13 @@ This is the entire frontend for GradePortal written with React.js
 ├── src
 |   ├── containers
 |   |   ├── professor
-|   |   |   ├── Analytics.js
 |   |   |   ├── UpsertClass.js
 |   |   |   └── UpsertProject.js
-|   |   ├── student
-|   |   |   └── Submission.js
 |   |   ├── Login.js
 |   |   ├── Classes.js
+|   |   ├── FAQ.js
 |   |   ├── Landing.js
+|   |   ├── Project.js
 |   |   └── Projects.js
 |   ├── fonts
 |   ├── images
