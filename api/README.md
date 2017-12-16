@@ -14,10 +14,11 @@ This is the entire backend for GradePortal written in Golang. It is a pure RESTf
 - Run `./api` to run the pre-built server executable
 
 To build and run on your own:
-	- Install [Golang](https://golang.org/doc/install)
-	- Run `go get ./` to fetch all the go dependencies
-	- Run `go build` to build the executable
-	- Run `./api` to run the newly built executable
+
+- Install [Golang](https://golang.org/doc/install)
+- Run `go get ./` to fetch all the go dependencies
+- Run `go build` to build the executable
+- Run `./api` to run the newly built executable
 
 Note that running `./start.sh` isn't enough on a local machine because of the necessary connection needed between the api server and the database.
 
